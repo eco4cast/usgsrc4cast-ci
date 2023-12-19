@@ -1,4 +1,4 @@
-# National Ecological Observatory Network (NEON) Ecological Forecasting Challenge
+# Ecological Forecasting Initiative (EFI) and U.S. Geological Survey (USGS) River Chlorophyll Forecasting Challenge
 
 The following elements of a forecasting challenge workflow are included in this repo.  The GitHub Actions are the tool for automating the tasks.
 
@@ -15,3 +15,7 @@ The following elements of a forecasting challenge workflow are included in this 
 See [https://doi.org/10.1002/fee.2616](https://doi.org/10.1002/fee.2616) for more information on the structure of a forecasting challenge.
 
 Supported by the U.S. National Science Foundation grants (DEB-1926388 and OAC-2209866)
+
+## Disclaimer
+Although this software program has been used by the U.S. Geological Survey (USGS), no warranty, expressed or implied, is made by the USGS or the U.S. Government as to the accuracy and functioning of the program and related program material nor shall the fact of distribution constitute any such warranty, and no responsibility is assumed by the USGS in connection therewith.
+This software is provided “AS IS.”
