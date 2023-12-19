@@ -12,7 +12,6 @@ source("src/download_nwis_data.R")
 # End this file with a list of target objects.
 list(
 
-  # storing predictions from run-pgdl-da into ncdf files
   tar_target(
     site_list_file,
     "in/FY23_ecological_forecast_challenge_USGS_sites.csv",
@@ -40,11 +39,6 @@ list(
       return(out_file)
     }
   ),
-
-  # tar_target(
-  #   historic_data,
-  #   download()
-  # ),
 
   tar_target(
     start_date,
