@@ -62,3 +62,7 @@ archive/
 .DS_Store
 *.gz
 *.csv
+
+**/out/**
+
+**/in/**
