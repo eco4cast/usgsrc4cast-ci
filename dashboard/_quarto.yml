@@ -3,9 +3,9 @@ project:
   output-dir: docs
 
 website:
-  title: "NEON Ecological Forecast Challenge"
+  title: "EFI-USGS River Chlorophyll Forecast Challenge"
   page-navigation: true
-  repo-url: https://github.com/eco4cast/neon4cast-ci
+  repo-url: https://github.com/eco4cast/usgsrc4cast-ci
   repo-actions: [source, issue]
 
   navbar:
@@ -26,7 +26,7 @@ website:
     left: "CC-BY"
     right:
       - icon: github
-        href: https://github.com/eco4cast/neon4cast-ci
+        href: https://github.com/eco4cast/usgsrc4cast-ci
 
 format:
   html:
