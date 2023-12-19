@@ -8,7 +8,7 @@ on:
 name: target-generation
 
 jobs:
-  phenology:
+  chl-targets:
     runs-on: ubuntu-latest
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -23,44 +23,7 @@ jobs:
       - name: Generate targets
         shell: Rscript {0}
         run: |
-          install.packages("RCurl")
-          source("targets/phenology_targets.R")
-
-  beetles:
-    runs-on: ubuntu-latest
-    env:
-      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_SUBMISSIONS }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_SUBMISSIONS }}
-      OSN_KEY: ${{ secrets.OSN_KEY }}
-      OSN_SECRET: ${{ secrets.OSN_SECRET }}
-      NEON_TOKEN: ${{ secrets.NEON_TOKEN }}
-    container: rocker/geospatial:latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Generate targets
-        shell: Rscript {0}
-        run: |
-          install.packages(c("neonstore","RCurl","duckdbfs","ISOweek"))
-          source("targets/beetles_targets.R")
-
-  ticks:
-    runs-on: ubuntu-latest
-    env:
-      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_SUBMISSIONS }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_SUBMISSIONS }}
-      OSN_KEY: ${{ secrets.OSN_KEY }}
-      OSN_SECRET: ${{ secrets.OSN_SECRET }}
-      NEON_TOKEN: ${{ secrets.NEON_TOKEN }}
-    container: rocker/geospatial:latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Generate targets
-        shell: Rscript {0}
-        run: |
-          install.packages(c("neonstore","RCurl","duckdbfs","ISOweek"))
-          source("targets/ticks_targets.R")
+          install.packages("clustermq", "dataRetrieval", "RCurl", "tarchetypes", "targets")
+          setwd("targets")
+          targets::tar_make()
 
