@@ -1,5 +1,5 @@
-challenge_long_name: NEON Ecological Forecasting Challenge
-project_id: neon4cast
+challenge_long_name: EFI-USGS River Chlorophyll Forecasting Challenge
+project_id: usgsrc4cast
 endpoint: sdsc.osn.xsede.org
 noaa_endpoint: s3.flare-forecast.org
 submissions_endpoint: submit.ecoforecast.org
@@ -24,8 +24,8 @@ target_metadata_gsheet: https://docs.google.com/spreadsheets/d/10YTX9ae_C1rFdLgE
 targets_thumbnail: 'https://raw.githubusercontent.com/eco4cast/neon4cast-ci/main/catalog/thumbnail_plots/neon_stream.jpg'
 targets_thumbnail_title: 'Test Image'
 targets_path: 'catalog/targets/'
-challenge_url: https://projects.ecoforecast.org/neon4cast-ci
-github_repo: eco4cast/neon4cast-ci
+challenge_url: https://projects.ecoforecast.org/usgsrc4cast-ci
+github_repo: eco4cast/usgsrc4cast-ci
 target_groups:
   Aquatics:
     targets_file: "https://data.ecoforecast.org/neon4cast-targets/aquatics/aquatics-targets.csv.gz"

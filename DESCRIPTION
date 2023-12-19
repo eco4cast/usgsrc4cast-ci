@@ -1,11 +1,16 @@
-Package: neon4cast-ci
-Title: Cyberinfrastructure for the VERA Forecasting Challenge
+Package: usgsrc4cast-ci
+Title: Cyberinfrastructure for the EFI-USGS River Chlorophyll Forecasting Challenge
 Version: 0.1
 Authors@R: c(person(
               "Quinn", "Thomas", 
               email = "rqthomas@vt.edu", 
               role = c("aut", "cre"),
-              comment = c(ORCID = "0000-0003-1282-7825")))
+              comment = c(ORCID = "0000-0003-1282-7825")),
+              person(
+              "Jacob", "Zwart", 
+              email = "jzwart@usgs.gov", 
+              role = c("aut", "cre"),
+              comment = c(ORCID = "0000-0002-3870-405X")))
 Description: Cyberinfrastructure that processing submissions, scores submissions, generates catalog, and generates dashboards
 License: MIT
 Encoding: UTF-8
