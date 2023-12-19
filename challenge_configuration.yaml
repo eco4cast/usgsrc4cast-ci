@@ -19,12 +19,13 @@ site_path: 'catalog/sites'
 site_table: USGS_site_metadata.csv
 site_thumbnail: 'https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/thumbnails/image/screencapture-waterdata-usgs-gov-nwis-rt-2018-08-02-13_00_05-01.jpg'
 site_thumbnail_title: "USGS Sites Map"
-site_table_link: 'https://raw.githubusercontent.com/eco4cast/neon4cast-ci/main/USGS_site_metadata.csv'
+site_table_link: 'https://raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/USGS_site_metadata.csv'
 # TODO: update below
 target_metadata_gsheet: https://docs.google.com/spreadsheets/d/10YTX9ae_C1rFdLgEDkUcCRCpUkVYv06leY01BtD1BgM/edit?usp=sharing
 targets_thumbnail: 'https://raw.githubusercontent.com/eco4cast/neon4cast-ci/main/catalog/thumbnail_plots/neon_stream.jpg'
 targets_thumbnail_title: 'Test Image'
 targets_path: 'catalog/targets/'
+##
 challenge_url: https://projects.ecoforecast.org/usgsrc4cast-ci
 github_repo: eco4cast/usgsrc4cast-ci
 target_groups:
@@ -39,37 +40,38 @@ variable_groups:
     thumbnail_link: 'https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/thumbnails/image/Back-b.jpg'
     thumbnail_title: 'USGS Streamgage'
 catalog_config:
-  about_string: 'https://projects.ecoforecast.org/neon4cast-docs/'
-  about_title: 'NEON Ecological Forecasting Challenge Documentation'
-  scores_thumbnail: "https://raw.githubusercontent.com/eco4cast/neon4cast-ci/main/catalog/thumbnail_plots/52760199990_d1a0f154fe_c.jpg"
-  scores_thumbnail_title: "NEON Buoy Image"
-  forecasts_thumbnail: "https://raw.githubusercontent.com/eco4cast/neon4cast-ci/main/catalog/thumbnail_plots/51629805865_0ef01ffbbc_c.jpg"
-  forecasts_thumbnail_title: "NEON Buoy Image"
+  about_string: 'https://projects.ecoforecast.org/usgsrc4cast-docs/'
+  about_title: 'EFI-USGS River Chlorophyll Forecasting Challenge Documentation'
+  scores_thumbnail: "https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/thumbnails/image/Back-b.jpg"
+  scores_thumbnail_title: "USGS Streamgage"
+  forecasts_thumbnail: "https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/thumbnails/image/Back-b.jpg"
+  forecasts_thumbnail_title: "USGS Streamgage"
   forecast_path: 'catalog/forecasts/'
   scores_path: 'catalog/scores/'
   summaries_path: 'catalog/summaries/'
-  summaries_thumbnail: 'https://raw.githubusercontent.com/eco4cast/neon4cast-ci/main/catalog/thumbnail_plots/neon_desert.jpg'
-  summaries_thumbnail_title: "NEON Image"
+  # here
+  summaries_thumbnail: 'https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/thumbnails/image/Manual%20measurement%20streamgage.jpg'
+  summaries_thumbnail_title: "USGS Image"
   inventory_path: 'catalog/inventory'
-  inventory_thumbnail: 'https://raw.githubusercontent.com/eco4cast/neon4cast-ci/main/catalog/thumbnail_plots/neon_forest.jpg'
-  inventory_thumbnail_title: "NEON Image"
+  inventory_thumbnail: 'https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/thumbnails/image/Streamgaging%20Basics%20photo%20showing%20Acoustic%20Doppler%20Current%20Profiler2.jpg'
+  inventory_thumbnail_title: "USGS Image"
   noaa_path: 'catalog/noaa_forecasts/'
-  noaa_thumbnail: 'https://raw.githubusercontent.com/eco4cast/neon4cast-ci/main/catalog/thumbnail_plots/neon_wetland.jpg'
-  noaa_thumbnail_title: "NEON Image"
+  noaa_thumbnail: 'https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/DSC_0001.jpg'
+  noaa_thumbnail_title: "USGS Image"
   aws_download_path_forecasts: 'bio230014-bucket01/challenges/forecasts/parquet/'
   aws_download_path_scores: 'bio230014-bucket01/challenges/scores/parquet/'
   summaries_download_path: 'bio230014-bucket01/vera4cast/forecasts/summaries/parquet/'
   host_url: "https://www.ecoforecastprojectvt.org"
   host_name: "Ecoforecast Challenge"
   bbox:
-    max_lat: 71.2824
-    min_lat: 17.9696
-    max_lon: -66.7987
-    min_lon: -156.6194
+    max_lat: 45.5175
+    min_lat: 39.6327
+    max_lon: -74.7781
+    min_lon: -122.6692
   site_type: 'MultiPoint'
-  base_image_path: 'https://data.ecoforecast.org/neon4cast-catalog'
+  base_image_path: 'https://data.ecoforecast.org/usgsrc4cast-catalog'
   citation_doi: "https://doi.org/10.1002/fee.2616"
   citation_text: "Thomas, R.Q., C. Boettiger, C.C. Carey, M.C. Dietze, L.R. Johnson, M.A. Kenney, J.S. Mclachlan, J.A. Peters, E.R. Sokol, J.F. Weltzin, A. Willson, W.M. Woelmer, and Challenge Contributors. 2023. The NEON Ecological Forecasting Challenge. Frontiers in Ecology and Environment 21: 112-113."
-  dashboard_url: "https://projects.ecoforecast.org/neon4cast-docs/"
-  dashboard_title: "NEON Forecast Challenge Dashboard"
-  site_metadata_url: 'https://raw.githubusercontent.com/eco4cast/neon4cast-ci/main/neon4cast_field_site_metadata.csv'
+  dashboard_url: "https://projects.ecoforecast.org/usgsrc4cast-docs/"
+  dashboard_title: "EFI-USGS River Chlorophyll Forecast Challenge Dashboard"
+  site_metadata_url: 'https://raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/USGS_site_metadata.csv'
