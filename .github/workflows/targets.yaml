@@ -23,7 +23,7 @@ jobs:
       - name: Generate targets
         shell: Rscript {0}
         run: |
-          install.packages("clustermq", "dataRetrieval", "RCurl", "tarchetypes", "targets")
+          install.packages(c("clustermq", "dataRetrieval", "RCurl", "tarchetypes", "targets"))
           setwd("targets")
           targets::tar_make()
 
