@@ -16,14 +16,13 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_SUBMISSIONS }}
       OSN_KEY: ${{ secrets.OSN_KEY }}
       OSN_SECRET: ${{ secrets.OSN_SECRET }}
-    container: rocker/geospatial:latest
+    container: eco4cast/usgsrc4cast-targets:latest
     steps:
       - uses: actions/checkout@v3
 
       - name: Generate targets
         shell: Rscript {0}
         run: |
-          install.packages(c("clustermq", "dataRetrieval", "RCurl", "tarchetypes", "targets"))
           setwd("targets")
           targets::tar_make()
 
