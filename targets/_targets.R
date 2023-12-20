@@ -125,7 +125,8 @@ list(
                site_id = paste0("USGS-", site_id),
                project_id = "usgsrc4cast",
                duration = "P1D") %>%
-        select(datetime, site_id, variable, observation)
+        select(datetime, site_id, #project_id, duration,
+               variable, observation)
       write_csv(out, file = out_file)
       return(out_file)
     },
