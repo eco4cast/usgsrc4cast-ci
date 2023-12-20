@@ -7,9 +7,9 @@ editor:
 
 We invite you to submit forecasts!
 
-The NEON Ecological Forecasting Challenge is an open platform for the ecological and data science communities to forecast data from [the National Ecological Observatory Network](https://www.neonscience.org) before they are collected.
+The EFI-USGS River Chlorophyll Forecasting Challenge is an open platform for the ecological and data science communities to forecast data from [the U.S. Geological Survey (USGS)](https://www.usgs.gov/) before they are collected.
 
-The Challenge is hosted by the [Ecological Forecasting Initiative Research Coordination Network](https://ecoforecast.org) and sponsored by the U.S. National Science Foundation. 
+The Challenge is hosted by the [Ecological Forecasting Initiative Research Coordination Network](https://ecoforecast.org) and sponsored by the U.S. National Science Foundation. This challenge is co-hosted by the USGS Proxies Project, an effort supported by the Water Mission Area Water Quality Processes program to develop estimation methods for PFAS, harmful algal blooms, and metals, at multiple spatial and temporal scales.
 
 ## Why a forecasting challenge?
 

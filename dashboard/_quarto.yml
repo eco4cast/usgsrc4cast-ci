@@ -33,7 +33,7 @@ format:
     theme: [sandstone, custom.scss]
     css: styles.css
     title-block-style: default
-    title-block-banner: "img/banner.jpg"
+    title-block-banner: "img/USGS_logo_green.png"
     title-block-banner-color: white
     page-layout: full
     toc: true

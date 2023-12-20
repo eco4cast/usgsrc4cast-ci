@@ -3,16 +3,17 @@ source("https://raw.githubusercontent.com/eco4cast/neon4cast/ci_upgrade/R/to_hou
 
 #install_mc()
 mc_alias_set("osn", "sdsc.osn.xsede.org", "", "")
+# TODO: update path to usgsrc4cast-drivers?
 mc_mirror("osn/bio230014-bucket01/neon4cast-drivers/noaa/gefs-v12/pseudo", "pseudo")
 
 df <- arrow::open_dataset("pseudo") |>
   dplyr::filter(variable %in% c("PRES","TMP","RH","UGRD","VGRD","APCP","DSWRF","DLWRF"))
 
 
-site_list <- readr::read_csv(paste0("https://github.com/eco4cast/",
-                                    "neon4cast-noaa-download/",
-                                    "raw/master/noaa_download_site_list.csv"),
-                             show_col_types = FALSE) |> dplyr::pull(site_id)
+site_list <- readr::read_csv(paste0("https://github.com/eco4cast/usgsrc4cast-ci/",
+                                    "raw/main/USGS_site_metadata.csv"),
+                             show_col_types = FALSE) |>
+  dplyr::pull(site_id)
 
 s3 <- arrow::s3_bucket("bio230014-bucket01/neon4cast-drivers/noaa/gefs-v12",
                        endpoint_override = "sdsc.osn.xsede.org",

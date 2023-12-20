@@ -1,9 +1,10 @@
-source("https://raw.githubusercontent.com/eco4cast/neon4cast/ci_upgrade/R/to_hourly.R")
+source("https://raw.githubusercontent.com/eco4cast/neon4cast/ci_upgrade/R/to_hourly.R") # is this branch stable?
 
-site_list <- readr::read_csv("neon4cast_field_site_metadata.csv",
-                             show_col_types = FALSE) |>
-  dplyr::rename(site_id = field_site_id)
+site_list <- readr::read_csv("USGS_site_metadata.csv",
+                             show_col_types = FALSE)
 
+# should this be updated to a usgsrc4cast-drivers path? or are we keeping all drivers in
+#  neon4cast-drivers?
 s3_stage2 <- arrow::s3_bucket("bio230014-bucket01/neon4cast-drivers/noaa/gefs-v12/stage2",
                               endpoint_override = "sdsc.osn.xsede.org",
                               access_key= Sys.getenv("OSN_KEY"),
@@ -29,7 +30,8 @@ df <- arrow::open_dataset(s3_stage2) |>
 curr_date <- Sys.Date()
 last_week <- dplyr::tibble(reference_datetime = as.character(seq(curr_date - lubridate::days(7), curr_date - lubridate::days(1), by = "1 day")))
 
-missing_dates <- dplyr::anti_join(last_week, df, by = "reference_datetime") |> dplyr::pull(reference_datetime)
+missing_dates <- dplyr::anti_join(last_week, df, by = "reference_datetime") |>
+  dplyr::pull(reference_datetime)
 
 if(length(missing_dates) > 0){
   for(i in 1:length(missing_dates)){
@@ -49,12 +51,16 @@ if(length(missing_dates) > 0){
       dplyr::collect() |>
       dplyr::mutate(reference_datetime = missing_dates[i])
 
-    hourly_df <- to_hourly(site_df, use_solar_geom = TRUE, psuedo = FALSE) |>
+    hourly_df <- to_hourly(site_df,
+                           use_solar_geom = TRUE,
+                           psuedo = FALSE) |>
       dplyr::mutate(ensemble = as.numeric(stringr::str_sub(ensemble, start = 4, end = 5)),
                     reference_datetime = lubridate::as_date(reference_datetime)) |>
       dplyr::rename(parameter = ensemble)
 
-    arrow::write_dataset(hourly_df, path = s3_stage2, partitioning = c("reference_datetime", "site_id"))
+    arrow::write_dataset(hourly_df,
+                         path = s3_stage2,
+                         partitioning = c("reference_datetime", "site_id"))
   }
 }
 

@@ -35,6 +35,8 @@ list(
                site_url = paste0("https://waterdata.usgs.gov/monitoring-location/", site_no)) %>%
         relocate(site_id) %>%
         relocate(site_url, .before = colocated) %>%
+        rename(latitude = dec_lat_va,
+               longitude = dec_long_va) %>%
         write_csv(file = out_file)
       return(out_file)
     }

@@ -7,11 +7,7 @@ editor:
 
 ```{r  message=FALSE, echo = FALSE}
 library(tidyverse)
-terrestrial_focal_sites <- c("BART", "OSBS", "KONZ", "SRER")
 aquatics_focal_sites <- c("BARC", "CRAM")
-phenology_focal_sites <- c("HARV", "BART", "STEI", "UKFS", "GRSM", "DELA", "CLBJ")
-ticks_focal_sites <- c("BLAN", "TALL")
-beetles_focal_sites <- c("BLAN", "OSBS")
 ```
 
 ```{r message=FALSE, echo = FALSE}
