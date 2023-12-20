@@ -1,4 +1,4 @@
-name: build docker container
+name: build targets docker container
 
 on:
   workflow_dispatch:
@@ -24,5 +24,6 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: eco4cast/rocker-neon4cast:latest
+          tags: eco4cast/usgsrc4cast-targets:latest
           build-args: GITHUB_PAT=${{ secrets.PAT }}
+          file: targets/Dockerfile
