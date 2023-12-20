@@ -1,8 +1,8 @@
 {
   "type": "Catalog",
-  "id": "neon4cast-stac",
-  "title": "NEON Ecological Forecasting Challenge Catalog",
-  "description": "A STAC (Spatiotemporal Asset Catalog) describing forecasts and forecast scores for the neon4cast Forecasting Challenge",
+  "id": "usgsrc4cast-stac",
+  "title": "EFI-USGS River Chlorophyll Forecasting Challenge Catalog",
+  "description": "A STAC (Spatiotemporal Asset Catalog) describing forecasts and forecast scores for the usgsrc4cast Forecasting Challenge",
   "stac_version": "1.0.0",
   "conformsTo": "conformsTo",
   "links": [

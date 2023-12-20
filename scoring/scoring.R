@@ -27,7 +27,9 @@ s3$CreateDir("scores")
 Sys.setenv("AWS_EC2_METADATA_DISABLED"="TRUE")
 Sys.unsetenv("AWS_DEFAULT_REGION")
 
-s3_inv <- arrow::s3_bucket(paste0(config$inventory_bucket,"/catalog/forecasts/project_id=", config$project_id), endpoint_override = endpoint)
+s3_inv <- arrow::s3_bucket(paste0(config$inventory_bucket,"/catalog/forecasts/project_id=",
+                                  config$project_id),
+                           endpoint_override = endpoint)
 
 variable_duration <- arrow::open_dataset(s3_inv) |>
   dplyr::distinct(variable, duration, project_id) |>
@@ -48,10 +50,14 @@ furrr::future_walk(1:nrow(variable_duration), function(k, variable_duration, con
 
   print(variable_duration[k,])
 
-  s3_targets <- arrow::s3_bucket(glue::glue(config$targets_bucket,"/project_id={project_id}"), endpoint_override = endpoint)
-  s3_scores <- arrow::s3_bucket(config$scores_bucket, endpoint_override = endpoint)
-  s3_prov <- arrow::s3_bucket(config$prov_bucket, endpoint_override = endpoint)
-  s3_inv <- arrow::s3_bucket(paste0(config$inventory_bucket,"/catalog/forecasts"), endpoint_override = endpoint)
+  s3_targets <- arrow::s3_bucket(glue::glue(config$targets_bucket,"/project_id={project_id}"),
+                                 endpoint_override = endpoint)
+  s3_scores <- arrow::s3_bucket(config$scores_bucket,
+                                endpoint_override = endpoint)
+  s3_prov <- arrow::s3_bucket(config$prov_bucket,
+                              endpoint_override = endpoint)
+  s3_inv <- arrow::s3_bucket(paste0(config$inventory_bucket,"/catalog/forecasts"),
+                             endpoint_override = endpoint)
 
   local_prov <- paste0(project_id,"-",duration,"-",variable, "-scoring_provenance.csv")
 
@@ -68,7 +74,8 @@ furrr::future_walk(1:nrow(variable_duration), function(k, variable_duration, con
 
   s3_scores_path <- s3_scores$path(glue::glue("parquet/project_id={project_id}/duration={duration}/variable={variable}"))
 
-  s3_targets <- arrow::s3_bucket(glue::glue(config$targets_bucket), endpoint_override = endpoint)
+  s3_targets <- arrow::s3_bucket(glue::glue(config$targets_bucket),
+                                 endpoint_override = endpoint)
 
   target <- arrow::open_csv_dataset(s3_targets,
                                     schema = arrow::schema(

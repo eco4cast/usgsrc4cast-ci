@@ -1,9 +1,9 @@
 source("https://raw.githubusercontent.com/eco4cast/neon4cast/ci_upgrade/R/to_hourly.R")
 
-site_list <- readr::read_csv(paste0("https://github.com/eco4cast/",
-                                    "neon4cast-noaa-download/",
-                                    "raw/master/noaa_download_site_list.csv"),
-                             show_col_types = FALSE) |> dplyr::pull(site_id)
+site_list <- readr::read_csv(paste0("https://github.com/eco4cast/usgsrc4cast-ci/",
+                                    "raw/main/USGS_site_metadata.csv"),
+                             show_col_types = FALSE) |>
+  dplyr::pull(site_id)
 
 future::plan("future::multisession", workers = 8)
 

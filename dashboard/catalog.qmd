@@ -29,7 +29,7 @@ The catalog of submitted forecasts and the evaluation of the forecasts ("scores"
 
 The catalog provides the code that you can use to access forecasts and scores.\ 
 
-A full page version can be found [here](https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/neon4cast-ci/main/catalog/catalog.json)\
+A full page version can be found [here](https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/catalog.json)\
 
 <br /> <br />
 

@@ -5,18 +5,9 @@ library(gefs4cast)
 gdalcubes::gdalcubes_options(parallel=2*parallel::detectCores())
 #gdalcubes::gdalcubes_options(parallel=TRUE)
 
-sites <-
-  dplyr::bind_rows(
-    readr::read_csv(paste0("https://github.com/eco4cast/",
-                           "neon4cast-noaa-download/",
-                           "raw/master/noaa_download_site_list.csv"),
-                    col_select = c("site_id", "latitude", "longitude")),
-    readr::read_csv(paste0("https://github.com/eco4cast/neon4cast-targets/",
-                           "raw/main/tern_field_site_metadata.csv"),
-                    col_select = c("site_id", "latitude", "longitude"))
-  )
-
-
+sites <- readr::read_csv(paste0("https://github.com/eco4cast/usgsrc4cast-ci/",
+                                "raw/main/USGS_site_metadata.csv"),
+                         col_select = c("site_id", "latitude", "longitude"))
 
 Sys.setenv("GEFS_VERSION"="v12")
 dates <- seq(as.Date("2020-09-24"), Sys.Date()-1, by=1)
