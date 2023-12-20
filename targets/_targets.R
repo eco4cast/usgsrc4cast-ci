@@ -32,8 +32,9 @@ list(
       whatNWISsites(sites = site_list_id) %>%
         tibble() %>%
         mutate(site_id = paste(agency_cd, site_no, sep = "-"),
+               project_id = "usgsrc4cast",
                site_url = paste0("https://waterdata.usgs.gov/monitoring-location/", site_no)) %>%
-        relocate(site_id) %>%
+        relocate(site_id, project_id) %>%
         relocate(site_url, .before = colocated) %>%
         rename(latitude = dec_lat_va,
                longitude = dec_long_va) %>%
@@ -121,7 +122,9 @@ list(
                site_id = site_no,
                observation = chl_ug_L) %>%
         mutate(variable = "chla",
-               site_id = paste0("USGS-", site_id)) %>%
+               site_id = paste0("USGS-", site_id),
+               project_id = "usgsrc4cast",
+               duration = "P1D") %>%
         select(datetime, site_id, variable, observation)
       write_csv(out, file = out_file)
       return(out_file)
