@@ -150,7 +150,7 @@ list(
     push_to_s3(
       config = config,
       local_file_name = all_historic_data_csv,
-      s3_file_name = "aquatics-targets.csv.gz")
+      s3_file_name = config$targets_file_name)
   )
 
 )
