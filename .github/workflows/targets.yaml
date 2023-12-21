@@ -20,7 +20,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          ref: targets-to-bucket
+          ref: prod
       - name: Generate targets
         shell: Rscript {0}
         run: |
