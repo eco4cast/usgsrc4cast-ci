@@ -8,9 +8,21 @@ tar_option_set(packages = c("dataRetrieval",
                             "tidyverse"))
 
 source("src/download_nwis_data.R")
+source("src/s3_utils.R")
 
 # End this file with a list of target objects.
 list(
+
+  tar_target(
+    config_file,
+    "../challenge_configuration.yaml",
+    format = "file"
+  ),
+
+  tar_target(
+    config,
+    yaml::read_yaml(config_file)
+  ),
 
   tar_target(
     site_list_file,
@@ -125,8 +137,8 @@ list(
                site_id = paste0("USGS-", site_id),
                project_id = "usgsrc4cast",
                duration = "P1D") %>%
-        select(datetime, site_id, #project_id, duration,
-               variable, observation)
+        select(project_id, site_id, datetime,
+               duration, variable, observation)
       write_csv(out, file = out_file)
       return(out_file)
     },
@@ -134,8 +146,11 @@ list(
   ),
 
   tar_target(
-    push_to_data_repo,
-    "fill_in"
+    push_to_targets_s3,
+    push_to_s3(
+      config = config,
+      local_file_name = all_historic_data_csv,
+      s3_file_name = "aquatics-targets.csv.gz")
   )
 
 )
