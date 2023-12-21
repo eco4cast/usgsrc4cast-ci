@@ -25,7 +25,8 @@ target_metadata_gsheet: https://docs.google.com/spreadsheets/d/10YTX9ae_C1rFdLgE
 targets_thumbnail: 'https://raw.githubusercontent.com/eco4cast/neon4cast-ci/main/catalog/thumbnail_plots/neon_stream.jpg'
 targets_thumbnail_title: 'Test Image'
 targets_path: 'catalog/targets/'
-##
+# to here
+targets_file_name: 'river-chl-targets.csv.gz'
 challenge_url: https://projects.ecoforecast.org/usgsrc4cast-ci
 github_repo: eco4cast/usgsrc4cast-ci
 target_groups:
