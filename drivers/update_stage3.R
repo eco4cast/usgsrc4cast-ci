@@ -1,9 +1,13 @@
-source("https://raw.githubusercontent.com/eco4cast/neon4cast/ci_upgrade/R/to_hourly.R")
+source("https://raw.githubusercontent.com/eco4cast/neon4cast/ci_upgrade/R/to_hourly.R") # should we rely on this branch?
 
 site_list <- readr::read_csv(paste0("https://github.com/eco4cast/usgsrc4cast-ci/",
-                                    "raw/main/USGS_site_metadata.csv"),
+                                    "raw/prod/USGS_site_metadata.csv"),
                              show_col_types = FALSE) |>
   dplyr::pull(site_id)
+
+Sys.setenv("GEFS_VERSION"="v12")
+
+config <- yaml::read_yaml("challenge_configuration.yaml")
 
 future::plan("future::multisession", workers = 8)
 
@@ -11,12 +15,12 @@ furrr::future_walk(site_list, function(curr_site_id){
 
   print(curr_site_id)
 
-  s3 <- arrow::s3_bucket("bio230014-bucket01/neon4cast-drivers/noaa/gefs-v12/stage3",
-                         endpoint_override = "sdsc.osn.xsede.org",
-                         access_key= Sys.getenv("OSN_KEY"),
-                         secret_key= Sys.getenv("OSN_SECRET"))
+  s3_stage3 <- arrow::s3_bucket(bucket = glue::glue("{config$driver_bucket}/gefs-v12/stage3"),
+                                endpoint_override = config$endpoint,
+                                access_key = Sys.getenv("OSN_KEY"),
+                                secret_key = Sys.getenv("OSN_SECRET"))
 
-  stage3_df <- arrow::open_dataset(s3) |>
+  stage3_df <- arrow::open_dataset(s3_stage3) |>
     dplyr::filter(site_id == curr_site_id) |>
     dplyr::collect()
 
@@ -24,8 +28,8 @@ furrr::future_walk(site_list, function(curr_site_id){
     dplyr::summarise(max = as.character(lubridate::as_date(max(datetime)))) |>
     dplyr::pull(max)
 
-  s3_pseudo <- arrow::s3_bucket("bio230014-bucket01/neon4cast-drivers/noaa/gefs-v12/pseudo",
-                                endpoint_override = "sdsc.osn.xsede.org",
+  s3_pseudo <- arrow::s3_bucket(bucket = glue::glue("{config$driver_bucket}/gefs-v12/pseudo"),
+                                endpoint_override = config$endpoint,
                                 access_key= Sys.getenv("OSN_KEY"),
                                 secret_key= Sys.getenv("OSN_SECRET"))
 
@@ -33,18 +37,18 @@ furrr::future_walk(site_list, function(curr_site_id){
 
   cut_off <- as.character(lubridate::as_date(max_date) - lubridate::days(3))
 
-  df <- arrow::open_dataset(s3_pseudo) |>
+  pseudo_df <- arrow::open_dataset(s3_pseudo) |>
     dplyr::filter(variable %in% c("PRES","TMP","RH","UGRD","VGRD","APCP","DSWRF","DLWRF")) |>
     dplyr::filter(site_id == curr_site_id,
                   reference_datetime >= cut_off) |>
     dplyr::collect()
 
-  if(nrow(df) > 0){
+  if(nrow(psuedo_df) > 0){
 
-    df2 <- df |>
+    df2 <- psuedo_df |>
       to_hourly(use_solar_geom = TRUE, psuedo = TRUE) |>
-    dplyr::mutate(ensemble = as.numeric(stringr::str_sub(ensemble, start = 4, end = 5))) |>
-    dplyr::rename(parameter = ensemble)
+      dplyr::mutate(ensemble = as.numeric(stringr::str_sub(ensemble, start = 4, end = 5))) |>
+      dplyr::rename(parameter = ensemble)
 
     stage3_df_update <- stage3_df |>
       dplyr::filter(datetime < min(df2$datetime))
@@ -52,6 +56,6 @@ furrr::future_walk(site_list, function(curr_site_id){
     df2 |>
       dplyr::bind_rows(stage3_df_update) |>
       dplyr::arrange(variable, datetime, parameter) |>
-      arrow::write_dataset(path = s3, partitioning = "site_id")
+      arrow::write_dataset(path = s3_stage3, partitioning = "site_id")
   }
 })
