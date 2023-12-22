@@ -1,20 +1,33 @@
+# Challenge details
 challenge_long_name: EFI-USGS River Chlorophyll Forecasting Challenge
+challenge_url: https://projects.ecoforecast.org/usgsrc4cast-ci
+github_repo: eco4cast/usgsrc4cast-ci
 project_id: usgsrc4cast
+
+# Endpoints
 endpoint: sdsc.osn.xsede.org
 noaa_endpoint: s3.flare-forecast.org
 submissions_endpoint: submit.ecoforecast.org
-scores_bucket: bio230014-bucket01/challenges/scores
+
+# Buckets
+archive_bucket: bio230014-bucket01/challenges/archive
+driver_bucket: bio230014-bucket01/challenges/drivers
 forecasts_bucket: bio230014-bucket01/challenges/forecasts
-summaries_bucket: bio230014-bucket01/challenges/forecasts/summaries
-submissions_bucket: submissions
 inventory_bucket: bio230014-bucket01/challenges/inventory
+model_metadata_bucket: bio230014-bucket01/challenges/metadata/model_id
 noaa_forecast_bucket: drivers/noaa/gefs-v12-reprocess/
 prov_bucket: bio230014-bucket01/challenges/prov
+scores_bucket: bio230014-bucket01/challenges/scores
+submissions_bucket: submissions
+summaries_bucket: bio230014-bucket01/challenges/forecasts/summaries
 targets_bucket: bio230014-bucket01/challenges/targets
-archive_bucket: bio230014-bucket01/challenges/archive
-model_metadata_bucket: bio230014-bucket01/challenges/metadata/model_id
-model_metadata_gsheet: https://docs.google.com/spreadsheets/d/1f177dpaxLzc4UuQ4_SJV9JWIbQPlilVnEztyvZE6aSU/edit?usp=sharing
+
+# Misc. files
 example_model_id: example
+model_metadata_gsheet: https://docs.google.com/spreadsheets/d/1f177dpaxLzc4UuQ4_SJV9JWIbQPlilVnEztyvZE6aSU/edit?usp=sharing
+targets_file_name: 'river-chl-targets.csv.gz'
+
+# Forecast sites
 site_path: 'catalog/sites'
 site_table: USGS_site_metadata.csv
 site_thumbnail: 'https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/thumbnails/image/screencapture-waterdata-usgs-gov-nwis-rt-2018-08-02-13_00_05-01.jpg'
@@ -25,21 +38,21 @@ target_metadata_gsheet: https://docs.google.com/spreadsheets/d/10YTX9ae_C1rFdLgE
 targets_thumbnail: 'https://raw.githubusercontent.com/eco4cast/neon4cast-ci/main/catalog/thumbnail_plots/neon_stream.jpg'
 targets_thumbnail_title: 'Test Image'
 targets_path: 'catalog/targets/'
-# to here
-targets_file_name: 'river-chl-targets.csv.gz'
-challenge_url: https://projects.ecoforecast.org/usgsrc4cast-ci
-github_repo: eco4cast/usgsrc4cast-ci
+
 target_groups:
   Aquatics:
     targets_file: "https://data.ecoforecast.org/neon4cast-targets/aquatics/aquatics-targets.csv.gz"
+
 noaa_forecast_groups: ['Pseudo','Stage1-stats','Stage1','Stage2','Stage3']
 noaa_forecast_group_paths: ['pseudo','stage1-stats','stage1','stage2','stage3']
+
 variable_groups:
   Aquatics:
     variable: ['chla']
     duration: ['P1D']
     thumbnail_link: 'https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/thumbnails/image/Back-b.jpg'
     thumbnail_title: 'USGS Streamgage'
+
 catalog_config:
   about_string: 'https://projects.ecoforecast.org/usgsrc4cast-docs/'
   about_title: 'EFI-USGS River Chlorophyll Forecasting Challenge Documentation'
