@@ -17,6 +17,8 @@ jobs:
 #    container: rocker/geospatial
     steps:
       - uses: actions/checkout@v3
+        # with:
+        #   ref: prod
 
       - name: Install
         shell: Rscript {0}

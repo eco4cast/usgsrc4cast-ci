@@ -10,7 +10,7 @@ name: gefs_osn
 
 jobs:
   docker:
-    runs-on: [self-hosted]
+    runs-on: [self-hosted] # do we have access to this in usgsrc4cast repo?
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       OSN_KEY: ${{ secrets.OSN_KEY }}
@@ -18,6 +18,8 @@ jobs:
 #    container: rocker/geospatial
     steps:
       - uses: actions/checkout@v3
+        # with:
+        #   ref: prod
 
       - name: Install
         shell: Rscript {0}
