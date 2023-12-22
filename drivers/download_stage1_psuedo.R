@@ -20,7 +20,7 @@ bench::bench_time({ # thelio
   s3 <- gefs4cast::gefs_s3_dir(product = "stage1-stats",
                                path = "", # should this path be more specific? the noaa bucket in the config is "drivers/noaa/gefs-v12-reprocess/"
                                endpoint = config$endpoint,
-                               bucket = config$noaa_forecast_bucket)
+                               bucket = config$driver_bucket)
   have_dates <- gsub("reference_datetime=", "", s3$ls())
   missing_dates <- dates[!(as.character(dates) %in% have_dates)]
   gefs4cast::gefs_to_parquet(dates = missing_dates,
@@ -34,7 +34,7 @@ bench::bench_time({ #32xlarge
   s3 <- gefs4cast::gefs_s3_dir(product = "pseudo",
                                path = "", # same questions as above ^
                                endpoint = config$endpoint,
-                               bucket = config$noaa_forecast_bucket)
+                               bucket = config$driver_bucket)
   have_dates <- gsub("reference_datetime=", "", s3$ls())
   missing_dates <- dates_pseudo[!(as.character(dates_pseudo) %in% have_dates)]
   gefs4cast:::gefs_pseudo_measures(dates = missing_dates,
@@ -47,7 +47,7 @@ bench::bench_time({ # cirrus ~ 6days for full set
   s3 <- gefs4cast::gefs_s3_dir(product = "stage1",
                                path = "",
                                endpoint = config$endpoint,
-                               bucket = config$noaa_forecast_bucket)
+                               bucket = config$driver_bucket)
   have_dates <- gsub("reference_datetime=", "", s3$ls())
   missing_dates <- dates[!(as.character(dates) %in% have_dates)]
   gefs4cast::gefs_to_parquet(dates = missing_dates,
