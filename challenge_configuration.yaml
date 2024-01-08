@@ -53,6 +53,7 @@ variable_groups:
     thumbnail_link: 'https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/thumbnails/image/Back-b.jpg'
     thumbnail_title: 'USGS Streamgage'
 
+# Forecast catalog configuration
 catalog_config:
   about_string: 'https://projects.ecoforecast.org/usgsrc4cast-docs/'
   about_title: 'EFI-USGS River Chlorophyll Forecasting Challenge Documentation'
