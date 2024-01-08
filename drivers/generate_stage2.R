@@ -1,4 +1,7 @@
-source("https://raw.githubusercontent.com/eco4cast/neon4cast/ci_upgrade/R/to_hourly.R") # is this branch stable? why use ci_upgrade ?
+## setup
+library(gdalcubes)
+library(gefs4cast)
+source("https://raw.githubusercontent.com/eco4cast/neon4cast/main/R/to_hourly.R")
 
 Sys.setenv("GEFS_VERSION"="v12")
 
@@ -6,33 +9,22 @@ site_list <- readr::read_csv("USGS_site_metadata.csv",
                              show_col_types = FALSE)
 
 config <- yaml::read_yaml("challenge_configuration.yaml")
+driver_bucket <- stringr::word(config$driver_bucket, 1, sep = "/")
+driver_path <- stringr::word(config$driver_bucket, 2, -1, sep = "/")
 
-# should this be updated to a usgsrc4cast-drivers path? or are we keeping all drivers in
-#  neon4cast-drivers?
 # s3_stage2 <- arrow::s3_bucket("bio230014-bucket01/neon4cast-drivers/noaa/gefs-v12/stage2",
 #                               endpoint_override = "sdsc.osn.xsede.org",
 #                               access_key= Sys.getenv("OSN_KEY"),
 #                               secret_key= Sys.getenv("OSN_SECRET"))
 s3_stage2 <- gefs4cast::gefs_s3_dir(product = "stage2",
-                                    path = "",
+                                    path = driver_path,
                                     endpoint = config$endpoint,
-                                    bucket = config$driver_bucket)
+                                    bucket = driver_bucket)
 
 df <- arrow::open_dataset(s3_stage2) |>
   dplyr::distinct(reference_datetime) |>
   dplyr::collect()
 
-#stage1_s3 <- arrow::s3_bucket("bio230014-bucket01/neon4cast-drivers/noaa/gefs-v12/stage1",
-#                       endpoint_override = "sdsc.osn.xsede.org",
-#                       anonymous = TRUE)
-
-
-#efi <- duckdbfs::open_dataset("s3://bio230014-bucket01/neon4cast-drivers/noaa/gefs-v12/stage1",
-#                    s3_access_key_id="",
-#                    s3_endpoint="sdsc.osn.xsede.org")
-#df_stage1 <- arrow::open_dataset(stage1_s3) |>
-#  dplyr::summarize(max(reference_datetime)) |>
-#  dplyr::collect()
 
 curr_date <- Sys.Date()
 last_week <- dplyr::tibble(reference_datetime = as.character(seq(curr_date - lubridate::days(7),

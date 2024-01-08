@@ -1,5 +1,8 @@
+## setup
 library(minioclient)
-source("https://raw.githubusercontent.com/eco4cast/neon4cast/ci_upgrade/R/to_hourly.R")
+library(gdalcubes)
+library(gefs4cast)
+source("https://raw.githubusercontent.com/eco4cast/neon4cast/main/R/to_hourly.R")
 
 #install_mc()
 mc_alias_set("osn", "sdsc.osn.xsede.org", "", "")
