@@ -40,14 +40,14 @@ targets_thumbnail_title: 'Test Image'
 targets_path: 'catalog/targets/'
 
 target_groups:
-  Aquatics:
-    targets_file: "https://data.ecoforecast.org/neon4cast-targets/aquatics/aquatics-targets.csv.gz"
+  aquatics:
+    targets_file: "https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/targets/project_id=usgsrc4cast/duration=P1D/river-chl-targets.csv.gz"
 
 noaa_forecast_groups: ['Pseudo','Stage1-stats','Stage1','Stage2','Stage3']
 noaa_forecast_group_paths: ['pseudo','stage1-stats','stage1','stage2','stage3']
 
 variable_groups:
-  Aquatics:
+  aquatics:
     variable: ['chla']
     duration: ['P1D']
     thumbnail_link: 'https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/thumbnails/image/Back-b.jpg'

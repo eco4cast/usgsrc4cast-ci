@@ -1,11 +1,7 @@
 #'# Ecological Forecasting Initiative Null Model
 
 #'## Set-up
-
 print(paste0("Running Creating Daily Terrestrial Forecasts at ", Sys.time()))
-
-#'Load renv.lock file that includes the versions of all the packages used
-#'You can generate using the command renv::snapshot()
 
 #' Required packages.
 #' EFIstandards is at remotes::install_github("eco4cast/EFIstandards")
@@ -14,37 +10,21 @@ library(lubridate)
 library(aws.s3)
 library(jsonlite)
 library(imputeTS)
-
-
 #' set the random number for reproducible MCMC runs
 set.seed(329)
 
-#'Generate plot to visualized forecast
-generate_plots <- TRUE
-#'Is the forecast run on the Ecological Forecasting Initiative Server?
-#'Setting to TRUE published the forecast on the server.
-efi_server <- TRUE
-
-#' List of team members. Used in the generation of the metadata
-#team_list <- list(list(individualName = list(givenName = "Quinn", surName = "Thomas"),
-#                       id = "https://orcid.org/0000-0003-1282-7825"),
-#                  list(individualName = list(givenName = "Others",  surName ="Pending")),
-#)
+config <- yaml::read_yaml("challenge_configuration.yaml")
 
 #'Team name code
 team_name <- "climatology"
 
-#'Read in target file.  The guess_max is specified because there could be a lot of
-#'NA values at the beginning of the file
-targets <- readr::read_csv("https://data.ecoforecast.org/neon4cast-targets/aquatics/aquatics-targets.csv.gz", guess_max = 10000)
-#targets <- read_csv("aquatics-targets.csv.gz")
+#'Read in target file.
+targets <- readr::read_csv(config$target_groups$aquatics$targets_file,
+                           show_col_types = F)
 
-
-sites <- read_csv("https://raw.githubusercontent.com/eco4cast/neon4cast-targets/main/NEON_Field_Site_Metadata_20220412.csv") |>
-  dplyr::filter(aquatics == 1)
-
-site_names <- sites$field_site_id
-
+sites <- readr::read_csv(paste0("https://github.com/eco4cast/usgsrc4cast-ci/",
+                                "raw/prod/USGS_site_metadata.csv"),
+                         show_col_types = F)
 
 # calculates a doy average for each target variable in each site
 target_clim <- targets %>%
@@ -85,21 +65,11 @@ for(i in 1:length(subseted_site_names)){
   site_vector <- c(site_vector, rep(subseted_site_names[i], length(forecast_dates)))
 }
 
-forecast_tibble1 <- tibble(datetime = rep(forecast_dates, length(subseted_site_names)),
-                           site_id = site_vector,
-                           variable = "temperature")
-
-forecast_tibble2 <- tibble(datetime = rep(forecast_dates, length(subseted_site_names)),
-                           site_id = site_vector,
-                           variable = "oxygen")
-
-forecast_tibble3 <- tibble(datetime = rep(forecast_dates, length(subseted_site_names)),
+forecast_tibble <- tibble(datetime = rep(forecast_dates, length(subseted_site_names)),
                            site_id = site_vector,
                            variable = "chla")
 
-forecast_tibble <- bind_rows(forecast_tibble1, forecast_tibble2, forecast_tibble3)
-
-foreast <- right_join(forecast, forecast_tibble)
+forecast <- right_join(forecast, forecast_tibble)
 
 forecast |>
   ggplot(aes(x = datetime, y = mean)) +
@@ -145,6 +115,7 @@ forecast_file <- paste("aquatics", file_date, "climatology.csv.gz", sep = "-")
 
 write_csv(combined, forecast_file)
 
+### probably need a different way to submit;
 neon4cast::submit(forecast_file = forecast_file,
                   ask = FALSE)
 
