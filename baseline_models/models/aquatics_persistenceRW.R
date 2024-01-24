@@ -4,7 +4,10 @@ library(fable)
 source('R/fablePersistenceModelFunction.R')
 
 # 1.Read in the targets data
-targets <- read_csv('https://data.ecoforecast.org/neon4cast-targets/aquatics/aquatics-targets.csv.gz') %>%
+config <- yaml::read_yaml("challenge_configuration.yaml")
+#'Read in target file.
+targets <- readr::read_csv(config$target_groups$aquatics$targets_file,
+                           show_col_types = F) %>%
   mutate(observation = ifelse(observation == 0 & variable == "chla", 0.00001, observation))
 
 # 2. Make the targets into a tsibble with explicit gaps
@@ -39,26 +42,19 @@ RW_forecasts_EFI <- RW_forecasts %>%
          model_id = "persistenceRW") %>%
   select(model_id, datetime, reference_datetime, site_id, family, parameter, variable, prediction)
 
-#RW_forecasts_EFI |>
-#  filter(variable == "chla") |>
-#  ggplot(aes(x = time, y = prediction, group = ensemble)) +
-#  geom_line() +
-#  facet_wrap(~site_id)
-
-
-
 # 4. Write forecast file
 
 file_date <- RW_forecasts_EFI$reference_datetime[1]
 
+## TODO: does this need to be renamed?
 forecast_file <- paste("aquatics", file_date, "persistenceRW.csv.gz", sep = "-")
 
 RW_forecasts_EFI <- RW_forecasts_EFI |>
   filter(variable != "ch")
 
-
 write_csv(RW_forecasts_EFI, forecast_file)
 
+# TODO: need a new submission script
 neon4cast::submit(forecast_file = forecast_file,
                   metadata = NULL,
                   ask = FALSE)
