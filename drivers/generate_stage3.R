@@ -1,33 +1,34 @@
+## setup
 library(minioclient)
-source("https://raw.githubusercontent.com/eco4cast/neon4cast/ci_upgrade/R/to_hourly.R")
+library(gdalcubes)
+library(gefs4cast)
+source("https://raw.githubusercontent.com/eco4cast/neon4cast/main/R/to_hourly.R")
+
+config <- yaml::read_yaml("challenge_configuration.yaml")
+driver_bucket <- stringr::word(config$driver_bucket, 1, sep = "/")
+driver_path <- stringr::word(config$driver_bucket, 2, -1, sep = "/")
+
+Sys.setenv("GEFS_VERSION"="v12")
 
 #install_mc()
 mc_alias_set("osn", "sdsc.osn.xsede.org", "", "")
-# TODO: update path to usgsrc4cast-drivers?
-mc_mirror("osn/bio230014-bucket01/neon4cast-drivers/noaa/gefs-v12/pseudo", "pseudo")
+
+mc_mirror(glue::glue("osn/{driver_bucket}/{driver_path}/gefs-v12/pseudo"), "pseudo")
 
 df <- arrow::open_dataset("pseudo") |>
   dplyr::filter(variable %in% c("PRES","TMP","RH","UGRD","VGRD","APCP","DSWRF","DLWRF"))
 
 
 site_list <- readr::read_csv(paste0("https://github.com/eco4cast/usgsrc4cast-ci/",
-                                    "raw/main/USGS_site_metadata.csv"),
+                                    "raw/prod/USGS_site_metadata.csv"),
                              show_col_types = FALSE) |>
   dplyr::pull(site_id)
 
-s3 <- arrow::s3_bucket("bio230014-bucket01/neon4cast-drivers/noaa/gefs-v12",
-                       endpoint_override = "sdsc.osn.xsede.org",
-                       access_key= Sys.getenv("OSN_KEY"),
-                       secret_key= Sys.getenv("OSN_SECRET"))
 
-s3$CreateDir("stage3")
-
-s3 <- arrow::s3_bucket("bio230014-bucket01/neon4cast-drivers/noaa/gefs-v12/stage3",
-                       endpoint_override = "sdsc.osn.xsede.org",
-                       access_key= Sys.getenv("OSN_KEY"),
-                       secret_key= Sys.getenv("OSN_SECRET"))
-
-#site_list <- site_list[1:3]
+s3_stage3 <- gefs4cast::gefs_s3_dir(product = "stage3",
+                                    path = driver_path,
+                                    endpoint = config$endpoint,
+                                    bucket = driver_bucket)
 
 future::plan("future::multisession", workers = 8)
 
@@ -38,15 +39,13 @@ furrr::future_walk(site_list, function(curr_site_id){
     dplyr::filter(site_id == curr_site_id) |>
     dplyr::collect()
 
-  s3 <- arrow::s3_bucket("bio230014-bucket01/neon4cast-drivers/noaa/gefs-v12/stage3",
-                         endpoint_override = "sdsc.osn.xsede.org",
-                         access_key= Sys.getenv("OSN_KEY"),
-                         secret_key= Sys.getenv("OSN_SECRET"))
+  s3_stage3 <- gefs4cast::gefs_s3_dir(product = "stage3",
+                                      path = driver_path,
+                                      endpoint = config$endpoint,
+                                      bucket = driver_bucket)
 
   print(curr_site_id)
   df |>
-    #dplyr::filter(site_id == curr_site_id) |>
-    #dplyr::collect() |>
     to_hourly(use_solar_geom = TRUE, psuedo = TRUE) |>
     dplyr::mutate(ensemble = as.numeric(stringr::str_sub(ensemble, start = 4, end = 5))) |>
     dplyr::rename(parameter = ensemble) |>

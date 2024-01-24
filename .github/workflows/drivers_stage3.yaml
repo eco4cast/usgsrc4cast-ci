@@ -1,8 +1,8 @@
 # Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
 # Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
 on:
-  #schedule:
-  #  - cron: '0 13 * * *'
+  schedule:
+    - cron: '0 13 * * *'
   workflow_dispatch:
 
 name: gefs_osn_stage3
@@ -17,6 +17,8 @@ jobs:
 #    container: rocker/geospatial
     steps:
       - uses: actions/checkout@v3
+        with:
+          ref: prod
 
       - name: Install
         shell: Rscript {0}
