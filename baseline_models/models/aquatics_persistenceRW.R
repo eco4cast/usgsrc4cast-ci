@@ -39,8 +39,10 @@ RW_forecasts_EFI <- RW_forecasts %>%
   group_by(site_id, variable) %>%
   mutate(reference_datetime = min(datetime) - lubridate::days(1),
          family = "ensemble",
-         model_id = "persistenceRW") %>%
-  select(model_id, datetime, reference_datetime, site_id, family, parameter, variable, prediction)
+         model_id = "persistenceRW",
+         project_id = "usgsrc4cast",
+         duration = "P1D") %>%
+  select(project_id, model_id, datetime, reference_datetime, duration, site_id, family, parameter, variable, prediction)
 
 # 4. Write forecast file
 

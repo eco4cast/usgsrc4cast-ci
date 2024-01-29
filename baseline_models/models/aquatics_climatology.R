@@ -89,8 +89,10 @@ combined <- forecast %>%
   mutate(family = "normal") |>
   ungroup() |>
   mutate(reference_datetime = lubridate::as_date(min(datetime)) - lubridate::days(1),
-         model_id = "climatology") |>
-  select(model_id, datetime, reference_datetime, site_id, family, parameter, variable, prediction)
+         model_id = "climatology",
+         project_id = "usgsrc4cast",
+         duration = "P1D") |>
+  select(project_id, model_id, datetime, reference_datetime, duration, site_id, family, parameter, variable, prediction)
 
 combined |>
   filter(parameter == "mu") |>
@@ -106,7 +108,7 @@ combined %>%
   ggplot(aes(x = datetime)) +
   geom_ribbon(aes(ymin=mu - sigma*1.96, ymax=mu + sigma*1.96), alpha = 0.1) +
   geom_line(aes(y = mu)) +
-  facet_grid(variable~site_id, scales = "free") +
+  facet_wrap(~site_id, scales = "free") +
   theme_bw()
 
 file_date <- combined$reference_datetime[1]
