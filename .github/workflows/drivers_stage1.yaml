@@ -9,6 +9,7 @@ name: gefs_osn
 
 jobs:
   docker:
+    timeout-minutes: 2880
     runs-on: [self-hosted]
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
