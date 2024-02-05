@@ -31,7 +31,7 @@ jobs:
       - name: Update GEFS
         shell: Rscript {0}
         run: |
-          source("drivers/download_stage1_psuedo.R")
+          source("drivers/download_stage1_pseudo.R")
 
       - name: Generate stage 2
         shell: Rscript {0}

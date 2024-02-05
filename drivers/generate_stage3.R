@@ -47,7 +47,7 @@ furrr::future_walk(dplyr::pull(site_list, site_id), function(curr_site_id){
   df |>
     to_hourly(site_list = dplyr::select(site_list, site_id, latitude, longitude),
               use_solar_geom = TRUE,
-              psuedo = TRUE) |>
+              pseudo = TRUE) |>
     dplyr::mutate(ensemble = as.numeric(stringr::str_sub(ensemble, start = 4, end = 5))) |>
     dplyr::rename(parameter = ensemble) |>
     arrow::write_dataset(path = s3_stage3, partitioning = "site_id")
