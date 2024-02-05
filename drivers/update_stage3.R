@@ -1,11 +1,10 @@
 library(gdalcubes)
 library(gefs4cast)
-source("https://raw.githubusercontent.com/eco4cast/neon4cast/main/R/to_hourly.R")
+source("drivers/to_hourly.R")
 
 site_list <- readr::read_csv(paste0("https://github.com/eco4cast/usgsrc4cast-ci/",
                                     "raw/prod/USGS_site_metadata.csv"),
-                             show_col_types = FALSE) |>
-  dplyr::pull(site_id)
+                             show_col_types = FALSE)
 
 Sys.setenv("GEFS_VERSION"="v12")
 
@@ -15,7 +14,7 @@ driver_path <- stringr::word(config$driver_bucket, 2, -1, sep = "/")
 
 future::plan("future::multisession", workers = 8)
 
-furrr::future_walk(site_list, function(curr_site_id){
+furrr::future_walk(dplyr::pull(site_list, site_id), function(curr_site_id){
 
   print(curr_site_id)
 
@@ -50,7 +49,9 @@ furrr::future_walk(site_list, function(curr_site_id){
   if(nrow(psuedo_df) > 0){
 
     df2 <- psuedo_df |>
-      to_hourly(use_solar_geom = TRUE, psuedo = TRUE) |>
+      to_hourly(site_list = dplyr::select(site_list, site_id, latitude, longitude),
+                use_solar_geom = TRUE,
+                psuedo = TRUE) |>
       dplyr::mutate(ensemble = as.numeric(stringr::str_sub(ensemble, start = 4, end = 5))) |>
       dplyr::rename(parameter = ensemble)
 
