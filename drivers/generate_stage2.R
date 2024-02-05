@@ -67,7 +67,7 @@ if(length(missing_dates) > 0){
     hourly_df <- to_hourly(site_df,
                            site_list = dplyr::select(site_list, site_id, latitude, longitude),
                            use_solar_geom = TRUE,
-                           psuedo = FALSE) |>
+                           pseudo = FALSE) |>
       dplyr::mutate(ensemble = as.numeric(stringr::str_sub(ensemble, start = 4, end = 5)),
                     reference_datetime = lubridate::as_date(reference_datetime)) |>
       dplyr::rename(parameter = ensemble)

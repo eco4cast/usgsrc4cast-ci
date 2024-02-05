@@ -3,13 +3,13 @@
 #' @param df dataframe of stage1 NEON GEFS forecasts for sites to forecast at
 #' @param site_list a dataframe of the latitude and longitude for all site_ids in df
 #' @param use_solar_geom logical for using solar geometry for daily SW calculation
-#' @param psuedo logical for something...
+#' @param pseudo logical for something...
 to_hourly <- function(df,
                       site_list,
                       use_solar_geom = TRUE,
-                      psuedo = FALSE){
+                      pseudo = FALSE){
 
-  if(!psuedo){
+  if(!pseudo){
     reference_datetime <- lubridate::as_datetime(df$reference_datetime)[1]
   }else{
     reference_datetime <- NA
@@ -40,7 +40,7 @@ to_hourly <- function(df,
 
   states <- df |>
     dplyr::select(site_id, family, horizon, ensemble, datetime, variable, prediction) |>
-    dplyr::filter(!psuedo | (psuedo & horizon != "006") | (psuedo & datetime == max(df$datetime))) |>
+    dplyr::filter(!pseudo | (pseudo & horizon != "006") | (pseudo & datetime == max(df$datetime))) |>
     dplyr::select(-horizon) |>
     dplyr::group_by(site_id, family, ensemble, variable) |>
     dplyr::right_join(full_time, by = c("site_id", "ensemble", "datetime", "family", "variable")) |>
