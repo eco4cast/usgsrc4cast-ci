@@ -1,7 +1,8 @@
 ## setup
 library(gdalcubes)
 library(gefs4cast)
-source("https://raw.githubusercontent.com/eco4cast/neon4cast/main/R/to_hourly.R")
+# need to source to_hourly.R instead of from neon4cast because there are neon-specific code in neon4cast
+source("drivers/to_hourly.R")
 
 Sys.setenv("GEFS_VERSION"="v12")
 
@@ -21,19 +22,28 @@ s3_stage2 <- gefs4cast::gefs_s3_dir(product = "stage2",
                                     endpoint = config$endpoint,
                                     bucket = driver_bucket)
 
-df <- arrow::open_dataset(s3_stage2) |>
-  dplyr::distinct(reference_datetime) |>
-  dplyr::collect()
-
+# if there aren't any data (i.e., this is the first time we're creating this dataset),
+#  then skip the distinct(reference_datetime) filter
+df <- arrow::open_dataset(s3_stage2)
+if(length(df$files) > 0){
+  df <- arrow::open_dataset(s3_stage2) |>
+    dplyr::distinct(reference_datetime) |>
+    dplyr::collect()
+}
 
 curr_date <- Sys.Date()
 last_week <- dplyr::tibble(reference_datetime = as.character(seq(curr_date - lubridate::days(7),
                                                                  curr_date - lubridate::days(1),
                                                                  by = "1 day")))
 
-missing_dates <- dplyr::anti_join(last_week, df,
-                                  by = "reference_datetime") |>
-  dplyr::pull(reference_datetime)
+if(length(df$files) > 0){
+  missing_dates <- dplyr::anti_join(last_week, df,
+                                    by = "reference_datetime") |>
+    dplyr::pull(reference_datetime)
+}else{
+  missing_dates <- dplyr::pull(last_week, reference_datetime)
+}
+
 
 if(length(missing_dates) > 0){
   for(i in 1:length(missing_dates)){
@@ -55,6 +65,7 @@ if(length(missing_dates) > 0){
       dplyr::mutate(reference_datetime = missing_dates[i])
 
     hourly_df <- to_hourly(site_df,
+                           site_list = dplyr::select(site_list, site_id, latitude, longitude),
                            use_solar_geom = TRUE,
                            psuedo = FALSE) |>
       dplyr::mutate(ensemble = as.numeric(stringr::str_sub(ensemble, start = 4, end = 5)),
