@@ -1,6 +1,11 @@
-get_target <- function(variable, duration, project_id = "neon4cast", lazy = FALSE){
+# not sure what this is used for
+get_target <- function(variable,
+                       duration,
+                       project_id = "neon4cast",
+                       lazy = FALSE){
 
-  s3_targets <- arrow::s3_bucket("bio230014-bucket01/challenges/targets", endpoint_override = "sdsc.osn.xsede.org")
+  s3_targets <- arrow::s3_bucket("bio230014-bucket01/challenges/targets",
+                                 endpoint_override = "sdsc.osn.xsede.org")
 
   target <- arrow::open_csv_dataset(s3_targets,
                                     schema = arrow::schema(
