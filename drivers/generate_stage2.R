@@ -2,7 +2,7 @@
 library(gdalcubes)
 library(gefs4cast)
 # need to source to_hourly.R instead of from neon4cast because there are neon-specific code in neon4cast
-source("drivers/to_hourly.R")
+source("R/eco4cast-helpers/to_hourly.R")
 
 Sys.setenv("GEFS_VERSION"="v12")
 
