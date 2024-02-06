@@ -77,6 +77,7 @@ standard_vars <- c("site_id", "datetime", "parameter", "family",
 
 utils::globalVariables(c("sd", ".model", "n", "dist", "pars",
                          ".mean", "ensemble", standard_vars),
+                       # TODO: update to generic package
                        "neon4cast")
 
 
