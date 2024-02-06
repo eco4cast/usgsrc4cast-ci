@@ -29,7 +29,7 @@ s3_stage3 <- gefs4cast::gefs_s3_dir(product = "stage3",
                                     endpoint = config$endpoint,
                                     bucket = driver_bucket)
 
-future::plan("future::multisession", workers = 8)
+future::plan("future::multisession", workers = 10)
 
 furrr::future_walk(dplyr::pull(site_list, site_id), function(curr_site_id){
 
