@@ -1,7 +1,7 @@
 #' NOAA GEFS tables
 #'
 #' Access NOAA Global Ensemble Forecast System (GEFS) forecast predictions
-#' at NEON sites. The GEFS is NOAA's longest horizon forecast, extending up
+#' at ecological forecast sites. The GEFS is NOAA's longest horizon forecast, extending up
 #' to 30 days at present, issued at 0.5 degree spatial resolution.
 #' EFI downsamples these forecasts at the coordinates of all NEON sites and
 #' provides efficient access to archives of these forecasts in a simple tabular
@@ -44,6 +44,7 @@
 #' among other changes, and are not made available here. Leave as default.
 #' @param endpoint the EFI host address (leave as default)
 #' @param verbose logical, displays or hides messages
+#' @param project_id the forecast challenge project_id you want pull GEFS from
 #' @param start_date forecast start date yyyy-mm-dd format
 #' @export
 #' @examplesIf interactive()
@@ -58,13 +59,26 @@
 #'
 noaa_stage1 <- function(cycle = 0,
                         version = "v12",
-                        endpoint = "data.ecoforecast.org",
+                        endpoint = "data.ecoforecast.org", # TODO: why is this still default?
                         verbose = TRUE,
+                        project_id,
                         start_date = "") {
 
   vars <- arrow_env_vars()
 
-  bucket <- paste0("bio230014-bucket01/neon4cast-drivers/noaa/gefs-v12/stage1/reference_datetime=",start_date)
+  # TODO: check if project_id is valid
+  check_project_id <- FALSE
+  if(check_project_id){
+    submitted_model_ids <- readr::read_csv("https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/inventory/model_id/model_id-project_id-inventory.csv", show_col_types = FALSE)
+    all_project_ids <- unique(submitted_model_ids$project_id)
+    if(!project_id %in% all_project_ids){
+      stop(sprintf("The project_id you supplied, %s, is not in the list of current forecast challenge project_ids [%s]",
+                   project_id, paste(all_project_ids, collapse = ", ")))
+    }
+  }
+  bucket <- sprintf("bio230014-bucket01/challenges/drivers/%s/noaa/gefs-v12/stage1/reference_datetime=%s",
+                    project_id,
+                    start_date)
 
   endpoint_override <- "https://sdsc.osn.xsede.org"
   s3 <- arrow::s3_bucket(paste0(bucket),
@@ -85,16 +99,38 @@ noaa_stage1 <- function(cycle = 0,
 #' - Fluxes and states are interpolated to 1 hour intervals
 #'
 #' @inheritParams noaa_stage1
+#' @param cycle Hour at which forecast was made, as character string
+#' (`"00"`, `"06"`, `"12"` or `"18"`). Only `"00"` (default) has 30 days horizon.
+#' @param version GEFS forecast version. Prior versions correspond to forecasts
+#' issued before 2020-09-25 which have different ensemble number and horizon,
+#' among other changes, and are not made available here. Leave as default.
+#' @param endpoint the EFI host address (leave as default)
+#' @param verbose logical, displays or hides messages
+#' @param project_id the forecast challenge project_id you want pull GEFS from
+#' @param start_date forecast start date yyyy-mm-dd format
 #' @export
 noaa_stage2 <- function(cycle = 0,
                         version = "v12",
                         endpoint = NA,
                         verbose = TRUE,
+                        project_id,
                         start_date = "") {
 
   vars <- arrow_env_vars()
 
-  bucket <- paste0("bio230014-bucket01/neon4cast-drivers/noaa/gefs-v12/stage2/reference_datetime=",start_date)
+  # TODO: check if project_id is valid
+  check_project_id <- FALSE
+  if(check_project_id){
+    submitted_model_ids <- readr::read_csv("https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/inventory/model_id/model_id-project_id-inventory.csv", show_col_types = FALSE)
+    all_project_ids <- unique(submitted_model_ids$project_id)
+    if(!project_id %in% all_project_ids){
+      stop(sprintf("The project_id you supplied, %s, is not in the list of current forecast challenge project_ids [%s]",
+                   project_id, paste(all_project_ids, collapse = ", ")))
+    }
+  }
+  bucket <- sprintf("bio230014-bucket01/challenges/drivers/%s/noaa/gefs-v12/stage2/reference_datetime=%s",
+                    project_id,
+                    start_date)
 
   endpoint_override <- "https://sdsc.osn.xsede.org"
   s3 <- arrow::s3_bucket(paste0(bucket),
@@ -122,15 +158,27 @@ noaa_stage2 <- function(cycle = 0,
 #' among other changes, and are not made available here. Leave as default.
 #' @param endpoint the EFI host address (leave as default)
 #' @param verbose logical, displays or hides messages
+#' @param project_id the forecast challenge project_id you want pull GEFS from
 #' @export
 noaa_stage3 <- function(version = "v12",
                         endpoint = "data.ecoforecast.org",
-                        verbose = TRUE) {
+                        verbose = TRUE,
+                        project_id) {
 
   vars <- arrow_env_vars()
 
-  bucket <- "bio230014-bucket01/neon4cast-drivers/noaa/gefs-v12/stage3"
-
+  # TODO: check if project_id is valid
+  check_project_id <- FALSE
+  if(check_project_id){
+    submitted_model_ids <- readr::read_csv("https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/inventory/model_id/model_id-project_id-inventory.csv", show_col_types = FALSE)
+    all_project_ids <- unique(submitted_model_ids$project_id)
+    if(!project_id %in% all_project_ids){
+      stop(sprintf("The project_id you supplied, %s, is not in the list of current forecast challenge project_ids [%s]",
+                   project_id, paste(all_project_ids, collapse = ", ")))
+    }
+  }
+  bucket <- sprintf("bio230014-bucket01/challenges/drivers/%s/noaa/gefs-v12/stage3",
+                    project_id)
 
   endpoint_override <- "https://sdsc.osn.xsede.org"
   s3 <- arrow::s3_bucket(bucket,
