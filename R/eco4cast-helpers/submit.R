@@ -1,14 +1,17 @@
 ## Technically this could become arrow-based
 
-#' submit forecast to EFI
+#' submit forecast to EFI forecast challenge
 #'
 #' @inheritParams forecast_output_validator
+#' @param forecast_file the path to the forecast file to submit
+#' @param project_id the forecast challenge project_id to submit to
 #' @param metadata path to metadata file
 #' @param ask should we prompt for a go before submission?
 #' @param s3_region subdomain (leave as is for EFI challenge)
 #' @param s3_endpoint root domain (leave as is for EFI challenge)
 #' @export
 submit <- function(forecast_file,
+                   project_id,
                    metadata = NULL,
                    ask = interactive(),
                    s3_region = "submit",
@@ -23,6 +26,7 @@ submit <- function(forecast_file,
 
   if(!go){
 
+    # TODO: update this warning to point to non-neon4cast docs
     warning(paste0("forecasts was not in a valid format and was not submitted\n",
                    "First, try read reinstalling neon4cast (remotes::install_github('eco4cast\\neon4cast'), restarting R, and trying again\n",
                    "Second, see https://projects.ecoforecast.org/neon4cast-docs/Submission-Instructions.html for more information on the file format"))
@@ -30,6 +34,7 @@ submit <- function(forecast_file,
   }
 
   check_model_id <- FALSE
+  # TODO: see if we want to have a more robust check on the model id submission
   if(check_model_id){
     googlesheets4::gs4_deauth()
     message("Checking if model_id is registered")
@@ -93,10 +98,21 @@ submit <- function(forecast_file,
     go <- utils::askYesNo("Forecast file is valid, ready to submit?")
   }
 
+  # check if project_id is valid
+  check_project_id <- FALSE
+  if(check_project_id){
+    submitted_model_ids <- readr::read_csv("https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/inventory/model_id/model_id-project_id-inventory.csv", show_col_types = FALSE)
+    all_project_ids <- unique(submitted_model_ids$project_id)
+    if(!project_id %in% all_project_ids){
+      stop(sprintf("The project_id you supplied, %s, is not in the list of current forecast challenge project_ids [%s]",
+                   project_id, paste(all_project_ids, collapse = ", ")))
+    }
+  }
+
   #GENERALIZATION:  Here are specific AWS INFO
   exists <- aws.s3::put_object(file = forecast_file,
                                object = basename(forecast_file),
-                               bucket = "submissions",
+                               bucket = fs::path("submissions", project_id),
                                region= s3_region,
                                base_url = s3_endpoint)
 

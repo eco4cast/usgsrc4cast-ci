@@ -83,7 +83,7 @@ forecast_output_validator <- function(forecast_file){
     if(lexists(out, c("project_id"))){
       usethis::ui_done("file has project_id column")
     }else{
-      usethis::ui_warn("file missing project_id column (use `neon4cast` as the project_id")
+      usethis::ui_warn("file missing project_id column (use the challenge you're submitting to as the project_id")
     }
 
     if(lexists(out, c("reference_datetime"))){
@@ -100,6 +100,7 @@ forecast_output_validator <- function(forecast_file){
     valid <- FALSE
   }
   if(!valid){
+    ## TODO: could update this warning message
     message("Forecast file is not valid. The following link provides information about the format:\nhttps://projects.ecoforecast.org/neon4cast-ci/instructions.html#forecast-file-format")
   }else{
     message("Forecast format is valid")
