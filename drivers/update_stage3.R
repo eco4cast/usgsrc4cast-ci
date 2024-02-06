@@ -12,7 +12,7 @@ config <- yaml::read_yaml("challenge_configuration.yaml")
 driver_bucket <- stringr::word(config$driver_bucket, 1, sep = "/")
 driver_path <- stringr::word(config$driver_bucket, 2, -1, sep = "/")
 
-future::plan("future::multisession", workers = 8)
+future::plan("future::multisession", workers = 10)
 
 furrr::future_walk(dplyr::pull(site_list, site_id), function(curr_site_id){
 
