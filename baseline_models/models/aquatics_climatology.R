@@ -1,7 +1,8 @@
 #'# Ecological Forecasting Initiative Null Model
 
 #'## Set-up
-print(paste0("Running Creating Daily Terrestrial Forecasts at ", Sys.time()))
+source("R/eco4cast-helpers/submit.R")
+source("R/eco4cast-helpers/forecast_output_validator.R")
 
 #' Required packages.
 #' EFIstandards is at remotes::install_github("eco4cast/EFIstandards")
@@ -113,13 +114,14 @@ combined %>%
 
 file_date <- combined$reference_datetime[1]
 
-forecast_file <- paste("aquatics", file_date, "climatology.csv.gz", sep = "-")
+forecast_file <- paste("usgsrc4cast", file_date, "climatology.csv.gz", sep = "-")
 
 write_csv(combined, forecast_file)
 
-### TODO: probably need a different way to submit;
-neon4cast::submit(forecast_file = forecast_file,
-                  ask = FALSE)
+# using function in R/eco4cast-helpers/ to submit to sub-folder in submit bucket
+submit(forecast_file = forecast_file,
+       project_id = "usgsrc4cast",
+       ask = FALSE)
 
 unlink(forecast_file)
 
