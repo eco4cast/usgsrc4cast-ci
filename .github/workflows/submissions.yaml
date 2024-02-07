@@ -1,8 +1,8 @@
 # Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
 # Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
 on:
-  #schedule:
-  #  - cron: '0 */2 * * *'
+  schedule:
+    - cron: '0 */2 * * *'
   workflow_dispatch:
 
 
@@ -21,7 +21,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          ref: submissions_processing # TODO: change to prod when happy
+          ref: prod
 
       - name: Process submissions
         shell: Rscript {0}
