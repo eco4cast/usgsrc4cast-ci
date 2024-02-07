@@ -20,6 +20,8 @@ jobs:
     container: eco4cast/rocker-neon4cast:latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          ref: submissions_processing # TODO: change to prod when happy
 
       - name: Process submissions
         shell: Rscript {0}
