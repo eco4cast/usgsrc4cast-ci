@@ -1,6 +1,6 @@
 library(gdalcubes)
 library(gefs4cast)
-source("drivers/to_hourly.R")
+source("R/eco4cast-helpers/to_hourly.R")
 
 site_list <- readr::read_csv(paste0("https://github.com/eco4cast/usgsrc4cast-ci/",
                                     "raw/prod/USGS_site_metadata.csv"),
