@@ -2,7 +2,7 @@
 library(minioclient)
 library(gdalcubes)
 library(gefs4cast)
-source("drivers/to_hourly.R")
+source("R/eco4cast-helpers/to_hourly.R")
 
 config <- yaml::read_yaml("challenge_configuration.yaml")
 driver_bucket <- stringr::word(config$driver_bucket, 1, sep = "/")
