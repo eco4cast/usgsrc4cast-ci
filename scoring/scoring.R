@@ -81,7 +81,7 @@ furrr::future_walk(1:nrow(variable_duration), function(k, variable_duration, con
                                     schema = arrow::schema(
                                       project_id = arrow::string(),
                                       site_id = arrow::string(),
-                                      datetime = arrow::timestamp(unit = "ns", timezone = "UTC"),
+                                      datetime = arrow::timestamp(unit = "ns"), # timezone = "UTC"),
                                       duration = arrow::string(),
                                       #depth_m = arrow::float(), #project_specific
                                       variable = arrow::string(),
@@ -96,8 +96,26 @@ furrr::future_walk(1:nrow(variable_duration), function(k, variable_duration, con
   curr_duration <- duration
   curr_project_id <- project_id
 
-  groupings <- arrow::open_dataset(s3_inv) |>
-    dplyr::filter(variable == curr_variable, duration == curr_duration) |>
+  groupings <- arrow::open_dataset(s3_inv,
+                                   schema = arrow::schema(
+                                     duration = arrow::string(),
+                                     model_id = arrow::string(),
+                                     site_id = arrow::string(),
+                                     reference_date = arrow::date32(),
+                                     variable = arrow::string(),
+                                     date = arrow::date32(),
+                                     project_id = arrow::string(),
+                                     pub_date = arrow::date32(),
+                                     path = arrow::string(),
+                                     path_full = arrow::string(),
+                                     path_summaries = arrow::string(),
+                                     endpoint = arrow::string(),
+                                     latitude = arrow::float(),
+                                     longitude = arrow::float(),
+                                   )) |>
+    dplyr::filter(variable == curr_variable,
+                  duration == curr_duration,
+                  project_id == curr_project_id) |>
     dplyr::select(-site_id) |>
     dplyr::collect() |>
     dplyr::distinct() |>
