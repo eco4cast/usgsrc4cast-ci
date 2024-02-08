@@ -14,7 +14,7 @@ archive_bucket: bio230014-bucket01/challenges/archive
 driver_bucket: bio230014-bucket01/challenges/drivers/usgsrc4cast/noaa
 forecasts_bucket: bio230014-bucket01/challenges/forecasts
 inventory_bucket: bio230014-bucket01/challenges/inventory
-model_metadata_bucket: bio230014-bucket01/challenges/metadata/model_id
+model_metadata_bucket: bio230014-bucket01/challenges/metadata
 noaa_forecast_bucket: drivers/noaa/gefs-v12-reprocess/
 prov_bucket: bio230014-bucket01/challenges/prov
 scores_bucket: bio230014-bucket01/challenges/scores

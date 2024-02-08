@@ -19,6 +19,8 @@ jobs:
     container: eco4cast/rocker-neon4cast:latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          ref: prod
 
       - name: Process submissions
         shell: Rscript {0}
@@ -36,6 +38,8 @@ jobs:
     container: eco4cast/rocker-neon4cast:latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          ref: prod
 
       - name: Generate scores
         shell: Rscript {0}
@@ -62,7 +66,8 @@ jobs:
       - uses: actions/checkout@v3
         with:
            fetch-depth: 0
-           set-safe-directory: '*'
+           set-safe-directory: '*'d
+           ref: catalog-dashboard # TODO: update to prod when happy
 
       - name: install validator
         run: |

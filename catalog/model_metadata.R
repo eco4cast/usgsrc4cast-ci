@@ -171,7 +171,12 @@ for(i in 1:nrow(registered_models)){
   file_name <- paste0(metadata$model_id, ".json")
   jsonlite::write_json(metadata, path = file.path("catalog",file_name), pretty = TRUE)
 
-  minioclient::mc_cp(file.path("catalog",file_name), file.path("osn",config$model_metadata_bucket, file_name))
+  minioclient::mc_cp(file.path("catalog",file_name),
+                     file.path("osn",
+                               config$model_metadata_bucket,
+                               "model_id",
+                               paste0("project_id=", config$project_id),
+                               file_name))
 
   unlink(file.path("catalog",file_name))
 }
