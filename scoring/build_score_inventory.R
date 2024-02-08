@@ -10,6 +10,7 @@ inventory_df <- arrow::open_dataset(s3) |>
   mutate(reference_date = lubridate::as_date(reference_datetime),
          date = lubridate::as_date(datetime),
          pub_date = lubridate::as_date(pub_datetime)) |>
+  filter(project_id == config$project_id) |>
   distinct(duration, model_id, site_id, reference_date, variable, date, project_id, pub_date) |>
   collect() |>
   mutate(path = glue::glue("{bucket}/parquet/project_id={project_id}/duration={duration}/variable={variable}"),
@@ -18,8 +19,7 @@ inventory_df <- arrow::open_dataset(s3) |>
 
 sites <- readr::read_csv(config$site_table,
                          show_col_types = FALSE) |>
-  select(field_site_id, latitude, longitude) |>
-  rename(site_id = field_site_id)
+  select(site_id, latitude, longitude)
 
 inventory_df <- dplyr::left_join(inventory_df, sites,
                                  by = "site_id")
