@@ -174,7 +174,6 @@ for(i in 1:nrow(registered_models)){
   minioclient::mc_cp(file.path("catalog",file_name),
                      file.path("osn",
                                config$model_metadata_bucket,
-                               "model_id",
                                paste0("project_id=", config$project_id),
                                file_name))
 

@@ -35,7 +35,8 @@ forecast_description_create <- data.frame(datetime = 'datetime of the forecasted
 # model_id <- 'climatology'
 
 print('FIND FORECAST TABLE SCHEMA')
-forecast_theme_df <- arrow::open_dataset(arrow::s3_bucket(config$forecasts_bucket, endpoint_override = config$endpoint, anonymous = TRUE)) #|>
+forecast_theme_df <- arrow::open_dataset(arrow::s3_bucket(config$forecasts_bucket,
+                                                          endpoint_override = config$endpoint, anonymous = TRUE)) #|>
   #filter(model_id == model_id, site_id = site_id, reference_datetime = reference_datetime)
 # NOTE IF NOT USING FILTER -- THE stac4cast::build_table_columns() NEEDS TO BE UPDATED
     #(USE strsplit(forecast_theme_df$ToString(), "\n") INSTEAD OF strsplit(forecast_theme_df[[1]]$ToString(), "\n"))
