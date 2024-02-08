@@ -19,6 +19,8 @@ jobs:
     #container: eco4cast/rocker-neon4cast:latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          ref: score4casts # TODO: change this to prod when happy
 
       - name: Install
         shell: Rscript {0}
