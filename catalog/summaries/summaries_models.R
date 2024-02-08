@@ -41,7 +41,8 @@ summaries_theme_df <- arrow::open_dataset(arrow::s3_bucket(config$summaries_buck
 
 summaries_data_df <- duckdbfs::open_dataset(glue::glue("s3://{config$inventory_bucket}/catalog/forecasts"),
                                             s3_endpoint = config$endpoint, anonymous=TRUE) |>
-  collect()
+  collect() |>
+  dplyr::filter(project_id == config$project_id)
 
 theme_models <- summaries_data_df |>
   distinct(model_id)
