@@ -68,3 +68,8 @@ archive/
 **/in/**
 
 _targets/
+
+cache
+.Rhistory
+.Rproj.user
+dashboard
