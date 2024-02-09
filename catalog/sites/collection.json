@@ -1,6 +1,6 @@
 {
   "id": "sites",
-  "description": "The catalog contains site metadata for the NEON Ecological Forecasting Challenge",
+  "description": "The catalog contains site metadata for the EFI-USGS River Chlorophyll Forecasting Challenge",
   "stac_version": "1.0.0",
   "license": "CC0-1.0",
   "stac_extensions": [
@@ -31,14 +31,14 @@
     },
     {
       "rel": "about",
-      "href": "https://projects.ecoforecast.org/neon4cast-docs/",
+      "href": "https://projects.ecoforecast.org/usgsrc4cast-docs/",
       "type": "text/html",
-      "title": "NEON Ecological Forecasting Challenge Documentation"
+      "title": "EFI-USGS River Chlorophyll Forecasting Challenge Documentation"
     },
     {
       "rel": "describedby",
-      "href": "https://projects.ecoforecast.org/neon4cast-docs/",
-      "title": "NEON Forecast Challenge Dashboard",
+      "href": "https://projects.ecoforecast.org/usgsrc4cast-docs/",
+      "title": "EFI-USGS River Chlorophyll Forecast Challenge Dashboard",
       "type": "text/html"
     }
   ],
@@ -47,10 +47,10 @@
     "spatial": {
       "bbox": [
         [
-          -156.6194,
-          17.9696,
-          -66.7987,
-          71.2824
+          -122.6692,
+          39.6327,
+          -74.7781,
+          45.5175
         ]
       ]
     },
@@ -65,99 +65,34 @@
   },
   "table:columns": [
     {
-      "name": "field_domain_id",
-      "type": "character",
-      "description": "domain identifier"
-    },
-    {
-      "name": "field_site_id",
+      "name": "site_id",
       "type": "character",
       "description": "site identifier"
     },
     {
-      "name": "field_site_name",
+      "name": "project_id",
       "type": "character",
-      "description": "site name"
+      "description": "forecast challenge identifier"
     },
     {
-      "name": "terrestrial",
-      "type": "numeric",
-      "description": "binary indicator for variable group"
-    },
-    {
-      "name": "aquatics",
-      "type": "numeric",
-      "description": "binary indicator for variable group"
-    },
-    {
-      "name": "phenology",
-      "type": "numeric",
-      "description": "binary indicator for variable group"
-    },
-    {
-      "name": "ticks",
-      "type": "numeric",
-      "description": "binary indicator for variable group"
-    },
-    {
-      "name": "beetles",
-      "type": "numeric",
-      "description": "binary indicator for variable group"
-    },
-    {
-      "name": "phenocam_code",
+      "name": "agency_cd",
       "type": "character",
-      "description": "code used for phenocam"
+      "description": "organization / agency responsible for site monitoring"
     },
     {
-      "name": "phenocam_roi",
+      "name": "site_no",
       "type": "character",
-      "description": "phenocam region of interest"
+      "description": "National Water Information System stream gage identifier"
     },
     {
-      "name": "phenocam_vegetation",
+      "name": "station_nm",
       "type": "character",
-      "description": "phenocam vegetation type"
+      "description": "National Water Information System station long name"
     },
     {
-      "name": "field_site_type",
+      "name": "site_tp_cd",
       "type": "character",
-      "description": "site type"
-    },
-    {
-      "name": "field_site_subtype",
-      "type": "character",
-      "description": "site subtype"
-    },
-    {
-      "name": "field_colocated_site",
-      "type": "character",
-      "description": "sites that are colocated"
-    },
-    {
-      "name": "field_site_host",
-      "type": "character",
-      "description": "host site"
-    },
-    {
-      "name": "field_site_url",
-      "type": "character",
-      "description": "host site url"
-    },
-    {
-      "name": "field_nonneon_research_allowed",
-      "type": "character",
-      "description": "is non-neon research allowed"
-    },
-    {
-      "name": "field_access_details",
-      "type": "character",
-      "description": "details for accessing the site"
-    },
-    {
-      "name": "field_neon_field_operations_office",
-      "type": "character",
-      "description": "operations office for neon site"
+      "description": "National Water Information System site type code; https://maps.waterdata.usgs.gov/mapper/help/sitetype.html"
     },
     {
       "name": "latitude",
@@ -170,188 +105,38 @@
       "description": "site longitude"
     },
     {
-      "name": "field_geodetic_datum",
+      "name": "site_url",
       "type": "character",
-      "description": "geodetic coordinates for site"
+      "description": "National Water Information System URL for monitoring site"
     },
     {
-      "name": "field_utm_northing",
-      "type": "numeric",
-      "description": "northing utm for site"
+      "name": "colocated",
+      "type": "logical",
+      "description": ""
     },
     {
-      "name": "field_utm_easting",
-      "type": "numeric",
-      "description": "easting utm for site"
-    },
-    {
-      "name": "field_utm_zone",
-      "type": "character",
-      "description": "utm zone for site"
-    },
-    {
-      "name": "field_site_county",
-      "type": "character",
-      "description": "county where site is located"
-    },
-    {
-      "name": "field_site_state",
-      "type": "character",
-      "description": "state where site is located"
-    },
-    {
-      "name": "field_site_country",
-      "type": "character",
-      "description": "country where site is located"
-    },
-    {
-      "name": "field_mean_elevation_m",
-      "type": "numeric",
-      "description": "mean site elevation in meters"
-    },
-    {
-      "name": "field_minimum_elevation_m",
-      "type": "numeric",
-      "description": "minimum site elevation in meters"
-    },
-    {
-      "name": "field_maximum_elevation_m",
-      "type": "numeric",
-      "description": "maximum site elevation in meters"
-    },
-    {
-      "name": "field_mean_annual_temperature_C",
-      "type": "numeric",
-      "description": "annual temperature of site in degrees C"
-    },
-    {
-      "name": "field_mean_annual_precipitation_mm",
-      "type": "numeric",
-      "description": "mean annual precipitation at site in mm"
-    },
-    {
-      "name": "field_dominant_wind_direction",
-      "type": "character",
-      "description": "dominant wind direction at site"
-    },
-    {
-      "name": "field_mean_canopy_height_m",
-      "type": "character",
-      "description": "mean canopy height at site"
-    },
-    {
-      "name": "field_dominant_nlcd_classes",
-      "type": "character",
-      "description": "dominant nlcd classes at site"
-    },
-    {
-      "name": "field_domint_plant_species",
-      "type": "character",
-      "description": "dominant plant species at site"
-    },
-    {
-      "name": "field_usgs_huc",
-      "type": "character",
-      "description": "USGS Hyrdrologic Unit Code (HUC) for site"
-    },
-    {
-      "name": "field_watershed_name",
-      "type": "character",
-      "description": "watershed name for site"
-    },
-    {
-      "name": "field_watershed_size_km2",
-      "type": "numeric",
-      "description": "watershed size for site in square kilometers"
-    },
-    {
-      "name": "field_lake_depth_mean_m",
-      "type": "numeric",
-      "description": "mean lake depth at site in meters"
-    },
-    {
-      "name": "field_lake_depth_max_m",
-      "type": "numeric",
-      "description": "maximum lake depth in meters"
-    },
-    {
-      "name": "field_tower_height_m",
-      "type": "numeric",
-      "description": "tower height at site in meters"
-    },
-    {
-      "name": "field_usgs_geology_unit",
-      "type": "character",
-      "description": "USGS geology unit for site"
-    },
-    {
-      "name": "field_megapit_soil_family",
-      "type": "character",
-      "description": "magapit soil family at site"
-    },
-    {
-      "name": "field_soil_subgroup",
-      "type": "character",
-      "description": "soil subgroup at site"
-    },
-    {
-      "name": "field_avg_number_of_green_days",
-      "type": "numeric",
-      "description": "average number of green days at site"
-    },
-    {
-      "name": "field_avg_grean_increase_doy",
-      "type": "character",
-      "description": "average green increase for day of year"
-    },
-    {
-      "name": "field_avg_green_max_doy",
-      "type": "character",
-      "description": "average green maximum for day of year"
-    },
-    {
-      "name": "field_avg_green_decrease_doy",
-      "type": "character",
-      "description": "average green decrease for day of year"
-    },
-    {
-      "name": "field_avg_green_min_doy",
-      "type": "character",
-      "description": "average green minimum for day of year"
-    },
-    {
-      "name": "field_phenocams",
-      "type": "character",
-      "description": "phenocam details for site"
-    },
-    {
-      "name": "field_number_tower_levels",
-      "type": "numeric",
-      "description": "number of tower levels at site"
-    },
-    {
-      "name": "neon_url",
-      "type": "character",
-      "description": "neon URL for site"
+      "name": "queryTime",
+      "type": ["POSIXct", "POSIXt"],
+      "description": "timestamp when site metadata was retrieved"
     }
   ],
   "assets": {
     "data": {
-      "href": "https://raw.githubusercontent.com/eco4cast/neon4cast-ci/main/neon4cast_field_site_metadata.csv",
+      "href": "https://raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/USGS_site_metadata.csv",
       "type": "application/x-parquet",
       "title": "Site Metadata Access",
       "roles": [
         "data"
       ],
-      "description": "This R code will return results for the site metadata.\n\n### R\n\n```{r}\n# Use code below\n\nurl <- https://raw.githubusercontent.com/eco4cast/neon4cast-ci/main/neon4cast_field_site_metadata.csv\nsites <- readr::read_csv(url, show_col_types = FALSE)\n```"
+      "description": "This R code will return results for the site metadata.\n\n### R\n\n```{r}\n# Use code below\n\nurl <- https://raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/USGS_site_metadata.csv\nsites <- readr::read_csv(url, show_col_types = FALSE)\n```"
     },
     "thumbnail": {
-      "href": "https://www.neonscience.org/sites/default/files/styles/max_2600x2600/public/2021-04/2021_04_graphic_Domain_Map_no-Titles-png.png?itok=7MsHPigZ",
+      "href": "https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/thumbnails/image/screencapture-waterdata-usgs-gov-nwis-rt-2018-08-02-13_00_05-01.jpg",
       "type": "image/JPEG",
       "roles": [
         "thumbnail"
       ],
-      "title": "NEON Sites Map"
+      "title": "USGS Sites Map"
     }
   }
 }
