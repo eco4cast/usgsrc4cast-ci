@@ -31,14 +31,14 @@
     },
     {
       "rel": "about",
-      "href": "https://projects.ecoforecast.org/neon4cast-docs/",
+      "href": "https://projects.ecoforecast.org/usgsrc4cast-docs/",
       "type": "text/html",
-      "title": "NEON Ecological Forecasting Challenge Documentation"
+      "title": "EFI-USGS River Chlorophyll Forecasting Challenge Documentation"
     },
     {
       "rel": "describedby",
-      "href": "https://projects.ecoforecast.org/neon4cast-docs/",
-      "title": "NEON Forecast Challenge Dashboard",
+      "href": "https://projects.ecoforecast.org/usgsrc4cast-docs/",
+      "title": "EFI-USGS River Chlorophyll Forecast Challenge Dashboard",
       "type": "text/html"
     }
   ],
@@ -47,18 +47,18 @@
     "spatial": {
       "bbox": [
         [
-          -156.6194,
-          17.9696,
-          -66.7987,
-          71.2824
+          -122.6692,
+          39.6327,
+          -74.7781,
+          45.5175
         ]
       ]
     },
     "temporal": {
       "interval": [
         [
-          "2013-08-30T00:00:00Z",
-          "2023-12-17T00:00:00Z"
+          "2009-01-22T00:00:00Z",
+          "2024-02-09T00:00:00Z"
         ]
       ]
     }
@@ -76,18 +76,13 @@
     },
     {
       "name": "datetime",
-      "type": ["POSIXct", "POSIXt"],
+      "type": "Date",
       "description": "datetime of the observed value (ISO 8601)"
     },
     {
       "name": "duration",
       "type": "character",
       "description": "temporal duration of target (hourly = PT1H, daily = P1D, etc.); follows ISO 8601 duration convention"
-    },
-    {
-      "name": "depth_m",
-      "type": "numeric",
-      "description": "depth (meters) in water column of observation"
     },
     {
       "name": "variable",
@@ -110,49 +105,13 @@
       "title": "Test Image"
     },
     "2": {
-      "href": "https://data.ecoforecast.org/neon4cast-targets/aquatics/aquatics-targets.csv.gz",
+      "href": "https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/targets/project_id=usgsrc4cast/duration=P1D/river-chl-targets.csv.gz",
       "type": "application/x-parquet",
-      "title": "Aquatics Target Access",
+      "title": "aquatics Target Access",
       "roles": [
         "data"
       ],
-      "description": "This R code will return results for the relevant targets file.\n\n### R\n\n```{r}\n# Use code below\n\nurl <- \"https://data.ecoforecast.org/neon4cast-targets/aquatics/aquatics-targets.csv.gz\"\ntargets <- readr::read_csv(url, show_col_types = FALSE)\n```"
-    },
-    "3": {
-      "href": "https://data.ecoforecast.org/neon4cast-targets/terrestrial/terrestrial-targets.csv.gz",
-      "type": "application/x-parquet",
-      "title": "Terrestrial Target Access",
-      "roles": [
-        "data"
-      ],
-      "description": "This R code will return results for the relevant targets file.\n\n### R\n\n```{r}\n# Use code below\n\nurl <- \"https://data.ecoforecast.org/neon4cast-targets/terrestrial/terrestrial-targets.csv.gz\"\ntargets <- readr::read_csv(url, show_col_types = FALSE)\n```"
-    },
-    "4": {
-      "href": "https://data.ecoforecast.org/neon4cast-targets/beetles/beetles-targets.csv.gz",
-      "type": "application/x-parquet",
-      "title": "Beetles Target Access",
-      "roles": [
-        "data"
-      ],
-      "description": "This R code will return results for the relevant targets file.\n\n### R\n\n```{r}\n# Use code below\n\nurl <- \"https://data.ecoforecast.org/neon4cast-targets/beetles/beetles-targets.csv.gz\"\ntargets <- readr::read_csv(url, show_col_types = FALSE)\n```"
-    },
-    "5": {
-      "href": "https://data.ecoforecast.org/neon4cast-targets/phenology/phenology-targets.csv.gz",
-      "type": "application/x-parquet",
-      "title": "Phenology Target Access",
-      "roles": [
-        "data"
-      ],
-      "description": "This R code will return results for the relevant targets file.\n\n### R\n\n```{r}\n# Use code below\n\nurl <- \"https://data.ecoforecast.org/neon4cast-targets/phenology/phenology-targets.csv.gz\"\ntargets <- readr::read_csv(url, show_col_types = FALSE)\n```"
-    },
-    "6": {
-      "href": "https://data.ecoforecast.org/neon4cast-targets/ticks/ticks-targets.csv.gz",
-      "type": "application/x-parquet",
-      "title": "Ticks Target Access",
-      "roles": [
-        "data"
-      ],
-      "description": "This R code will return results for the relevant targets file.\n\n### R\n\n```{r}\n# Use code below\n\nurl <- \"https://data.ecoforecast.org/neon4cast-targets/ticks/ticks-targets.csv.gz\"\ntargets <- readr::read_csv(url, show_col_types = FALSE)\n```"
+      "description": "This R code will return results for the relevant targets file.\n\n### R\n\n```{r}\n# Use code below\n\nurl <- \"https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/targets/project_id=usgsrc4cast/duration=P1D/river-chl-targets.csv.gz\"\ntargets <- readr::read_csv(url, show_col_types = FALSE)\n```"
     }
   }
 }

@@ -29,7 +29,9 @@ noaa_description_create <- data.frame(site_id = 'For forecasts that are not on a
 noaa_theme_df <- arrow::open_dataset(arrow::s3_bucket(paste0(config$noaa_forecast_bucket,"stage2/parquet/0/2023-08-01/feea"), endpoint_override = config$noaa_endpoint, anonymous = TRUE))
 
 
-noaa_theme_dates <- arrow::open_dataset(arrow::s3_bucket(paste0(config$noaa_forecast_bucket,"stage2/parquet/"), endpoint_override = config$noaa_endpoint, anonymous = TRUE)) |>
+noaa_theme_dates <- arrow::open_dataset(arrow::s3_bucket(paste0(config$driver_bucket,"/gefs-v12/stage2"),
+                                                         endpoint_override = config$endpoint,
+                                                         anonymous = TRUE)) |>
   dplyr::summarise(min(datetime),max(datetime)) |>
   collect()
 noaa_min_date <- noaa_theme_dates$`min(datetime)`
@@ -75,7 +77,7 @@ stac4cast::build_forecast_scores(table_schema = noaa_theme_df,
 ## BUILD VARIABLE GROUPS
 ## find group sites
 find_noaa_sites <- read_csv(config$site_table) |>
-  distinct(field_site_id)
+  distinct(site_id)
 
 for (i in 1:length(config$noaa_forecast_groups)){ ## organize variable groups
   print(config$noaa_forecast_groups[i])

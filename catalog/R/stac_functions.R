@@ -16,9 +16,12 @@ generate_model_assets <- function(m_vars, m_duration, aws_path){
     "1"= list(
       'type'= 'application/json',
       'title' = 'Model Metadata',
-      'href' = paste0("https://", config$endpoint,"/", config$model_metadata_bucket,"/",m,".json"),
+      'href' = paste0("https://", config$endpoint,"/",
+                      config$model_metadata_bucket,"/",
+                      "project_id=",config$project_id, "/",
+                      m,".json"),
       'description' = paste0("Use `jsonlite::fromJSON()` to download the model metadata JSON file. This R code will return metadata provided during the model registration.
-      \n\n### R\n\n```{r}\n# Use code below\n\nmodel_metadata <- jsonlite::fromJSON(",paste0('"','https://', config$endpoint,'/', config$model_metadata_bucket,'/',m,'.json"'),")\n\n")
+      \n\n### R\n\n```{r}\n# Use code below\n\nmodel_metadata <- jsonlite::fromJSON(",paste0('"','https://', config$endpoint,'/', config$model_metadata_bucket,'/', 'project_id=', config$project_id, '/', m,'.json"'),")\n\n")
     )
   )
 
@@ -516,8 +519,8 @@ build_group_variables <- function(table_schema,
                   ),
                   list(
                     "rel" = "describedby",
-                    "href" = "https://ltreb-reservoirs.github.io/vera4cast/",
-                    "title" = "VERA Forecast Challenge Dashboard",
+                    "href" = "https://ltreb-reservoirs.github.io/vera4cast/", # TODO: update this to something?
+                    "title" = "EFI-USGS Forecast Challenge Dashboard",
                     "type" = "text/html"
                   )
                 )),
