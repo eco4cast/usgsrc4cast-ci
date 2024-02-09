@@ -39,6 +39,12 @@ fs::dir_create(local_dir)
 
 message("Downloading forecasts ...")
 
+##
+files = minioclient::mc_ls(from = fs::path("submit", config$submissions_bucket, config$project_id),
+                           recusive = TRUE,
+                           details = TRUE)
+print(files)
+##
 minioclient::mc_mirror(from = fs::path("submit", config$submissions_bucket, config$project_id),
                        to = local_dir)
 
