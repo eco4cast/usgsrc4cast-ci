@@ -15,11 +15,8 @@ source("R/plot-utils.R")
 #source("../R/ignore_sigpipes.R")
 #ignore_sigpipe()
 
-terrestrial_focal_sites <- c("HARV", "OSBS")
+# TODO: update these 
 aquatics_focal_sites <- c("BARC", "CRAM")
-phenology_focal_sites <- c("HARV", "OSBS")
-ticks_focal_sites <- c("HARV", "OSBS")
-beetles_focal_sites <- c("HARV", "OSBS")
 ```
 
 This page visualizes the forecasts and forecast performance for the focal target variables.
@@ -36,18 +33,8 @@ reference_datetimes <- arrow::open_dataset("../cache/summaries") |>
   group_by(variable) |>
   dplyr::mutate(reference_datetime_max = min(c(reference_datetime_max, Sys.Date() - lubridate::days(1))))
 
-
-reference_datetimes_P1W <- arrow::open_dataset("../cache/summaries/duration=P1W") |> 
-  dplyr::mutate(wday = lubridate::wday(reference_datetime)) |> 
-  dplyr::filter(wday == 1) |> 
-  dplyr::summarize(reference_datetime_max = max(reference_datetime), .by = "variable") |>  
-  dplyr::collect() |> 
-  group_by(variable) |>
-  dplyr::mutate(reference_datetime_max = min(c(reference_datetime_max, Sys.Date() - lubridate::days(1))))
-
 config <- yaml::read_yaml("../challenge_configuration.yaml")
-sites <- readr::read_csv(paste0("../", config$site_table), show_col_types = FALSE) |> 
-  rename(site_id = field_site_id)
+sites <- readr::read_csv(paste0("../", config$site_table), show_col_types = FALSE)
 
 df_P1D <- arrow::open_dataset("../cache/summaries/duration=P1D") |> 
   left_join(reference_datetimes, by = "variable") |> 
@@ -59,15 +46,6 @@ df_P1D <- arrow::open_dataset("../cache/summaries/duration=P1D") |>
   filter(lubridate::as_date(datetime) > lubridate::as_date(reference_datetime)) |> 
   collect()
 
-df_P1W <- arrow::open_dataset("../cache/summaries/duration=P1W") |> 
-  left_join(reference_datetimes_P1W, by = "variable") |> 
-  filter(reference_datetime == reference_datetime_max) |> 
-  left_join(sites, by = "site_id") |> 
-  filter(site_id %in% sites$site_id,) |> 
-  mutate(reference_datetime = lubridate::as_datetime(reference_datetime),
-         datetime = lubridate::as_datetime(datetime)) |> 
-  filter(lubridate::as_date(datetime) > lubridate::as_date(reference_datetime)) |> 
-  collect()
 ```
 
 ```{r}
@@ -83,29 +61,16 @@ df_P1D_scores <- arrow::open_dataset("../cache/scores/duration=P1D") |>
 cutoff <- Sys.Date() - lubridate::days(365)
 
 
-df_P1W_scores <- arrow::open_dataset("../cache/scores/duration=P1W") |> 
-  left_join(sites, by = "site_id") |> 
-  mutate(reference_datetime = lubridate::as_datetime(reference_datetime),
-         datetime = lubridate::as_datetime(datetime)) |> 
-  filter(reference_datetime > cutoff) |> 
-  collect() 
-
 ref <- Sys.Date() - lubridate::days(30)
 
 ref_P1D <- min(c(Sys.Date() - lubridate::days(30), 
              lubridate::as_date(df_P1D$reference_datetime)))
 
-ref_P1W <- max(c(Sys.Date() - lubridate::days(365), 
-             lubridate::as_date(df_P1W$reference_datetime)))
 
 #n_data <- 10
 #who <- combined |> filter(!is.na(observation)) |> summarise(has_data = max(reference_datetime)) |> collect()
 #ref <- as.character ( as.Date(who$has_data[[1]]) - n_data )
 ex_P1D <- df_P1D_scores |> 
-  mutate(min_reference_datetime = min(reference_datetime)) |> 
-  filter(reference_datetime == min_reference_datetime)
-
-ex_P1W <- df_P1W_scores |> 
   mutate(min_reference_datetime = min(reference_datetime)) |> 
   filter(reference_datetime == min_reference_datetime)
 
@@ -120,114 +85,13 @@ best_P1D_scores <- df_P1D_scores |>
   group_by(variable) |> 
   slice(1:5)
 
-best_P1W_scores <- df_P1W_scores |> 
-  summarise(score = mean(crps, na.rm = TRUE), .by = c("model_id","variable")) |> 
-  filter(!is.infinite(score)) |> 
-  arrange(variable, score) |> 
-  group_by(variable) |> 
-  slice(1:5)
 ```
 Forecasts submitted on `r max(lubridate::as_date(df_P1D$reference_datetime))`
 
 
-::: panel-tabset
-
-### Terrestrial: Net Ecosystem Exchange
-
-Forecast summaries are available [here](https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/neon4cast-ci/main/catalog/summaries/Terrestrial/Daily_Net_ecosystem_exchange/collection.json)
-
-```{r}
-best_models <- best_P1D_scores |> filter(variable == "nee") |> pull(model_id)
-
-df_P1D |> 
-  filter(variable == "nee",
-         model_id %in% best_models, 
-         site_id %in% terrestrial_focal_sites) |> 
-  mutate(observation = as.numeric(NA)) |> 
-  forecast_plots()
-```
-
-### Terrestrial: Latent Heat Flux
-
-Forecast summaries are available [here](https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/neon4cast-ci/main/catalog/summaries/Terrestrial/Daily_latent_heat_flux/collection.json)
-
-```{r}
-best_models <- best_P1D_scores |> filter(variable == "le") |> pull(model_id)
-
-df_P1D |> 
-  filter(variable == "le",
-         model_id %in% best_models,
-         site_id %in% terrestrial_focal_sites) |> 
-  mutate(observation = as.numeric(NA)) |> 
-  forecast_plots()
-```
-### Phenology: Greeness
-
-Forecast summaries are available [here](https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/neon4cast-ci/main/catalog/summaries/Phenology/Daily_Green_chromatic_coordinate/collection.json)
-
-```{r}
-best_models <- best_P1D_scores |> filter(variable == "gcc_90") |> pull(model_id)
-
-df_P1D |> 
-  filter(variable == "gcc_90",
-         model_id %in% best_models, 
-         site_id %in% phenology_focal_sites) |> 
-  mutate(observation = as.numeric(NA)) |> 
-  forecast_plots()
-```
-
-
-### Phenology: Redness
-
-Forecast summaries are available [here](https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/neon4cast-ci/main/catalog/summaries/Phenology/Daily_Red_chromatic_coordinate/collection.json)
-
-```{r}
-best_models <- best_P1D_scores |> filter(variable == "rcc_90") |> pull(model_id)
-
-
-df_P1D |> 
-  filter(variable == "rcc_90",
-         model_id %in% best_models, 
-         site_id %in% phenology_focal_sites) |> 
-  mutate(observation = as.numeric(NA)) |> 
-  forecast_plots()
-```
-
-### Aquatics: water temperature
-
-Forecast summaries are available [here](https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/neon4cast-ci/main/catalog/summaries/Aquatics/Daily_Water_temperature/collection.json)
-
-```{r}
-best_models <- best_P1D_scores |> filter(variable == "temperature") |> pull(model_id)
-
-
-
-df_P1D |> 
-  filter(variable == c("temperature"),
-         model_id %in% best_models,
-         site_id %in% aquatics_focal_sites) |> 
-  mutate(observation = as.numeric(NA)) |> 
-  forecast_plots()
-```
-
-### Aquatics: dissolved oxygen
-
-Forecast summaries are available [here](https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/neon4cast-ci/main/catalog/summaries/Aquatics/Daily_Dissolved_oxygen/collection.json)
-
-```{r}
-best_models <- best_P1D_scores |> filter(variable == "oxygen") |> pull(model_id)
-
-df_P1D |> 
-  filter(variable == c("oxygen"),
-         model_id %in% best_models,
-         site_id %in% aquatics_focal_sites) |> 
-  mutate(observation = as.numeric(NA)) |> 
-  forecast_plots()
-```
-
 ### Aquatics: Chlorophyll-a
 
-Forecast summaries are available [here](https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/neon4cast-ci/main/catalog/summaries/Aquatics/Daily_Chlorophyll_a/collection.json)
+Forecast summaries are available [here](https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/summaries/Aquatics/Daily_Chlorophyll_a/collection.json)
 
 ```{r}
 best_models <- best_P1D_scores |> filter(variable == "chla") |> pull(model_id)
@@ -235,140 +99,21 @@ best_models <- best_P1D_scores |> filter(variable == "chla") |> pull(model_id)
 df_P1D |> 
   filter(variable == c("chla"),
          model_id %in% best_models, 
-         site_id %in% aquatics_focal_sites) |> 
+         # TODO: update these 
+         # site_id %in% aquatics_focal_sites
+         ) |> 
   mutate(observation = as.numeric(NA)) |> 
   forecast_plots()
 
-```
-
-### Beetle community richness
-
-Forecast summaries are available [here](https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/neon4cast-ci/main/catalog/summaries/Beetles/Weekly_beetle_community_richness/collection.json)
-
-```{r}
-best_models <- best_P1W_scores |> filter(variable == "richness") |> pull(model_id)
-
-
-df_P1W |> 
-  filter(variable == c("richness"),
-         model_id %in% best_models,
-         site_id %in% beetles_focal_sites) |> 
-  mutate(observation = as.numeric(NA)) |> 
-  forecast_plots()
-```
-
-### Beetle community abundance
-
-Forecast summaries are available [here](https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/neon4cast-ci/main/catalog/summaries/Beetles/Weekly_beetle_community_abundance/collection.json)
-
-```{r}
-best_models <- best_P1W_scores |> filter(variable == "abundance") |> pull(model_id)
-
-df_P1W |> 
-  filter(variable == c("abundance"),
-         model_id %in% best_models,
-         site_id %in% beetles_focal_sites) |> 
-  mutate(observation = as.numeric(NA)) |> 
-  forecast_plots()
-```
-
-
-### Ticks: Amblyomma americanum
-
-Forecast summaries are available [here](https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/neon4cast-ci/main/catalog/summaries/Ticks/collection.json)
-
-```{r}
-best_models <- best_P1W_scores |> filter(variable == "amblyomma_americanum") |> pull(model_id)
-
-df_P1W |> 
-  filter(variable == c("amblyomma_americanum"),
-         model_id %in% best_models,
-         site_id %in% ticks_focal_sites) |> 
-  mutate(observation = as.numeric(NA)) |> 
-  forecast_plots()
 ```
 
 :::
 
 ## Forecast analysis
 
-Below are forecasts submitted 30 days ago and include the observations used to evaluate them. Mouse over to see the team id, scroll to zoom.  Only the top five performing models are shown. Information on how to access the scores can be found in our [catalog](https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/neon4cast-ci/main/catalog/scores/collection.json)
+Below are forecasts submitted 30 days ago and include the observations used to evaluate them. Mouse over to see the team id, scroll to zoom.  Only the top five performing models are shown. Information on how to access the scores can be found in our [catalog](https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/scores/collection.json)
 
 ::: panel-tabset
-### Terrestrial: Net Ecosystem Exchange
-
-```{r}
-best_models <- best_P1D_scores |> filter(variable == "nee") |> pull(model_id)
-
-ex_P1D |> 
-  filter(variable == "nee",
-         model_id %in% best_models, 
-         site_id %in% terrestrial_focal_sites) |> 
-  forecast_plots()
-```
-
-### Terrestrial: Latent Heat Flux
-
-```{r}
-best_models <- best_P1D_scores |> filter(variable == "le") |> pull(model_id)
-
-
-ex_P1D |> 
-  filter(variable == "le",
-         model_id %in% best_models,
-         site_id %in% terrestrial_focal_sites) |> 
-  forecast_plots()
-```
-### Phenology: Greeness
-
-```{r}
-best_models <- best_P1D_scores |> filter(variable == "gcc_90") |> pull(model_id)
-
-
-ex_P1D |> 
-  filter(variable == "gcc_90",
-         model_id %in% best_models,
-         site_id %in% phenology_focal_sites) |> 
-  forecast_plots()
-```
-
-
-### Phenology: Redness
-
-```{r}
-best_models <- best_P1D_scores |> filter(variable == "rcc_90") |> pull(model_id)
-
-
-ex_P1D |> 
-  filter(variable == "rcc_90",
-         model_id %in% best_models,
-         site_id %in% phenology_focal_sites) |> 
-  forecast_plots()
-```
-
-### Aquatics: water temperature
-
-```{r}
-best_models <- best_P1D_scores |> filter(variable == "temperature") |> pull(model_id)
-
-ex_P1D |> 
-  filter(variable == c("temperature"),
-         model_id %in% best_models,
-         site_id %in% aquatics_focal_sites) |> 
-  forecast_plots()
-```
-
-### Aquatics: disolved oxygen
-
-```{r}
-best_models <- best_P1D_scores |> filter(variable == "oxygen") |> pull(model_id)
-
-ex_P1D |> 
-  filter(variable == c("oxygen"),
-         model_id %in% best_models,
-         site_id %in% aquatics_focal_sites) |> 
-  forecast_plots()
-```
 
 ### Aquatics: chrophyll-a
 
@@ -379,51 +124,12 @@ best_models <- best_P1D_scores |> filter(variable == "chla") |> pull(model_id)
 ex_P1D |> 
   filter(variable == c("chla"),
          model_id %in% best_models, 
-         site_id %in% aquatics_focal_sites) |> 
+         #TODO: Update 
+         # site_id %in% aquatics_focal_sites
+         ) |> 
   forecast_plots()
 
 ```
-
-### Beetle community richness
-
-```{r}
-best_models <- best_P1W_scores |> filter(variable == "richness") |> pull(model_id)
-
-
-ex_P1W |> 
-  filter(variable == c("richness"),
-         model_id %in% best_models,
-         site_id %in% beetles_focal_sites) |> 
-  forecast_plots()
-```
-
-### Beetle community abundance
-
-```{r}
-best_models <- best_P1W_scores |> filter(variable == "abundance") |> pull(model_id)
-
-
-ex_P1W |> 
-  filter(variable == c("abundance"),
-         model_id %in% best_models,
-         site_id %in% beetles_focal_sites) |> 
-  forecast_plots()
-```
-
-
-### Ticks: Amblyomma americanum
-
-```{r}
-best_models <- best_P1W_scores |> filter(variable == "amblyomma_americanum") |> pull(model_id)
-
-
-ex_P1W |> 
-  filter(variable == c("amblyomma_americanum"),
-         model_id %in% best_models,
-         site_id %in% ticks_focal_sites) |> 
-  forecast_plots()
-```
-
 
 :::
 
@@ -439,65 +145,10 @@ Learn about the continous ranked probablity score [here](https://projects.ecofor
 
 ::: panel-tabset
 
-### Terrestrial: Net Ecosystem Exchange
-
-```{r}
-leaderboard_plots(df_P1D_scores, "nee")
-```
-
-### Terrestrial: Latent Heat Flux
-
-```{r}
-leaderboard_plots(df_P1D_scores, "le")
-```
-### Phenology: Greeness
-
-```{r}
-leaderboard_plots(df_P1D_scores, "gcc_90")
-```
-
-
-### Phenology: Redness
-
-```{r}
-leaderboard_plots(df_P1D_scores, "rcc_90")
-```
-
-### Aquatics: water temperature
-
-```{r}
-leaderboard_plots(df_P1D_scores, "temperature")
-```
-
-### Aquatics: dissolved oxygen
-
-```{r}
-leaderboard_plots(df_P1D_scores, "oxygen")
-```
-
 ### Aquatics: chrophyll-a
 
 ```{r}
 leaderboard_plots(df_P1D_scores, "chla")
-```
-
-### Beetle community richness
-
-```{r}
-leaderboard_plots(df_P1W_scores, "richness")
-```
-
-### Beetle community abundance
-
-```{r}
-leaderboard_plots(df_P1W_scores, "abundance")
-```
-
-
-### Ticks: Amblyomma americanum
-
-```{r}
-leaderboard_plots(df_P1W_scores, "amblyomma_americanum")
 ```
 
 :::
