@@ -41,7 +41,7 @@ most_recent_targets <- arrow::open_csv_dataset(s3_targets,
                                     schema = arrow::schema(
                                       project_id = arrow::string(),
                                       site_id = arrow::string(),
-                                      datetime = arrow::timestamp(unit = "ns", timezone = "UTC"),
+                                      datetime = arrow::timestamp(unit = "ns"), # timezone = "UTC"),
                                       duration = arrow::string(),
                                       #depth_m = arrow::float(),
                                       variable = arrow::string(),
