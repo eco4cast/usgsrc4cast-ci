@@ -41,7 +41,7 @@ message("Downloading forecasts ...")
 
 ##
 files = minioclient::mc_ls(target = fs::path("submit", config$submissions_bucket, config$project_id),
-                           recusive = TRUE,
+                           recursive = TRUE,
                            details = TRUE)
 print(files)
 ##
