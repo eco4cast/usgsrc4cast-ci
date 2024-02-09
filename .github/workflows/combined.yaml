@@ -20,7 +20,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          ref: prod
+           ref: catalog-dashboard # TODO: update to prod when happy
 
       - name: Process submissions
         shell: Rscript {0}
@@ -39,7 +39,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          ref: prod
+           ref: catalog-dashboard # TODO: update to prod when happy
 
       - name: Generate scores
         shell: Rscript {0}
@@ -98,6 +98,7 @@ jobs:
         with:
            fetch-depth: 0
            set-safe-directory: '*'
+           ref: catalog-dashboard # TODO: update to prod when happy
 
       - uses: quarto-dev/quarto-actions/setup@v2
         with:
