@@ -67,7 +67,7 @@ jobs:
         with:
           ref: catalog-dashboard
           fetch-depth: 0
-          set-safe-directory: '*'d
+          set-safe-directory: '*'
 
       - name: install validator
         run: |
