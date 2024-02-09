@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.146">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>EFI-USGS River Chlorophyll Forecast Challenge - What to forecast</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>
+
+      .quarto-title-block .quarto-title-banner h1,
+      .quarto-title-block .quarto-title-banner h2,
+      .quarto-title-block .quarto-title-banner h3,
+      .quarto-title-block .quarto-title-banner h4,
+      .quarto-title-block .quarto-title-banner h5,
+      .quarto-title-block .quarto-title-banner h6
+      {
+        color: white;
+      }
+
+      .quarto-title-block .quarto-title-banner {
+        color: white;
+background-image: url(img/USGS_logo_green.png);
+background-size: cover;
+      }
+</style>
+<script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<link href="site_libs/leaflet-1.3.1/leaflet.css" rel="stylesheet">
+<script src="site_libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="site_libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet">
+<script src="site_libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="site_libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="site_libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet">
+<script src="site_libs/leaflet-binding-2.2.1/leaflet.js"></script>
+<script src="site_libs/leaflet-providers-2.0.0/leaflet-providers_2.0.0.js"></script>
+<script src="site_libs/leaflet-providers-plugin-2.2.1/leaflet-providers-plugin.js"></script>
+<link href="site_libs/leaflet-markercluster-1.0.5/MarkerCluster.css" rel="stylesheet">
+<link href="site_libs/leaflet-markercluster-1.0.5/MarkerCluster.Default.css" rel="stylesheet">
+<script src="site_libs/leaflet-markercluster-1.0.5/leaflet.markercluster.js"></script>
+<script src="site_libs/leaflet-markercluster-1.0.5/leaflet.markercluster.freezable.js"></script>
+<script src="site_libs/leaflet-markercluster-1.0.5/leaflet.markercluster.layersupport.js"></script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">EFI-USGS River Chlorophyll Forecast Challenge</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="./targets.html" rel="" target="" aria-current="page"><i class="bi bi-bullseye" role="img">
+</i> 
+ <span class="menu-text">What to forecast</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./instructions.html" rel="" target=""><i class="bi bi-info-square" role="img">
+</i> 
+ <span class="menu-text">How to forecast</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./performance.html" rel="" target=""><i class="bi bi-droplet" role="img">
+</i> 
+ <span class="menu-text">Forecast performance</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./catalog.html" rel="" target=""><i class="bi bi-book" role="img">
+</i> 
+ <span class="menu-text">Forecast catalog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./learn-more.html" rel="" target=""><i class="bi bi-check2-circle" role="img">
+</i> 
+ <span class="menu-text">Learn more</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-page-left">
+      <h1 class="title">What to forecast</h1>
+                      </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta column-page-left">
+
+      
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#tldr-forecast-the-targets" id="toc-tldr-forecast-the-targets" class="nav-link active" data-scroll-target="#tldr-forecast-the-targets">tl;dr: Forecast the targets!</a></li>
+  <li><a href="#sec-starting-sites" id="toc-sec-starting-sites" class="nav-link" data-scroll-target="#sec-starting-sites">Where to start</a></li>
+  <li><a href="#sec-targets" id="toc-sec-targets" class="nav-link" data-scroll-target="#sec-targets">Explore the targets and themes</a>
+  <ul class="collapse">
+  <li><a href="#aquatics" id="toc-aquatics" class="nav-link" data-scroll-target="#aquatics">Aquatics</a></li>
+  </ul></li>
+  <li><a href="#explore-the-sites" id="toc-explore-the-sites" class="nav-link" data-scroll-target="#explore-the-sites">Explore the sites</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/eco4cast/usgsrc4cast-ci/blob/main/targets.qmd" class="toc-action">View source</a></p><p><a href="https://github.com/eco4cast/usgsrc4cast-ci/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
+
+
+
+
+<section id="tldr-forecast-the-targets" class="level2">
+<h2 class="anchored" data-anchor-id="tldr-forecast-the-targets">tl;dr: Forecast the targets!</h2>
+<p>The “targets” are time-series of United States Geological Survey (<a href="https://www.usgs.gov/">USGS</a>) data for use in model development and forecast evaluation.</p>
+<p>The targets are updated as new USGS data are made available.</p>
+<p>This challenge focuses on forecasting river chlorophyll-a at select USGS monitoring locations. The links to targets files are included below.</p>
+</section>
+<section id="sec-starting-sites" class="level2">
+<h2 class="anchored" data-anchor-id="sec-starting-sites">Where to start</h2>
+<!-- If are you are getting started, we recommend the following focal sites for each of the five "themes". -->
+<!-- The first site in the list is the recommended starting site. -->
+<!-- -   Aquatics: BARC, CRAM -->
+<p>As you develop your forecasting skills and want to expand to more sites, the targets are available at all 10 USGS sites. You may also consider submitting forecasts to sites that match your interests. For example, a class being taught in the winter may be more interested in forecasting southern sites while a summer class may focus on more northern sites.</p>
+<p>More information about USGS sites can be found in the <a href="https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgs4cast-ci/main/catalog/sites/collection.json">site metadata</a> and on USGS’s <a href="https://dashboard.waterdata.usgs.gov/app/nwd/en/">website</a></p>
+</section>
+<section id="sec-targets" class="level2">
+<h2 class="anchored" data-anchor-id="sec-targets">Explore the targets and themes</h2>
+<p>Information on the targets files for the “themes” is below. In the tables,</p>
+<ul>
+<li><p>“duration” is the time-step of the variable where <code>P1D</code> is a daily mean.</p></li>
+<li><p>The “forecast horizon” is the number of days-ahead that we want you to forecast.</p></li>
+<li><p>The “latency” is the time between data collection and data availability in the targets file</p></li>
+</ul>
+<section id="aquatics" class="level3">
+<h3 class="anchored" data-anchor-id="aquatics">Aquatics</h3>
+<p><img src="https://projects.ecoforecast.org/neon4cast-catalog/img/neon_buoy.jpg" class="img-fluid"></p>
+<p>Freshwater surface water temperature, dissolved oxygen, and chlorophyll-a all influence drinking water quality, are critical for life in aquatic environments, and can represent the health of the ecosystem.</p>
+<p>The aquatics theme challenges you to forecast daily mean water quality variables at up-to 10 river USGS sites.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">variable</th>
+<th style="text-align: left;">duration</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">chla</td>
+<td style="text-align: left;">P1D</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>The daily mean target file is located at the following URL.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/targets/project_id=usgsrc4cast/duration=P1D/river-chl-targets.csv.gz"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>You can directly load it into R using the following</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>aquatics_targets <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(url, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The file contains the following columns</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 17%">
+<col style="width: 20%">
+<col style="width: 16%">
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 17%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">project_id</th>
+<th style="text-align: left;">site_id</th>
+<th style="text-align: left;">datetime</th>
+<th style="text-align: left;">duration</th>
+<th style="text-align: left;">variable</th>
+<th style="text-align: right;">observation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">usgsrc4cast</td>
+<td style="text-align: left;">USGS-01463500</td>
+<td style="text-align: left;">2017-02-17</td>
+<td style="text-align: left;">P1D</td>
+<td style="text-align: left;">chla</td>
+<td style="text-align: right;">2.8</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">usgsrc4cast</td>
+<td style="text-align: left;">USGS-01463500</td>
+<td style="text-align: left;">2017-02-18</td>
+<td style="text-align: left;">P1D</td>
+<td style="text-align: left;">chla</td>
+<td style="text-align: right;">2.7</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">usgsrc4cast</td>
+<td style="text-align: left;">USGS-01463500</td>
+<td style="text-align: left;">2017-02-19</td>
+<td style="text-align: left;">P1D</td>
+<td style="text-align: left;">chla</td>
+<td style="text-align: right;">3.1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">usgsrc4cast</td>
+<td style="text-align: left;">USGS-01463500</td>
+<td style="text-align: left;">2017-02-20</td>
+<td style="text-align: left;">P1D</td>
+<td style="text-align: left;">chla</td>
+<td style="text-align: right;">3.3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">usgsrc4cast</td>
+<td style="text-align: left;">USGS-01463500</td>
+<td style="text-align: left;">2017-02-21</td>
+<td style="text-align: left;">P1D</td>
+<td style="text-align: left;">chla</td>
+<td style="text-align: right;">4.4</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">usgsrc4cast</td>
+<td style="text-align: left;">USGS-01463500</td>
+<td style="text-align: left;">2017-02-22</td>
+<td style="text-align: left;">P1D</td>
+<td style="text-align: left;">chla</td>
+<td style="text-align: right;">7.9</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>and the time series for the focal sites</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>aquatics_targets <span class="sc">|&gt;</span> </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># </span><span class="al">TODO</span><span class="co">: need to update focal sites </span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># filter(site_id %in% aquatics_focal_sites) |&gt; </span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> datetime, <span class="at">y =</span> observation)) <span class="sc">+</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(variable<span class="sc">~</span>site_id, <span class="at">scales =</span> <span class="st">"free_y"</span>) <span class="sc">+</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="targets_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="explore-the-sites" class="level2">
+<h2 class="anchored" data-anchor-id="explore-the-sites">Explore the sites</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div class="leaflet html-widget html-fill-item" id="htmlwidget-85f351babe347a7db273" style="width:100%;height:650px;"></div>
+<script type="application/json" data-for="htmlwidget-85f351babe347a7db273">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"setView":[[43.47839356422085,-98.74777398430538],2,[]],"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,"OSM",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addProviderTiles","args":["Esri.WorldImagery",null,"Imagery",{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addProviderTiles","args":["Esri.WorldTopoMap",null,"Topo Map",{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addLayersControl","args":[["Imagery","OSM","Topo Map"],[],{"collapsed":true,"autoZIndex":true,"position":"topright"}]},{"method":"addMarkers","args":[[45.7624,39.7582,29.676,71.2824,44.0639,37.0597,39.0337,44.9501,34.4442,32.5415,65.154,65.1532,33.4012,40.035,40.8155,46.2097,18.1135,47.1617,63.8811,32.5417,28.1251,31.1854,35.689,17.9696,18.1741,42.5369,63.8758,42.4719,31.1948,32.5907,39.1051,39.1104,39.1008,18.0213,35.6904,31.8539,39.0956,45.9983,45.7908,32.9604,38.9459,44.2596,37.3783,38.2483,40.0543,46.7697,35.4106,68.6698,40.1776,35.9641,29.6893,38.8943,33.3785,47.1591,47.1298,19.5531,40.7839,40.2759,38.8929,38.8901,37.1088,37.0334,31.9107,45.5089,40.4619,29.6878,33.751,32.9505,37.0058,36.9559,31.8534,68.6307,68.6611,45.4937,39.0404,46.2339,35.9574,39.8914,47.1282,45.8205,44.9535],[-122.3303,-102.4471,-82.00839999999999,-156.6194,-71.28740000000001,-119.2575,-78.04179999999999,-110.5871,-96.6242,-87.79819999999999,-147.5026,-147.504,-97.56999999999999,-105.5442,-104.7456,-89.47369999999999,-66.9868,-99.1066,-145.7514,-87.8039,-81.4362,-84.4374,-83.50190000000001,-66.8687,-66.7987,-72.17270000000001,-149.2133,-72.3295,-84.4686,-106.8425,-96.60380000000001,-96.6129,-96.56310000000001,-67.07689999999999,-83.5038,-88.16119999999999,-77.9832,-89.70480000000001,-121.9338,-87.40770000000001,-96.443,-122.1655,-80.5248,-109.3883,-105.5824,-100.9154,-99.05880000000001,-149.143,-112.4524,-84.2826,-81.99339999999999,-78.1473,-97.78230000000001,-99.1139,-99.2531,-155.3173,-111.7979,-105.546,-78.1395,-76.56,-119.7323,-119.2622,-110.8355,-89.5864,-103.0293,-82.0177,-111.5081,-87.3933,-119.006,-119.0274,-88.1589,-149.6106,-149.3705,-89.5857,-95.1921,-89.5373,-84.27930000000001,-105.9154,-99.2413,-121.9519,-110.5391],null,null,["NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON","NEON"],{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["Abby Road","Arikaree River","Lake Barco","Utqiaġvik","Bartlett Experimental Forest","Upper Big Creek","Blandy Experimental Farm","Blacktail Deer Creek","Blue River","Black Warrior River","Caribou-Poker Creeks Research Watershed","Caribou Creek","Lyndon B. Johnson National Grassland","Como Creek","Central Plains Experimental Range","Crampton Lake","Rio Cupeyes","Dakota Coteau Field Site","Delta Junction","Dead Lake","Disney Wilderness Preserve","Flint River","Great Smoky Mountains National Park","Guanica Forest","Rio Guilarte","Harvard Forest & Quabbin Watershed","Healy","Lower Hop Brook","The Jones Center At Ichauway","Jornada Experimental Range","Kings Creek","Konza Prairie Agroecosystem","Konza Prairie Biological Station","Lajas Experimental Station","LeConte Creek","Lenoir Landing","Lewis Run","Little Rock Lake","Martha Creek","Mayfield Creek","McDiffett Creek","McRae Creek","Mountain Lake Biological Station","Moab","Niwot Ridge","Northern Great Plains Research Laboratory","Marvin Klemme Range Research Station","Oksrukuyik Creek","Onaqui","Oak Ridge","Ordway-Swisher Biological Station","Posey Creek","Pringle Creek","Prairie Lake","Prairie Pothole","Pu'u Maka'ala Natural Area Reserve","Red Butte Creek","Rocky Mountains","Smithsonian Conservation Biology Institute","Smithsonian Environmental Research Center","San Joaquin Experimental Range","Soaproot Saddle","Santa Rita Experimental Range","Steigerwaldt-Chequamegon","North Sterling","Lake Suggs","Sycamore Creek","Talladega National Forest","Lower Teakettle","Teakettle Creek - Watershed 2","Lower Tombigbee River","Toolik Lake","Toolik Field Station","Treehaven","University of Kansas Field Station","University of Notre Dame Environmental Research Center","Walker Branch","West St Louis Creek","Chase Lake National Wildlife Refuge","Wind River Experimental Forest","Yellowstone National Park"],null,{"showCoverageOnHover":true,"zoomToBoundsOnClick":true,"spiderfyOnMaxZoom":true,"removeOutsideVisibleBounds":true,"spiderLegPolylineOptions":{"weight":1.5,"color":"#222","opacity":0.5},"freezeAtZoom":false},null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[17.9696,71.2824],"lng":[-156.6194,-66.7987]}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p><br> <br> The following table lists all the sites in the EFI-USGS Ecological Forecasting Challenge. The columns with “theme” names incidate whether that site is included in that theme’s target file.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 12%">
+<col style="width: 7%">
+<col style="width: 31%">
+<col style="width: 48%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">site_id</th>
+<th style="text-align: left;">site_no</th>
+<th style="text-align: left;">station_nm</th>
+<th style="text-align: left;">site_url</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">USGS-14211720</td>
+<td style="text-align: left;">14211720</td>
+<td style="text-align: left;">WILLAMETTE RIVER AT PORTLAND, OR</td>
+<td style="text-align: left;">https://waterdata.usgs.gov/monitoring-location/14211720</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">USGS-14211010</td>
+<td style="text-align: left;">14211010</td>
+<td style="text-align: left;">CLACKAMAS RIVER NEAR OREGON CITY, OR</td>
+<td style="text-align: left;">https://waterdata.usgs.gov/monitoring-location/14211010</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">USGS-14181500</td>
+<td style="text-align: left;">14181500</td>
+<td style="text-align: left;">NORTH SANTIAM RIVER AT NIAGARA, OR</td>
+<td style="text-align: left;">https://waterdata.usgs.gov/monitoring-location/14181500</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">USGS-05586300</td>
+<td style="text-align: left;">05586300</td>
+<td style="text-align: left;">ILLINOIS RIVER AT FLORENCE, IL</td>
+<td style="text-align: left;">https://waterdata.usgs.gov/monitoring-location/05586300</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">USGS-05558300</td>
+<td style="text-align: left;">05558300</td>
+<td style="text-align: left;">ILLINOIS RIVER AT HENRY, IL</td>
+<td style="text-align: left;">https://waterdata.usgs.gov/monitoring-location/05558300</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">USGS-05553700</td>
+<td style="text-align: left;">05553700</td>
+<td style="text-align: left;">ILLINOIS RIVER AT STARVED ROCK, IL</td>
+<td style="text-align: left;">https://waterdata.usgs.gov/monitoring-location/05553700</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">USGS-05543010</td>
+<td style="text-align: left;">05543010</td>
+<td style="text-align: left;">ILLINOIS RIVER AT SENECA, IL</td>
+<td style="text-align: left;">https://waterdata.usgs.gov/monitoring-location/05543010</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">USGS-05549500</td>
+<td style="text-align: left;">05549500</td>
+<td style="text-align: left;">FOX RIVER NEAR MCHENRY, IL</td>
+<td style="text-align: left;">https://waterdata.usgs.gov/monitoring-location/05549500</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">USGS-01427510</td>
+<td style="text-align: left;">01427510</td>
+<td style="text-align: left;">DELAWARE RIVER AT CALLICOON NY</td>
+<td style="text-align: left;">https://waterdata.usgs.gov/monitoring-location/01427510</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">USGS-01463500</td>
+<td style="text-align: left;">01463500</td>
+<td style="text-align: left;">Delaware River at Trenton NJ</td>
+<td style="text-align: left;">https://waterdata.usgs.gov/monitoring-location/01463500</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    if (id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        for (let i = 0; i < 2; i++) {
+          container.appendChild(note.children[i].cloneNode(true));
+        }
+        return container.innerHTML
+      } else {
+        return note.innerHTML;
+      }
+    } else {
+      return note.innerHTML;
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      try { hash = new URL(url).hash; } catch {}
+      const id = hash.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note !== null) {
+        try {
+          const html = processXRef(id, note);
+          instance.setContent(html);
+        } finally {
+          instance.enable();
+          instance.show();
+        }
+      } else {
+        // See if we can fetch this
+        fetch(url.split('#')[0])
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.getElementById(id);
+          console.log(htmlDoc.body.innerHTML);
+          if (note !== null) {
+            const html = processXRef(id, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>CC-BY</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/eco4cast/usgsrc4cast-ci">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
