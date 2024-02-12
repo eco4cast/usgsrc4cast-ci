@@ -11,7 +11,7 @@ editor:
 We provide an overview of the steps for submitting with the details below:
 
 1)  Explore the [data](targets.qmd#sec-targets) (e.g., targets) and build your forecast model.
-2)  Register and describe your model at <https://forms.gle/kg2Vkpho9BoMXSy57>. You are not required to register if your forecast submission uses the word "example" in your model_id". Any forecasts with "example" in the model_id will not be used in forecast evaluation analyses. Use neon4cast as the challenge you are registering for. 
+2)  Register and describe your model at <https://forms.gle/kg2Vkpho9BoMXSy57>. You are not required to register if your forecast submission uses the word "example" in your model_id". Any forecasts with "example" in the model_id will not be used in forecast evaluation analyses. Use `usgsrc4cast` as the challenge you are registering for. 
 3)  Generate a forecast!
 4)  Write the forecast output to a file that follows our standardized format (described below).
 5)  Submit your forecast using an R function (provided below).
@@ -21,7 +21,7 @@ We provide an overview of the steps for submitting with the details below:
 
 ### All forecasting approaches are welcome
 
-We encourage you to use any modeling approach to make a prediction about the future conditions at any of the NEON sites and variables.
+We encourage you to use any modeling approach to make a prediction about the future conditions at any of the USGS sites. 
 
 ### Must include uncertainty
 
@@ -31,17 +31,17 @@ You can represent your confidence (i.e., uncertainty in the forecast) using a di
 ### Any model drivers/covariates/features are welcome
 
 You can use any data as model inputs (including all of the forecast target data available to date).
-All sensor-based target data are available in with a 1 to 7 day delay (latency) from time of collection.
+All target data are available in with a 1 day delay (latency) from time of collection.
 You may want to use the updated target data to re-train a model or for use in data assimilation.
 
 As a genuine forecasting challenge, you will need forecasted drivers if your model uses drivers as inputs.
-If you are interested in using forecasted meteorology, we are downloading and processing NOAA Global Ensemble Forecasting System (GEFS) weather forecasts for each NEON site.
+If you are interested in using forecasted meteorology, we are downloading and processing NOAA Global Ensemble Forecasting System (GEFS) weather forecasts for each USGS site.
 The NOAA GEFS forecasts extend 35-days ahead.
 More information about accessing the weather forecasts can be found [here]( https://projects.ecoforecast.org/neon4cast-docs/Shared-Forecast-Drivers.html)
 
-### Forecasts can be for a range of horizons
+### Forecasts extend out to 30 days in the future
 
-Forecasts can be submitted for 1 day to 1 year-ahead, depending on the variable.
+Forecasts can be submitted for 1 to 30 days ahead.
 See the [variable tables](targets.qmd#sec-targets) for the horizon that is associated with each variable.
 
 ### Forecasts can be submitted everyday
@@ -50,19 +50,16 @@ Since forecasts can be submitted everyday, automation is important.
 We provide an [example GitHub](https://github.com/eco4cast/neon4cast-example) repository that can be used to automate your forecast with GitHub Actions.
 It also includes the use of a custom Docker Container [eco4cast/rocker-neon4cast:latest](https://github.com/eco4cast/neon4cast-ci/blob/main/Dockerfile) that has many of the packages and functions needed to generate and submit forecasts.
 
-We only evaluate forecasts for any weekly variables (e.g., beetles and ticks) that were submitted on the Sunday of each week.
-Therefore we recommend only submitting forecasts of the weekly variables on Sundays.
+## You can forecast at any of the USGS sites
 
-## You can forecast at any of the NEON sites
-
-If are you are getting started, we recommend a set of [focal sites](targets.qmd#sec-starting-sites) for each of the five "themes".
-You are also welcome to submit forecasts to all  or a subset of NEON sites . More information about NEON sites can be found in the [site metadata](https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/neon4cast-ci/main/catalog/sites/collection.json) and on NEON's [website](https://www.neonscience.org/field-sites/explore-field-sites)
+If are you are getting started, we recommend a set of [focal sites](targets.qmd#sec-starting-sites).
+You are also welcome to submit forecasts to all  or a subset of USGS sites . More information about USGS sites can be found in the [site metadata](https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/sites/collection.json) and on USGS's [website](https://dashboard.waterdata.usgs.gov/app/nwd/en/)
 
 ## Forecast file format
 
 The file is a csv format with the following columns:
 
--   `project_id`: use `neon4cast`
+-   `project_id`: use `usgsrc4cast`
 
 -   `model_id`: the short name of the model defined as the model_id in your registration. The model_id should have no spaces.
     `model_id` should reflect a method to forecast one or a set of target variables and must be unique to the neon4cast challenge.
@@ -81,7 +78,7 @@ The file is a csv format with the following columns:
     This value should match the duration of the target variable that you are forecasting.
     Formatted as [ISO 8601 duration](https://en.wikipedia.org/wiki/ISO_8601#Durations)
 
--   `site_id`: code for NEON site.
+-   `site_id`: code for USGS site.
 
 -   `family` name of the probability distribution that is described by the parameter values in the parameter column (see list below for accepted distribution).
     An ensemble forecast as a family of `ensemble`.
@@ -91,7 +88,7 @@ The file is a csv format with the following columns:
     For example, the parameters for a normal distribution are called `mu` and `sigma`.
 
 -   `variable`: standardized variable name.
-    It must match the variable name in the target file.
+    It must match the variable name in the target file (e.g., `chla`).
 
 -   `prediction`: forecasted value for the parameter in the parameter column
 
@@ -132,6 +129,7 @@ Ensemble (or sample) forecasts are transformed to a probability distribution fun
 Here is an example of a forecast that uses a normal distribution:
 
 ```{r}
+# TODO: need to update to different example
 df <- readr::read_csv("https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/forecasts/raw/T20231102190926_aquatics-2023-10-19-climatology.csv.gz", show_col_types = FALSE)
 ```
 ```{r}
@@ -143,6 +141,7 @@ df |>
 For an ensemble (or sample) forecast, the `family` column uses the word `ensemble` to designate that it is a ensemble forecast and the parameter column is the ensemble member number (`1`, `2`, `3` ...)
 
 ```{r}
+# TODO: need to update to different example 
 df <- readr::read_csv("https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/forecasts/raw/T20231102190926_aquatics-2023-10-19-persistenceRW.csv.gz", show_col_types = FALSE)
 ```
 ```{r}
@@ -159,10 +158,10 @@ df |>
 
 Save your forecast as a csv file with the following naming convention:
 
-`theme_name-year-month-day-model_id.csv`.
+`project_id-year-month-day-model_id.csv`.
 Compressed csv files with the csv.gz extension are also accepted.
 
-The `theme_name` options are: terrestrial_daily, terrestrial_30min, aquatics, beetles, ticks, or phenology.
+The `project_id` is this forecast challenge, `usgsrc4cast`.
 
 The year, month, and day are the year, month, and day the reference_datetime (horizon = 0).
 For example, if a forecast starts today and tomorrow is the first forecasted day, horizon = 0 would be today, and used in the file name.
@@ -178,22 +177,22 @@ The csv file can only contain one unique `model_id` and one unique `project_id`.
 The function is available using the following code
 
 ```{r eval = FALSE}
-remotes::install_github("eco4cast/neon4cast")
+source("https://raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/prod/R/eco4cast-helpers/submit.R") 
+source("https://raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/prod/R/eco4cast-helpers/forecast_output_validator.R")
 ```
 
 The submit function is
 
 ```{r eval = FALSE}
-library(neon4cast)
-neon4cast::submit(forecast_file = "theme_name-year-month-day-model_id.csv")
+submit(forecast_file = "project_id-year-month-day-model_id.csv")
 ```
 
 ## Post-submission
 
 ### Processing
 
-After submission, our servers will process uploaded files by converting them to a [parquet format](https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/neon4cast-ci/main/catalog/forecasts/collection.json) on our public s3 storage.
-A `pub_datetime` column will be added that denotes when a forecast was submitted.  [Summaries](https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/neon4cast-ci/main/catalog/summaries/collection.json) are generated of the forecasts provide descriptive statistics of the forecast.  
+After submission, our servers will process uploaded files by converting them to a [parquet format](https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/forecasts/collection.json) on our public s3 storage.
+A `pub_datetime` column will be added that denotes when a forecast was submitted.  [Summaries](https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/summaries/collection.json) are generated of the forecasts provide descriptive statistics of the forecast.  
 
 ### Evaluation
 
@@ -207,7 +206,6 @@ We are automatically submitting the following baseline models:
 
 -   `climatology`: the normal distribution (mean and standard deviation) of that day-of-year in the historical observations
 -   `persistenceRW`: a random walk model that assumes no change in the mean behavior. The random walk is initialized using the most resent observation.
--   `mean`: the historical mean of the data is submitted for the beetles theme.
 
 Our [forecast performance](performance.qmd#performance) page includes evaluations of all submitted models.
 
@@ -219,4 +217,4 @@ Information and code for accessing the forecasts and scores can be found on our 
 
 Thanks for reading this document!\
 
-If you still have questions about how to submit your forecast to the NEON Ecological Forecasting Challenge, we encourage you to email Dr. Quinn Thomas (rqthomas{at}vt.edu).
+If you still have questions about how to submit your forecast to the EFI-USGS River Chlorophyll Forecasting Challenge, we encourage you to email Dr. Jacob Zwart (jzwart{at}usgs.gov).

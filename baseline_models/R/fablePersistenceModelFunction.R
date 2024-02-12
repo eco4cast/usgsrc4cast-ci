@@ -1,7 +1,7 @@
 
 # Function carry out a random walk forecast
 RW_daily_forecast <- function(site, var, h,
-                        bootstrap = FALSE, boot_number = 200, 
+                        bootstrap = FALSE, boot_number = 200,
                         transformation = 'none', verbose = TRUE,...) {
   # Work out when the forecast should start
   forecast_starts <- targets %>%
@@ -10,7 +10,7 @@ RW_daily_forecast <- function(site, var, h,
     dplyr::summarise(start_date = max(datetime) + lubridate::days(1)) %>% # Date
     dplyr::mutate(h = (Sys.Date() - start_date) + h) %>% # Horizon value
     dplyr::ungroup()
-  
+
   if (verbose == T) {
     message(
       site,
@@ -22,7 +22,7 @@ RW_daily_forecast <- function(site, var, h,
       bootstrap
     )
   }
-  
+
   # filter the targets data set to the site_var pair
   targets_use <- targets %>%
     dplyr::filter(site_id == site,
@@ -33,7 +33,7 @@ RW_daily_forecast <- function(site, var, h,
     # Remove the NA's put at the end, so that the forecast starts from the last day with an observation,
     # rather than today
     dplyr::filter(datetime < forecast_starts$start_date)
-  
+
   if (nrow(targets_use) == 0) {
     message('no targets available, no forecast run')
     empty_df <- data.frame('variable' = character(),
@@ -42,9 +42,9 @@ RW_daily_forecast <- function(site, var, h,
                              'datetime' = lubridate::ymd(),
                             '.rep' = character(),
                             '.sim' = numeric())
-    
+
     return(empty_df)
-    
+
   } else {
     if (transformation == 'log') {
       RW_model <- targets_use %>%
@@ -62,7 +62,7 @@ RW_daily_forecast <- function(site, var, h,
       RW_model <- targets_use %>%
         fabletools::model(RW = fable::RW(sqrt(observation)))
     }
-    
+
     if (bootstrap == T) {
       forecast <- RW_model %>% fabletools::generate(
           h = as.numeric(forecast_starts$h),
@@ -74,5 +74,5 @@ RW_daily_forecast <- function(site, var, h,
     message('forecast finished')
     return(forecast)
   }
-  
+
 }

@@ -13,17 +13,21 @@
     {
       "rel": "item",
       "type": "application/json",
+<<<<<<< HEAD
       "href": "../../models/model_items/USGSHABs1.json"
     },
     {
       "rel": "item",
       "type": "application/json",
       "href": "../../models/model_items/cb_prophet.json"
+=======
+      "href": "../../models/model_items/climatology.json"
+>>>>>>> 238ec235ce3b968821a7d83ecc4c8c19abc56199
     },
     {
       "rel": "item",
       "type": "application/json",
-      "href": "../../models/model_items/climatology.json"
+      "href": "../../models/model_items/persistenceRW.json"
     },
     {
       "rel": "item",
@@ -182,8 +186,13 @@
     "temporal": {
       "interval": [
         [
+<<<<<<< HEAD
           "2023-01-01T00:00:00Z",
           "2023-11-30T00:00:00Z"
+=======
+          "2024-02-07T00:00:00Z",
+          "2024-02-12T00:00:00Z"
+>>>>>>> 238ec235ce3b968821a7d83ecc4c8c19abc56199
         ]
       ]
     }
