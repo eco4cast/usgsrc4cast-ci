@@ -15,8 +15,7 @@ source("R/plot-utils.R")
 #source("../R/ignore_sigpipes.R")
 #ignore_sigpipe()
 
-# TODO: update these 
-aquatics_focal_sites <- c("BARC", "CRAM")
+aquatics_focal_sites <- c("USGS-05553700", "USGS-01463500")
 ```
 
 This page visualizes the forecasts and forecast performance for the focal target variables.
@@ -91,7 +90,7 @@ Forecasts submitted on `r max(lubridate::as_date(df_P1D$reference_datetime))`
 
 ### Aquatics: Chlorophyll-a
 
-Forecast summaries are available [here](https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/summaries/Aquatics/Daily_Chlorophyll_a/collection.json)
+Forecast summaries are available [here](https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/summaries/aquatics/Daily_Chlorophyll_a/collection.json)
 
 ```{r}
 best_models <- best_P1D_scores |> filter(variable == "chla") |> pull(model_id)
@@ -99,8 +98,7 @@ best_models <- best_P1D_scores |> filter(variable == "chla") |> pull(model_id)
 df_P1D |> 
   filter(variable == c("chla"),
          model_id %in% best_models, 
-         # TODO: update these 
-         # site_id %in% aquatics_focal_sites
+         site_id %in% aquatics_focal_sites
          ) |> 
   mutate(observation = as.numeric(NA)) |> 
   forecast_plots()
@@ -124,8 +122,7 @@ best_models <- best_P1D_scores |> filter(variable == "chla") |> pull(model_id)
 ex_P1D |> 
   filter(variable == c("chla"),
          model_id %in% best_models, 
-         #TODO: Update 
-         # site_id %in% aquatics_focal_sites
+         site_id %in% aquatics_focal_sites
          ) |> 
   forecast_plots()
 

@@ -10,7 +10,8 @@ title: "Forecast catalog"
 s3 <- arrow::s3_bucket(bucket = "bio230014-bucket01/challenges/metadata/model_id/",
                        endpoint_override = "sdsc.osn.xsede.org", anonymous = TRUE)
 
-d1 <- arrow::open_dataset(s3, format = "json") |> dplyr::collect()
+d1 <- arrow::open_dataset(s3, format = "json") |> dplyr::collect() %>% 
+  dplyr::filter(project_id == "usgsrc4cast")
 
 model_type <- tidyr::unnest(d1[[3]], cols = names(d1[[3]]))$type
 
@@ -34,5 +35,5 @@ A full page version can be found [here](https://radiantearth.github.io/stac-brow
 <br /> <br />
 
 ```{=html}
-<iframe width="910" height="1000" src="https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/neon4cast-ci/main/catalog/catalog.json" title="Webpage example"></iframe>
+<iframe width="910" height="1000" src="https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/catalog.json" title="Webpage example"></iframe>
 ```

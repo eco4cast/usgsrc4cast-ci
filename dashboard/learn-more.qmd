@@ -2,9 +2,9 @@
 
 ## Tutorials
 
-Introductory tutorial for submitting to Challenge focused on aquatics theme: [https://github.com/OlssonF/NEON-forecast-challenge-workshop](https://github.com/OlssonF/NEON-forecast-challenge-workshop). [A webinar version of tutorial](https://www.youtube.com/watch?v=-5iPNr19g-4)
+Introductory tutorial for submitting to the NEON Challenge focused on aquatics theme: [https://github.com/OlssonF/NEON-forecast-challenge-workshop](https://github.com/OlssonF/NEON-forecast-challenge-workshop). [A webinar version of tutorial](https://www.youtube.com/watch?v=-5iPNr19g-4)
 
-More advanced tutorial for submitting to Challenge focused on terrestrial theme: [https://github.com/rqthomas/FluxCourseForecast](https://github.com/mdietze/FluxCourseForecast)
+More advanced tutorial for submitting to the NEON Challenge focused on terrestrial theme: [https://github.com/rqthomas/FluxCourseForecast](https://github.com/mdietze/FluxCourseForecast)
 
 Other tutorial materials about [ecological forecasting](https://ecoforecast.org/resources/educational-resources/)
 
@@ -16,7 +16,7 @@ Lewis, A., W. Woelmer, H. Wander, D. Howard, J. Smith, R. McClure, M. Lofton, N.
 
 Lewis, A. S. L., Rollinson, C. R., Allyn, A. J., Ashander, J., Brodie, S., Brookson, C. B., et al. (2023). The power of forecasts to advance ecological theory. Methods in Ecology and Evolution, 14(3), 746–756. [https://doi.org/10.1111/2041-210X.13955](https://doi.org/10.1111/2041-210X.13955)
 
-### Manuscripts about the Challenge
+### Manuscripts about the NEON Challenge
 
 Thomas, R. Q., Boettiger, C., Carey, C. C., Dietze, M. C., Johnson, L. R., Kenney, M. A., et al. (2023). The NEON Ecological Forecasting Challenge. Frontiers in Ecology and the Environment, 21(3), 112–113. [https://doi.org/10.1002/fee.2616](https://doi.org/10.1002/fee.2616)
 
