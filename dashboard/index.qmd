@@ -1,5 +1,5 @@
 ---
-title: "Forecasting Challenge"
+title: "EFI-USGS River Chlorophyll Forecasting Challenge"
 editor: 
   markdown: 
     wrap: 72
@@ -9,15 +9,15 @@ We invite you to submit forecasts!
 
 The EFI-USGS River Chlorophyll Forecasting Challenge is an open platform for the ecological and data science communities to forecast data from [the U.S. Geological Survey (USGS)](https://www.usgs.gov/) before they are collected.
 
-The Challenge is hosted by the [Ecological Forecasting Initiative Research Coordination Network](https://ecoforecast.org) and sponsored by the U.S. National Science Foundation. This challenge is co-hosted by the USGS Proxies Project, an effort supported by the Water Mission Area Water Quality Processes program to develop estimation methods for PFAS, harmful algal blooms, and metals, at multiple spatial and temporal scales.
+The Challenge is hosted by the [Ecological Forecasting Initiative Research Coordination Network](https://ecoforecast.org) and sponsored by the U.S. National Science Foundation. This challenge is co-hosted by the [USGS Proxies Project](https://www.usgs.gov/mission-areas/water-resources/science/proxies-project), an effort supported by the Water Mission Area Water Quality Processes program to develop estimation methods for per- and polyfluoroalkyl substances (PFAS), harmful algal blooms (HABs), and 12 elements of concern, at multiple spatial and temporal scales.
 
 ## Why a forecasting challenge?
 
 Our vision is to use forecasts to advance theory and to support natural resource management. We can begin to realize this vision by creating and analyzing a catalog of forecasts from a range of ecological systems, spatiotemporal scales, and environmental gradients. 
 
-Our forecasting challenge is platform for the ecological and data science communities to advance skills in forecasting ecological systems and for generating forecasts that contribute to a synthetic understanding of patterns of predictability in ecology.  Rewards for contributing are skill advancement, joy, and potential involved in manuscripts. We do not currently crown winner nor offer financial awards.
+Our forecasting challenge is platform for the ecological and data science communities to advance skills in forecasting ecological systems and for generating forecasts that contribute to a synthetic understanding of patterns of environmental predictability.  Rewards for contributing are skill advancement, joy, and potential involved in manuscripts. We do not currently crown winner nor offer financial awards.
 
-The Challenge is [an excellent focal project in university courses](https://www.neonscience.org/impact/observatory-blog/efi-neon-forecasting-challenge-classroom).
+The original [NEON forecasting challenge](https://projects.ecoforecast.org/neon4cast-ci/) has been [an excellent focal project in university courses](https://www.neonscience.org/impact/observatory-blog/efi-neon-forecasting-challenge-classroom) and this EFI-USGS challenge could be used as classroom projects as well. 
 
 <br /> <br />
 
@@ -68,7 +68,7 @@ last_updated <- Sys.Date()
 layout_column_wrap(
   width = "250px",
   value_box(
-    title = "Total forecasts submitted to the NEON Challenge", 
+    title = "Total forecasts submitted to the EFI-USGS Challenge", 
     value = n_forecasts,
     showcase = bs_icon("graph-up"),
     theme_color = "success" 
@@ -99,7 +99,7 @@ layout_column_wrap(
 
 ## The Challenge is a platform
 
-Our platform is designed to empower you to contribute by providing target data, numerical weather forecasts, and tutorials.  We automatically score your forecasts using the latest NEON data.  All forecasts and scores are publicly available through cloud storage and discoverable through our catalog.
+Our platform is designed to empower you to contribute by providing target data, numerical weather forecasts, and tutorials.  We automatically score your forecasts using the latest USGS data.  All forecasts and scores are publicly available through cloud storage and discoverable through our catalog.
 
 ![The NEON Ecological Forecasting Challenge platform from Thomas et al. 2023](img/workflow.png){fig-align="center"}
 <br /> <br />
@@ -108,13 +108,13 @@ Figure from [Thomas et al. 2023](https://doi.org/10.1002/fee.2616)
 
 ## Contact
 
-eco4cast.initiative@gmail.com
+eco4cast.initiative@gmail.com and jzwart@usgs.gov
 
 ## Acknowledgements
 
 Thomas, R. Q., Boettiger, C., Carey, C. C., Dietze, M. C., Johnson, L. R., Kenney, M. A., et al. (2023). The NEON Ecological Forecasting Challenge. Frontiers in Ecology and the Environment, 21(3), 112–113. [https://doi.org/10.1002/fee.2616](https://doi.org/10.1002/fee.2616)
 <br /> <br /> 
-We thank NEON for providing the freely available data and the EFI community for feedback on the design of the Challenge. This material is based upon work supported by the National
+We thank the EFI community for feedback on the design of the Challenge. This material is based upon work supported by the National
 Science Foundation under Grant DEB-1926388.
 <br /> <br /> 
 Page last updated on `r Sys.Date()`
