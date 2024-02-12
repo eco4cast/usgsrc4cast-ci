@@ -3,8 +3,7 @@ config <- yaml::read_yaml('challenge_configuration.yaml')
 catalog_config <- config$catalog_config
 
 project_sites <- read_csv(catalog_config$site_metadata_url, col_types = cols())
-project_sites$site_lat_lon <- lapply(1:nrow(project_sites), function(i) c(project_sites$field_longitude[i], project_sites$field_latitude[i]))
-project_sites$field_site_name_short <- gsub(' NEON', '',project_sites$field_site_name) # remove the NEON on back end of name
+project_sites$site_lat_lon <- lapply(1:nrow(project_sites), function(i) c(project_sites$longitude[i], project_sites$latitude[i]))
 
 iterator_list <- 1:nrow(project_sites)
 
@@ -12,18 +11,18 @@ site_name_coords <- purrr::map(iterator_list, function(i)
   list(
    "type" = "Feature",
    "properties" = list(
-     "site_id" = project_sites$field_site_name_short[i],
-     "Partner" = "NEON",
+     "site_id" = project_sites$site_id[i],
+     "Partner" = "USGS",
      "n" =  5 ),
    "geometry" = list(
      "type" = "Point",
-     "coordinates" = c(project_sites$field_longitude[i], project_sites$field_latitude[i])
+     "coordinates" = c(project_sites$longitude[i], project_sites$latitude[i])
   )))
 
 
 site_info <- list(
   "type" = "FeatureCollection",
-  "name" = "neon",
+  "name" = "usgs",
   "crs" = list(
     "type" = "name",
     "properties" = list(
