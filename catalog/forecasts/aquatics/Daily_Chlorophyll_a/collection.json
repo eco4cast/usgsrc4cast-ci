@@ -1,6 +1,6 @@
 {
-  "id": "daily-forecasts",
-  "description": "Forecasts are the raw forecasts that includes all ensemble members or distribution parameters. Due to the size of the raw forecasts, we recommend accessing the scores (summaries of the forecasts) to analyze forecasts (unless you need the individual ensemble members). You can access the forecasts at the top level of the dataset where all models, variables, and dates that forecasts were produced (reference_datetime) are available. The code to access the entire dataset is provided as an asset. Given the size of the forecast catalog, it can be time-consuming to access the data at the full dataset level. For quicker access to the forecasts for a particular model (model_id), we also provide the code to access the data at the model_id level as an asset for each model.",
+  "id": "Daily_Chlorophyll_a",
+  "description": "This page includes all models for the Daily_Chlorophyll_a variable.",
   "stac_version": "1.0.0",
   "license": "CC0-1.0",
   "stac_extensions": [
@@ -11,26 +11,24 @@
   "type": "Collection",
   "links": [
     {
-      "rel": "child",
+      "rel": "item",
       "type": "application/json",
-      "href": "aquatics/collection.json",
-      "title": "aquatics"
+      "href": "../../models/model_items/climatology.json"
     },
     {
-      "rel": "child",
+      "rel": "item",
       "type": "application/json",
-      "href": "models/collection.json",
-      "title": "group item"
+      "href": "../../models/model_items/persistenceRW.json"
     },
     {
       "rel": "parent",
       "type": "application/json",
-      "href": "../catalog.json"
+      "href": "../collection.json"
     },
     {
       "rel": "root",
       "type": "application/json",
-      "href": "../catalog.json"
+      "href": "../collection.json"
     },
     {
       "rel": "self",
@@ -54,16 +52,11 @@
       "type": "text/html"
     }
   ],
-  "title": "Forecasts",
+  "title": "Daily_Chlorophyll_a",
   "extent": {
     "spatial": {
       "bbox": [
-        [
-          -122.6692,
-          39.6327,
-          -74.7781,
-          45.5175
-        ]
+        ["Inf", "Inf", "-Inf", "-Inf"]
       ]
     },
     "temporal": {
@@ -139,21 +132,21 @@
   ],
   "assets": {
     "data": {
-      "href": "s3://anonymous@bio230014-bucket01/challenges/forecasts/parquet/?endpoint_override=sdsc.osn.xsede.org",
+      "href": "s3://anonymous@bio230014-bucket01/challenges/forecasts/parquet/project_id=usgsrc4cast/duration=P1D/variable=chla?endpoint_override=sdsc.osn.xsede.org",
       "type": "application/x-parquet",
       "title": "Database Access",
       "roles": [
         "data"
       ],
-      "description": "Use `arrow` for remote access to the database. This R code will return results for the Forecasting Challenge.\n\n### R\n\n```{r}\n# Use code below\n\nall_results <- arrow::open_dataset(\"s3://anonymous@bio230014-bucket01/challenges/forecasts/parquet/?endpoint_override=sdsc.osn.xsede.org\")\ndf <- all_results |> dplyr::collect()\n\n```\n       \n\nYou can use dplyr operations before calling `dplyr::collect()` to `summarise`, `select` columns, and/or `filter` rows prior to pulling the data into a local `data.frame`. Reducing the data that is pulled locally will speed up the data download speed and reduce your memory usage.\n\n\n"
+      "description": "Use `arrow` for remote access to the database. This R code will return results for forecasts of the variable by the specific model .\n\n### R\n\n```{r}\n# Use code below\n\nall_results <- arrow::open_dataset(\"s3://anonymous@bio230014-bucket01/challenges/forecasts/parquet/project_id=usgsrc4cast/duration=P1D/variable=chla?endpoint_override=sdsc.osn.xsede.org\")\ndf <- all_results |> dplyr::collect()\n\n```\n       \n\nYou can use dplyr operations before calling `dplyr::collect()` to `summarise`, `select` columns, and/or `filter` rows prior to pulling the data into a local `data.frame`. Reducing the data that is pulled locally will speed up the data download speed and reduce your memory usage.\n\n\n"
     },
     "thumbnail": {
-      "href": "https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/thumbnails/image/Back-b.jpg",
+      "href": "pending",
       "type": "image/JPEG",
       "roles": [
         "thumbnail"
       ],
-      "title": "USGS Streamgage"
+      "title": "pending"
     }
   }
 }
