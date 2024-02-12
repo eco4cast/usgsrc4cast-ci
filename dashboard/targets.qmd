@@ -7,7 +7,7 @@ editor:
 
 ```{r  message=FALSE, echo = FALSE}
 library(tidyverse)
-aquatics_focal_sites <- c("BARC", "CRAM")
+aquatics_focal_sites <- c("USGS-05553700", "USGS-01463500")
 ```
 
 ```{r message=FALSE, echo = FALSE}
@@ -59,8 +59,6 @@ In the tables,
 
 ![](https://projects.ecoforecast.org/neon4cast-catalog/img/neon_buoy.jpg)
 
-Freshwater surface water temperature, dissolved oxygen, and chlorophyll-a all influence drinking water quality, are critical for life in aquatic environments, and can represent the health of the ecosystem.
-
 The aquatics theme challenges you to forecast daily mean water quality variables at up-to 10 river USGS sites.
 
 ```{r echo = FALSE}
@@ -99,12 +97,12 @@ and the time series for the focal sites
 
 ```{r}
 aquatics_targets |> 
-  # TODO: need to update focal sites 
-  # filter(site_id %in% aquatics_focal_sites) |> 
+  filter(site_id %in% aquatics_focal_sites) |> 
   ggplot(aes(x = datetime, y = observation)) +
   geom_point() +
-  facet_grid(variable~site_id, scales = "free_y") +
-  theme_bw()
+  facet_wrap(~site_id, scales = "free") +
+  theme_bw() + 
+  ylab("Chlorophyll-a (ug/L)")
 ```
 
 
