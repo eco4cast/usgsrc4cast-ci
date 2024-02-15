@@ -21,6 +21,11 @@
       "href": "../../models/model_items/persistenceRW.json"
     },
     {
+      "rel": "item",
+      "type": "application/json",
+      "href": "../../models/model_items/USGSHABs1.json"
+    },
+    {
       "rel": "parent",
       "type": "application/json",
       "href": "../collection.json"
@@ -63,7 +68,7 @@
       "interval": [
         [
           "2024-02-07T00:00:00Z",
-          "2024-03-19T00:00:00Z"
+          "2024-03-20T00:00:00Z"
         ]
       ]
     }
