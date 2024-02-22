@@ -30,7 +30,7 @@
   "properties": {
     "description": "\nmodel info: Forecasts stream chlorophyll-a based on the historic average and standard deviation for that given site and day-of-year.\n\nSites: USGS-01427510, USGS-01463500, USGS-05543010, USGS-05553700, USGS-05558300, USGS-05586300, USGS-14181500, USGS-14211010, USGS-14211720\n\nVariables: Daily Chlorophyll_a",
     "start_datetime": "2024-02-07",
-    "end_datetime": "2024-03-24",
+    "end_datetime": "2024-03-27",
     "providers": [
       {
         "url": "pending",
