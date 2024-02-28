@@ -1,26 +1,26 @@
 on:
-  #schedule:
-  #  - cron: '0 23 * * *'
+  schedule:
+    - cron: '0 23 * * *'
   workflow_dispatch:
 
 name: catalog
 
 jobs:
-  docker:
+  catalog:
     runs-on: ubuntu-latest
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       OSN_KEY: ${{ secrets.OSN_KEY }}
       OSN_SECRET: ${{ secrets.OSN_SECRET }}
-    #container: rocker/geospatial:latest
     container: eco4cast/rocker-neon4cast:latest
     steps:
       - run: git config --system --add safe.directory '*'
 
       - uses: actions/checkout@v3
         with:
-           fetch-depth: 0
-           set-safe-directory: '*'
+          ref: prod
+          fetch-depth: 0
+          set-safe-directory: '*'
 
       - name: install validator
         run: |
@@ -34,7 +34,7 @@ jobs:
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
+          git pull
           git add catalog/* .
           git commit -a -m "update catalog" || echo "nothing to commit"
           git push https://${GITHUB_PAT}:${GITHUB_PAT}@github.com/${GITHUB_REPOSITORY}
-
