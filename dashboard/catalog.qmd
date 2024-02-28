@@ -10,8 +10,8 @@ title: "Forecast catalog"
 s3 <- arrow::s3_bucket(bucket = "bio230014-bucket01/challenges/metadata/model_id/",
                        endpoint_override = "sdsc.osn.xsede.org", anonymous = TRUE)
 
-d1 <- arrow::open_dataset(s3, format = "json") |> dplyr::collect() %>% 
-  dplyr::filter(project_id == "usgsrc4cast")
+d1 <- arrow::open_dataset(s3, format = "json") |> dplyr::collect() 
+d1 <- dplyr::filter(d1, project_id == "usgsrc4cast")
 
 model_type <- tidyr::unnest(d1[[3]], cols = names(d1[[3]]))$type
 

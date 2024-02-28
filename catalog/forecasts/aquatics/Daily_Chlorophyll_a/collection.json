@@ -33,6 +33,7 @@
     {
       "rel": "item",
       "type": "application/json",
+<<<<<<< HEAD
       "href": "../../models/model_items/procBlanchardMonod.json"
     },
     {
@@ -139,6 +140,9 @@
       "rel": "item",
       "type": "application/json",
       "href": "../../models/model_items/tg_auto_adam.json"
+=======
+      "href": "../../models/model_items/USGSHABs1.json"
+>>>>>>> 3ceb79b1536f7184348bde9228dc3ccc3c4cb5fe
     },
     {
       "rel": "parent",
@@ -182,23 +186,12 @@
     "temporal": {
       "interval": [
         [
-<<<<<<< HEAD
-          "2023-01-01T00:00:00Z",
-          "2024-01-21T00:00:00Z"
-=======
-          "2024-02-07T00:00:00Z",
-          "2024-03-18T00:00:00Z"
->>>>>>> 238ec235ce3b968821a7d83ecc4c8c19abc56199
+
         ]
       ]
     }
   },
   "table:columns": [
-    {
-      "name": "reference_datetime",
-      "type": "timestamp[us, tz=UTC]",
-      "description": "datetime that the forecast was initiated (horizon = 0)"
-    },
     {
       "name": "datetime",
       "type": "timestamp[us, tz=UTC]",
@@ -210,9 +203,9 @@
       "description": "For forecasts that are not on a spatial grid, use of a site dimension that maps to a more detailed geometry (points, polygons, etc.) is allowable. In general this would be documented in the external metadata (e.g., alook-up table that provides lon and lat)"
     },
     {
-      "name": "family",
-      "type": "string",
-      "description": "For ensembles: “ensemble.” Default value if unspecified for probability distributions: Name of the statistical distribution associated with the reported statistics. The “sample” distribution is synonymous with “ensemble.”For summary statistics: “summary.”"
+      "name": "prediction",
+      "type": "double",
+      "description": "predicted value for variable"
     },
     {
       "name": "parameter",
@@ -220,14 +213,24 @@
       "description": "ensemble member or distribution parameter"
     },
     {
-      "name": "prediction",
-      "type": "double",
-      "description": "predicted value for variable"
+      "name": "family",
+      "type": "string",
+      "description": "For ensembles: “ensemble.” Default value if unspecified for probability distributions: Name of the statistical distribution associated with the reported statistics. The “sample” distribution is synonymous with “ensemble.”For summary statistics: “summary.”"
+    },
+    {
+      "name": "reference_datetime",
+      "type": "timestamp[us, tz=UTC]",
+      "description": "datetime that the forecast was initiated (horizon = 0)"
     },
     {
       "name": "pub_datetime",
       "type": "timestamp[us, tz=UTC]",
       "description": "datetime that forecast was submitted"
+    },
+    {
+      "name": "date",
+      "type": "date32[day]",
+      "description": {}
     },
     {
       "name": "project_id",
