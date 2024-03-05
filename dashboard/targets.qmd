@@ -11,9 +11,7 @@ aquatics_focal_sites <- c("USGS-05553700", "USGS-01463500")
 ```
 
 ```{r message=FALSE, echo = FALSE}
-# TODO: need to update this 
-googlesheets4::gs4_deauth()
-target_metadata <- googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/10YTX9ae_C1rFdLgEDkUcCRCpUkVYv06leY01BtD1BgM/edit?usp=sharing")
+target_metadata <- readr::read_csv("https://raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/prod/targets/in/controlled_vocab_targets.csv")
 ```
 
 ```{r echo = FALSE}
@@ -65,10 +63,9 @@ The aquatics theme challenges you to forecast daily mean water quality variables
 url <- "https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/targets/project_id=usgsrc4cast/duration=P1D/river-chl-targets.csv.gz"
 read_csv(url, show_col_types = FALSE) |> 
   distinct(variable, duration) |> 
-  # TODO: need to fix target_metadata 
-  # left_join(target_metadata, by = c("variable","duration")) |> 
+  left_join(target_metadata, by = c("variable","duration")) |> 
   filter(variable %in% c("chla")) |> 
-  # select(-class) |> 
+  select(-class) |> 
   knitr::kable()
 ```
 
