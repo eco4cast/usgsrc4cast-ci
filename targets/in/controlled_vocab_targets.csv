@@ -1,0 +1,2 @@
+Variable name,"""official"" targets name",Description,duration,class,horizon,Latency
+Chlorophyll_a,chla,daily mean Chlorophyll-a (ug/L),P1D,aquatics,30 days,~ 0 days
