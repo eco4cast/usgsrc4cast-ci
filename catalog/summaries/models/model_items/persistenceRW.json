@@ -31,7 +31,7 @@
   "properties": {
     "description": "\nmodel info: Random walk model based on most recent stream chl-a observations using the fable::RW() model.\n\nSites: USGS-01427510, USGS-01463500, USGS-05543010, USGS-05549500, USGS-05553700, USGS-05558300, USGS-05586300, USGS-14181500, USGS-14211010, USGS-14211720\n\nVariables: Daily Chlorophyll_a",
     "start_datetime": "2024-02-07",
-    "end_datetime": "2024-04-07",
+    "end_datetime": "2024-04-08",
     "providers": [
       {
         "url": "pending",
