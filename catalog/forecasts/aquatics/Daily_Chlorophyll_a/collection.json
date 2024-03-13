@@ -13,12 +13,12 @@
     {
       "rel": "item",
       "type": "application/json",
-      "href": "../../models/model_items/climatology.json"
+      "href": "../../models/model_items/persistenceRW.json"
     },
     {
       "rel": "item",
       "type": "application/json",
-      "href": "../../models/model_items/persistenceRW.json"
+      "href": "../../models/model_items/climatology.json"
     },
     {
       "rel": "item",
@@ -68,7 +68,7 @@
       "interval": [
         [
           "2024-02-07T00:00:00Z",
-          "2024-04-15T00:00:00Z"
+          "2024-04-16T00:00:00Z"
         ]
       ]
     }
