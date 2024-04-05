@@ -13,17 +13,17 @@
     {
       "rel": "item",
       "type": "application/json",
+      "href": "../../models/model_items/climatology.json"
+    },
+    {
+      "rel": "item",
+      "type": "application/json",
       "href": "../../models/model_items/persistenceRW.json"
     },
     {
       "rel": "item",
       "type": "application/json",
       "href": "../../models/model_items/USGSHABs1.json"
-    },
-    {
-      "rel": "item",
-      "type": "application/json",
-      "href": "../../models/model_items/climatology.json"
     },
     {
       "rel": "parent",
@@ -68,7 +68,7 @@
       "interval": [
         [
           "2024-02-07T00:00:00Z",
-          "2024-04-02T00:00:00Z"
+          "2024-04-05T00:00:00Z"
         ]
       ]
     }

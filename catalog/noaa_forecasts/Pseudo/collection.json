@@ -32,8 +32,8 @@
     {
       "rel": "about",
       "href": "https://projects.ecoforecast.org/usgsrc4cast-docs/",
-      "type": "text/html",
-      "title": "EFI-USGS River Chlorophyll Forecasting Challenge Documentation"
+      "title": "EFI-USGS River Chlorophyll Forecasting Challenge Documentation",
+      "type": "text/html"
     },
     {
       "rel": "describedby",
@@ -53,7 +53,7 @@
       "interval": [
         [
           "2024-01-29T00:00:00Z",
-          "2024-05-05T00:00:00Z"
+          "2024-05-08T00:00:00Z"
         ]
       ]
     }
@@ -97,13 +97,13 @@
   ],
   "assets": {
     "data": {
-      "href": "s3://anonymous@drivers/noaa/gefs-v12-reprocess/pseudo/parquet?endpoint_override=s3.flare-forecast.org",
+      "href": "s3://anonymous@drivers/noaa/gefs-v12-reprocess//pseudo/parquet?endpoint_override=s3.flare-forecast.org",
       "type": "application/x-parquet",
       "title": "Database Access",
       "roles": [
         "data"
       ],
-      "description": "Use `arrow` for remote access to the database. This R code will return results for NEON forecasts associated with the forecasting challenge.\n\n### R\n\n```{r}\n# Use code below\n\nall_results <- arrow::open_dataset(\"s3://anonymous@drivers/noaa/gefs-v12-reprocess/pseudo/parquet?endpoint_override=s3.flare-forecast.org\")\ndf <- all_results |> dplyr::collect()\n\n```\n       \n\nYou can use dplyr operations before calling `dplyr::collect()` to `summarise`, `select` columns, and/or `filter` rows prior to pulling the data into a local `data.frame`. Reducing the data that is pulled locally will speed up the data download speed and reduce your memory usage.\n\n\n"
+      "description": "Use `arrow` for remote access to the database. This R code will return results for NEON forecasts associated with the forecasting challenge.\n\n### R\n\n```{r}\n# Use code below\n\nall_results <- arrow::open_dataset(\"s3://anonymous@drivers/noaa/gefs-v12-reprocess//pseudo/parquet?endpoint_override=s3.flare-forecast.org\")\ndf <- all_results |> dplyr::collect()\n\n```\n       \n\nYou can use dplyr operations before calling `dplyr::collect()` to `summarise`, `select` columns, and/or `filter` rows prior to pulling the data into a local `data.frame`. Reducing the data that is pulled locally will speed up the data download speed and reduce your memory usage.\n\n\n"
     },
     "thumbnail": {
       "href": "https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/DSC_0001.jpg",
