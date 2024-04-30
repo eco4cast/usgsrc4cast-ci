@@ -15,7 +15,7 @@ source("R/plot-utils.R")
 #source("../R/ignore_sigpipes.R")
 #ignore_sigpipe()
 
-aquatics_focal_sites <- c("USGS-05553700", "USGS-01463500")
+aquatics_focal_sites <- c("USGS-05553700", "USGS-14211720")
 ```
 
 This page visualizes the forecasts and forecast performance for the focal target variables.
@@ -88,7 +88,7 @@ best_P1D_scores <- df_P1D_scores |>
 Forecasts submitted on `r max(lubridate::as_date(df_P1D$reference_datetime))`
 
 
-### Aquatics: Chlorophyll-a
+### River Chlorophyll-a
 
 Forecast summaries are available [here](https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/summaries/aquatics/Daily_Chlorophyll_a/collection.json)
 
@@ -113,7 +113,7 @@ Below are forecasts submitted 30 days ago and include the observations used to e
 
 ::: panel-tabset
 
-### Aquatics: chrophyll-a
+### River Chlorophyll-a
 
 ```{r}
 best_models <- best_P1D_scores |> filter(variable == "chla") |> pull(model_id)
