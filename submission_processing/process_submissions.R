@@ -200,6 +200,7 @@ if(nrow(submit_files) > 0){
                                       config$forecasts_bucket,
                                       "/raw/project_id=", config$project_id, "/",
                                       basename(submission_timestamp))
+          print(raw_bucket_object)
 
           minioclient::mc_cp(submission_timestamp, paste0(dirname(raw_bucket_object),"/", basename(submission_timestamp)))
 
