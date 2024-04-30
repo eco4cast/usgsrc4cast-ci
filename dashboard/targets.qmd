@@ -7,7 +7,7 @@ editor:
 
 ```{r  message=FALSE, echo = FALSE}
 library(tidyverse)
-aquatics_focal_sites <- c("USGS-05553700", "USGS-01463500")
+aquatics_focal_sites <- c("USGS-05553700", "USGS-14211720")
 ```
 
 ```{r message=FALSE, echo = FALSE}
@@ -43,7 +43,7 @@ More information about USGS sites can be found in the [site metadata](https://ra
 
 ## Explore the targets and themes {#sec-targets}
 
-Information on the targets files for the "themes" is below.
+Information on the targets files for the river chlorophyll challenge is below.
 In the tables,
 
 -   "duration" is the time-step of the variable where `P1D` is a daily mean.
@@ -53,11 +53,11 @@ In the tables,
 -   The "latency" is the time between data collection and data availability in the targets file
 
 
-### Aquatics
+### River Chlorophyll
 
-![](https://projects.ecoforecast.org/neon4cast-catalog/img/neon_buoy.jpg)
+![](https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/media/images/Millstone-hab1.png)
 
-The aquatics theme challenges you to forecast daily mean water quality variables at up-to 10 river USGS sites.
+The river chlorophyll challenge invites you to forecast daily mean chlorophyll at up to 10 USGS river sites.
 
 ```{r echo = FALSE}
 url <- "https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/targets/project_id=usgsrc4cast/duration=P1D/river-chl-targets.csv.gz"
