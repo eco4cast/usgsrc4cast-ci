@@ -62,7 +62,7 @@ The file is a csv format with the following columns:
 -   `project_id`: use `usgsrc4cast`
 
 -   `model_id`: the short name of the model defined as the model_id in your registration. The model_id should have no spaces.
-    `model_id` should reflect a method to forecast one or a set of target variables and must be unique to the neon4cast challenge.
+    `model_id` should reflect a method to forecast one or a set of target variables and must be unique to the `usgsrc4cast` challenge.
 
 -   `datetime`: forecast timestamp.
     Format `%Y-%m-%d %H:%M:%S` with UTC as the time zone.
