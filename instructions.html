@@ -318,8 +318,7 @@ background-size: cover;
 <h3 data-number="5.1" class="anchored" data-anchor-id="example-forecasts"><span class="header-section-number">5.1</span> Example forecasts</h3>
 <p>Here is an example of a forecast that uses a normal distribution:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: need to update to different example</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">"https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/forecasts/raw/T20231102190926_aquatics-2023-10-19-climatology.csv.gz"</span>, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">"https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/forecasts/raw/project_id=usgsrc4cast/T20240506050515_usgsrc4cast-2024-05-05-climatology.csv.gz"</span>, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span> </span>
@@ -328,20 +327,24 @@ background-size: cover;
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <colgroup>
-<col style="width: 13%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 9%">
+<col style="width: 16%">
+<col style="width: 7%">
 <col style="width: 12%">
-<col style="width: 21%">
+<col style="width: 6%">
 <col style="width: 8%">
 <col style="width: 7%">
-<col style="width: 11%">
-<col style="width: 13%">
-<col style="width: 12%">
+<col style="width: 9%">
 </colgroup>
 <thead>
 <tr class="header">
+<th style="text-align: left;">project_id</th>
 <th style="text-align: left;">model_id</th>
 <th style="text-align: left;">datetime</th>
 <th style="text-align: left;">reference_datetime</th>
+<th style="text-align: left;">duration</th>
 <th style="text-align: left;">site_id</th>
 <th style="text-align: left;">family</th>
 <th style="text-align: left;">parameter</th>
@@ -351,64 +354,76 @@ background-size: cover;
 </thead>
 <tbody>
 <tr class="odd">
+<td style="text-align: left;">usgsrc4cast</td>
 <td style="text-align: left;">climatology</td>
-<td style="text-align: left;">2023-10-20</td>
-<td style="text-align: left;">2023-10-19</td>
-<td style="text-align: left;">ARIK</td>
+<td style="text-align: left;">2024-05-06</td>
+<td style="text-align: left;">2024-05-05</td>
+<td style="text-align: left;">P1D</td>
+<td style="text-align: left;">USGS-01427510</td>
 <td style="text-align: left;">normal</td>
 <td style="text-align: left;">mu</td>
-<td style="text-align: left;">oxygen</td>
-<td style="text-align: right;">4.542862</td>
+<td style="text-align: left;">chla</td>
+<td style="text-align: right;">2.316215</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">usgsrc4cast</td>
 <td style="text-align: left;">climatology</td>
-<td style="text-align: left;">2023-10-20</td>
-<td style="text-align: left;">2023-10-19</td>
-<td style="text-align: left;">ARIK</td>
+<td style="text-align: left;">2024-05-06</td>
+<td style="text-align: left;">2024-05-05</td>
+<td style="text-align: left;">P1D</td>
+<td style="text-align: left;">USGS-01427510</td>
 <td style="text-align: left;">normal</td>
 <td style="text-align: left;">sigma</td>
-<td style="text-align: left;">oxygen</td>
-<td style="text-align: right;">1.448393</td>
+<td style="text-align: left;">chla</td>
+<td style="text-align: right;">1.013190</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">usgsrc4cast</td>
 <td style="text-align: left;">climatology</td>
-<td style="text-align: left;">2023-10-20</td>
-<td style="text-align: left;">2023-10-19</td>
-<td style="text-align: left;">ARIK</td>
+<td style="text-align: left;">2024-05-07</td>
+<td style="text-align: left;">2024-05-05</td>
+<td style="text-align: left;">P1D</td>
+<td style="text-align: left;">USGS-01427510</td>
 <td style="text-align: left;">normal</td>
 <td style="text-align: left;">mu</td>
-<td style="text-align: left;">temperature</td>
-<td style="text-align: right;">8.070854</td>
+<td style="text-align: left;">chla</td>
+<td style="text-align: right;">2.016441</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">usgsrc4cast</td>
 <td style="text-align: left;">climatology</td>
-<td style="text-align: left;">2023-10-20</td>
-<td style="text-align: left;">2023-10-19</td>
-<td style="text-align: left;">ARIK</td>
+<td style="text-align: left;">2024-05-07</td>
+<td style="text-align: left;">2024-05-05</td>
+<td style="text-align: left;">P1D</td>
+<td style="text-align: left;">USGS-01427510</td>
 <td style="text-align: left;">normal</td>
 <td style="text-align: left;">sigma</td>
-<td style="text-align: left;">temperature</td>
-<td style="text-align: right;">1.330059</td>
+<td style="text-align: left;">chla</td>
+<td style="text-align: right;">1.013190</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">usgsrc4cast</td>
 <td style="text-align: left;">climatology</td>
-<td style="text-align: left;">2023-10-21</td>
-<td style="text-align: left;">2023-10-19</td>
-<td style="text-align: left;">ARIK</td>
+<td style="text-align: left;">2024-05-08</td>
+<td style="text-align: left;">2024-05-05</td>
+<td style="text-align: left;">P1D</td>
+<td style="text-align: left;">USGS-01427510</td>
 <td style="text-align: left;">normal</td>
 <td style="text-align: left;">mu</td>
-<td style="text-align: left;">oxygen</td>
-<td style="text-align: right;">4.194895</td>
+<td style="text-align: left;">chla</td>
+<td style="text-align: right;">2.694340</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">usgsrc4cast</td>
 <td style="text-align: left;">climatology</td>
-<td style="text-align: left;">2023-10-21</td>
-<td style="text-align: left;">2023-10-19</td>
-<td style="text-align: left;">ARIK</td>
+<td style="text-align: left;">2024-05-08</td>
+<td style="text-align: left;">2024-05-05</td>
+<td style="text-align: left;">P1D</td>
+<td style="text-align: left;">USGS-01427510</td>
 <td style="text-align: left;">normal</td>
 <td style="text-align: left;">sigma</td>
-<td style="text-align: left;">oxygen</td>
-<td style="text-align: right;">1.448393</td>
+<td style="text-align: left;">chla</td>
+<td style="text-align: right;">1.013190</td>
 </tr>
 </tbody>
 </table>
@@ -416,8 +431,7 @@ background-size: cover;
 </div>
 <p>For an ensemble (or sample) forecast, the <code>family</code> column uses the word <code>ensemble</code> to designate that it is a ensemble forecast and the parameter column is the ensemble member number (<code>1</code>, <code>2</code>, <code>3</code> …)</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: need to update to different example </span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">"https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/forecasts/raw/T20231102190926_aquatics-2023-10-19-persistenceRW.csv.gz"</span>, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">"https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/forecasts/raw/project_id=usgsrc4cast/T20240506050515_usgsrc4cast-2024-05-05-persistenceRW.csv.gz"</span>, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span> </span>
@@ -427,20 +441,24 @@ background-size: cover;
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <colgroup>
-<col style="width: 15%">
-<col style="width: 12%">
-<col style="width: 20%">
-<col style="width: 8%">
-<col style="width: 9%">
 <col style="width: 10%">
+<col style="width: 11%">
 <col style="width: 9%">
-<col style="width: 12%">
+<col style="width: 16%">
+<col style="width: 7%">
+<col style="width: 11%">
+<col style="width: 7%">
+<col style="width: 8%">
+<col style="width: 7%">
+<col style="width: 9%">
 </colgroup>
 <thead>
 <tr class="header">
+<th style="text-align: left;">project_id</th>
 <th style="text-align: left;">model_id</th>
 <th style="text-align: left;">datetime</th>
 <th style="text-align: left;">reference_datetime</th>
+<th style="text-align: left;">duration</th>
 <th style="text-align: left;">site_id</th>
 <th style="text-align: left;">family</th>
 <th style="text-align: right;">parameter</th>
@@ -450,64 +468,76 @@ background-size: cover;
 </thead>
 <tbody>
 <tr class="odd">
+<td style="text-align: left;">usgsrc4cast</td>
 <td style="text-align: left;">persistenceRW</td>
-<td style="text-align: left;">2023-10-20</td>
-<td style="text-align: left;">2023-10-19</td>
-<td style="text-align: left;">BARC</td>
+<td style="text-align: left;">2024-05-06</td>
+<td style="text-align: left;">2024-05-05</td>
+<td style="text-align: left;">P1D</td>
+<td style="text-align: left;">USGS-01427510</td>
 <td style="text-align: left;">ensemble</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: left;">chla</td>
-<td style="text-align: right;">3.795652</td>
+<td style="text-align: right;">0.1739193</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">usgsrc4cast</td>
 <td style="text-align: left;">persistenceRW</td>
-<td style="text-align: left;">2023-10-20</td>
-<td style="text-align: left;">2023-10-19</td>
-<td style="text-align: left;">BARC</td>
+<td style="text-align: left;">2024-05-06</td>
+<td style="text-align: left;">2024-05-05</td>
+<td style="text-align: left;">P1D</td>
+<td style="text-align: left;">USGS-01427510</td>
 <td style="text-align: left;">ensemble</td>
 <td style="text-align: right;">2</td>
 <td style="text-align: left;">chla</td>
-<td style="text-align: right;">3.963322</td>
+<td style="text-align: right;">0.1651993</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">usgsrc4cast</td>
 <td style="text-align: left;">persistenceRW</td>
-<td style="text-align: left;">2023-10-20</td>
-<td style="text-align: left;">2023-10-19</td>
-<td style="text-align: left;">BARC</td>
+<td style="text-align: left;">2024-05-06</td>
+<td style="text-align: left;">2024-05-05</td>
+<td style="text-align: left;">P1D</td>
+<td style="text-align: left;">USGS-01427510</td>
 <td style="text-align: left;">ensemble</td>
 <td style="text-align: right;">3</td>
 <td style="text-align: left;">chla</td>
-<td style="text-align: right;">2.053637</td>
+<td style="text-align: right;">0.2120872</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">usgsrc4cast</td>
 <td style="text-align: left;">persistenceRW</td>
-<td style="text-align: left;">2023-10-20</td>
-<td style="text-align: left;">2023-10-19</td>
-<td style="text-align: left;">BARC</td>
+<td style="text-align: left;">2024-05-06</td>
+<td style="text-align: left;">2024-05-05</td>
+<td style="text-align: left;">P1D</td>
+<td style="text-align: left;">USGS-01427510</td>
 <td style="text-align: left;">ensemble</td>
 <td style="text-align: right;">4</td>
 <td style="text-align: left;">chla</td>
-<td style="text-align: right;">3.294723</td>
+<td style="text-align: right;">0.1574321</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">usgsrc4cast</td>
 <td style="text-align: left;">persistenceRW</td>
-<td style="text-align: left;">2023-10-20</td>
-<td style="text-align: left;">2023-10-19</td>
-<td style="text-align: left;">BARC</td>
+<td style="text-align: left;">2024-05-06</td>
+<td style="text-align: left;">2024-05-05</td>
+<td style="text-align: left;">P1D</td>
+<td style="text-align: left;">USGS-01427510</td>
 <td style="text-align: left;">ensemble</td>
 <td style="text-align: right;">5</td>
 <td style="text-align: left;">chla</td>
-<td style="text-align: right;">1.847344</td>
+<td style="text-align: right;">0.2035837</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">usgsrc4cast</td>
 <td style="text-align: left;">persistenceRW</td>
-<td style="text-align: left;">2023-10-20</td>
-<td style="text-align: left;">2023-10-19</td>
-<td style="text-align: left;">BARC</td>
+<td style="text-align: left;">2024-05-06</td>
+<td style="text-align: left;">2024-05-05</td>
+<td style="text-align: left;">P1D</td>
+<td style="text-align: left;">USGS-01427510</td>
 <td style="text-align: left;">ensemble</td>
 <td style="text-align: right;">6</td>
 <td style="text-align: left;">chla</td>
-<td style="text-align: right;">7.829229</td>
+<td style="text-align: right;">0.3037156</td>
 </tr>
 </tbody>
 </table>
