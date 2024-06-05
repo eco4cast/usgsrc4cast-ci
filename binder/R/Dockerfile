@@ -1,46 +1,37 @@
 FROM rocker/binder:latest
 
-#USER root
-RUN apt-get update && apt-get -y install cron
-RUN apt-get update && apt-get -y install jags
-RUN apt-get update && apt-get -y install libgd-dev
-RUN apt-get update && apt-get -y install libnetcdf-dev
+# Ensure the commands are run as root user
+USER root
 
-RUN sudo update-ca-certificates
+# Update the package list and install required packages
+RUN rm -rf /var/lib/apt/lists/* && \
+    apt-get update && \
+    apt-get -y install cron jags libgd-dev libnetcdf-dev python3 python3-pip && \
+    apt-get clean && \
+    sudo update-ca-certificates
 
-#USER ${NB_USER}
-
-RUN apt-get -y install python3 python3-pip
-
+# Install R packages
 RUN install2.r devtools remotes reticulate
 
-RUN R -e "remotes::install_github('cboettig/minioclient')"
-RUN sleep 180
-RUN R -e "remotes::install_github('eco4cast/stac4cast')"
-RUN sleep 180
-RUN R -e "remotes::install_github('eco4cast/EFIstandards')"
-RUN sleep 180
-RUN R -e "remotes::install_github('cboettig/aws.s3')"
-RUN sleep 180
-RUN R -e "remotes::install_github('eco4cast/score4cast')"
-RUN sleep 180
-RUN R -e "remotes::install_github('EcoForecast/ecoforecastR')"
-RUN sleep 180
-RUN R -e "remotes::install_github('eco4cast/neon4cast')"
-RUN sleep 180
-RUN R -e "remotes::install_github('cboettig/prov')"
-RUN sleep 180
-RUN R -e "remotes::install_github('eco4cast/read4cast')"
-RUN sleep 180
-RUN R -e "remotes::install_github('eco4cast/gefs4cast')"
-RUN sleep 180
-RUN R -e "remotes::install_github('mitchelloharawild/distributional', ref = 'bb0427e')"
+# Install R packages from GitHub
+RUN R -e "remotes::install_github('cboettig/minioclient')" && \
+    R -e "remotes::install_github('eco4cast/stac4cast')" && \
+    R -e "remotes::install_github('eco4cast/EFIstandards')" && \
+    R -e "remotes::install_github('cboettig/aws.s3')" && \
+    R -e "remotes::install_github('eco4cast/score4cast')" && \
+    R -e "remotes::install_github('EcoForecast/ecoforecastR')" && \
+    R -e "remotes::install_github('eco4cast/neon4cast')" && \
+    R -e "remotes::install_github('cboettig/prov')" && \
+    R -e "remotes::install_github('eco4cast/read4cast')" && \
+    R -e "remotes::install_github('eco4cast/gefs4cast')" && \
+    R -e "remotes::install_github('mitchelloharawild/distributional', ref = 'bb0427e')"
 
-RUN install2.r arrow renv rjags neonstore ISOweek RNetCDF fable fabletools forecast imputeTS duckdbfs gsheet
+# Install additional R packages
+RUN install2.r arrow renv rjags neonstore ISOweek RNetCDF fable fabletools forecast imputeTS duckdbfs gsheet && \
+    install2.r ncdf4 scoringRules tidybayes tidync udunits2 bench contentid yaml RCurl here feasts future furrr jsonlite
 
-RUN install2.r ncdf4 scoringRules tidybayes tidync udunits2 bench contentid yaml RCurl here feasts future furrr jsonlite
-
-#RUN R -e "reticulate::install_python(version = '3.9:latest', list = FALSE, force = FALSE)"
-
+# Copy cron script
 COPY cron.sh /etc/services.d/cron/run
 
+# Switch back to the default user if necessary
+# USER ${NB_USER}
