@@ -28,6 +28,6 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: eco4cast/rocker-R-binder-usgsrc4cast:latest
+          tags: eco4cast/rocker-r-binder-usgsrc4cast:latest
           build-args: GITHUB_PAT=${{ secrets.PAT }}
           file: binder/R/Dockerfile
