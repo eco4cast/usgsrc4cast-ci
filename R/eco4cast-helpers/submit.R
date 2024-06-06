@@ -26,15 +26,13 @@ submit <- function(forecast_file,
 
   if(!go){
 
-    # TODO: update this warning to point to non-neon4cast docs
     warning(paste0("forecasts was not in a valid format and was not submitted\n",
-                   "First, try read reinstalling neon4cast (remotes::install_github('eco4cast\\neon4cast'), restarting R, and trying again\n",
-                   "Second, see https://projects.ecoforecast.org/neon4cast-docs/Submission-Instructions.html for more information on the file format"))
+                   "First, try reinstalling neon4cast (remotes::install_github('eco4cast\\neon4cast'), sourcing usgsrc4cast-specific functions (https://projects.ecoforecast.org/usgsrc4cast-ci/instructions.html#uploading-forecast), restarting R, and trying again\n",
+                   "Second, see https://projects.ecoforecast.org/usgsrc4cast-ci/instructions.html for more information on the file format"))
     return(NULL)
   }
 
   check_model_id <- FALSE
-  # TODO: see if we want to have a more robust check on the model id submission
   if(check_model_id){
     googlesheets4::gs4_deauth()
     message("Checking if model_id is registered")
@@ -47,7 +45,7 @@ submit <- function(forecast_file,
 
     df <- read4cast::read_forecast(forecast_file)
     model_id <- df$model_id[1]
-    model_project_id <- paste("neon4cast", model_id, sep = "-")
+    model_project_id <- paste(project_id, model_id, sep = "-")
 
     if(grepl("(example)", model_id)){
       message(paste0("You are submitting a forecast with 'example' in the model_id. As an example forecast, it will be processed but not used in future analyses.\n",
@@ -57,7 +55,7 @@ submit <- function(forecast_file,
 
     if(!(model_project_id %in% registered_model_project_id) & !grepl("(example)",model_id)){
 
-      message("Checking if model_id for neon4cast is already used in submissions")
+      message(sprintf("Checking if model_id is already used in submissions for %s", project_id))
 
       submitted_model_ids <- readr::read_csv("https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/inventory/model_id/model_id-project_id-inventory.csv", show_col_types = FALSE)
       submitted_project_model_id <- paste(submitted_model_ids$project_id, submitted_model_ids$model_id, sep = "-")
@@ -78,20 +76,20 @@ submit <- function(forecast_file,
       }
     }
 
-    if(!grepl("(example)",model_id)){
-      if(first_submission & model_project_id %in% registered_model_project_id){
-        submitted_model_ids <- readr::read_csv("https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/inventory/model_id/model_id-project_id-inventory.csv", show_col_types = FALSE)
-        submitted_project_model_id <- paste(submitted_model_ids$project_id, submitted_model_ids$model_id, sep = "-")
-
-        if(model_project_id %in% submitted_project_model_id){
-          stop(paste0("Your model_id (",model_id,") is already used in other submitted forecasts. There are two causes for this error: \n
-                    - If you have previously submitted a forecast, set the argument `first_submission = FALSE` to remove this error\n
-                    - If you have not previously submitted a forecast, this error message means that the model_id has already been registered and used for submissions.  Please register and use another model_id at [https://forms.gle/kg2Vkpho9BoMXSy57](https://forms.gle/kg2Vkpho9BoMXSy57)"))
-        }
-      }
-    }else{
-      message("Since `example` is in your model_id, you are submitting an example forecast that will be processed but not used in future analyses.")
-    }
+    # if(!grepl("(example)",model_id)){
+    #   if(first_submission & model_project_id %in% registered_model_project_id){
+    #     submitted_model_ids <- readr::read_csv("https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/inventory/model_id/model_id-project_id-inventory.csv", show_col_types = FALSE)
+    #     submitted_project_model_id <- paste(submitted_model_ids$project_id, submitted_model_ids$model_id, sep = "-")
+    #
+    #     if(model_project_id %in% submitted_project_model_id){
+    #       stop(paste0("Your model_id (",model_id,") is already used in other submitted forecasts. There are two causes for this error: \n
+    #                 - If you have previously submitted a forecast, set the argument `first_submission = FALSE` to remove this error\n
+    #                 - If you have not previously submitted a forecast, this error message means that the model_id has already been registered and used for submissions.  Please register and use another model_id at [https://forms.gle/kg2Vkpho9BoMXSy57](https://forms.gle/kg2Vkpho9BoMXSy57)"))
+    #     }
+    #   }
+    # }else{
+    #   message("Since `example` is in your model_id, you are submitting an example forecast that will be processed but not used in future analyses.")
+    # }
   }
 
   if(go & ask){
@@ -110,11 +108,15 @@ submit <- function(forecast_file,
   }
 
   #GENERALIZATION:  Here are specific AWS INFO
-  exists <- aws.s3::put_object(file = forecast_file,
-                               object = basename(forecast_file),
-                               bucket = fs::path("submissions", project_id),
-                               region= s3_region,
-                               base_url = s3_endpoint)
+  exists <- FALSE
+  if(go){
+    exists <- aws.s3::put_object(file = forecast_file,
+                                 object = basename(forecast_file),
+                                 bucket = fs::path("submissions", project_id),
+                                 region= s3_region,
+                                 base_url = s3_endpoint)
+  }
+
 
   if(exists){
     message("Thank you for submitting!")
