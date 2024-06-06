@@ -21,6 +21,7 @@ forecast_output_validator <- function(forecast_file){
       usethis::ui_done("file has model_id column")
     }else{
       usethis::ui_warn("file missing model_id column ")
+      valid <- FALSE
     }
 
 
@@ -53,6 +54,7 @@ forecast_output_validator <- function(forecast_file){
       usethis::ui_done("file has site_id column")
     }else{
       usethis::ui_warn("file missing site_id column")
+      valid <- FALSE
     }
 
     if(lexists(out, c("datetime"))){
@@ -78,12 +80,14 @@ forecast_output_validator <- function(forecast_file){
       usethis::ui_done("file has duration column")
     }else{
       usethis::ui_warn("file missing duration column (values for the column: daily = P1D, 30min = PT30M)")
+      valid <- FALSE
     }
 
     if(lexists(out, c("project_id"))){
       usethis::ui_done("file has project_id column")
     }else{
       usethis::ui_warn("file missing project_id column (use the challenge you're submitting to as the project_id")
+      valid <- FALSE
     }
 
     if(lexists(out, c("reference_datetime"))){
