@@ -26,7 +26,6 @@ forecast_description_create <- data.frame(datetime = 'datetime of the forecasted
                                           depth_m = 'depth (meters) in water column of prediction',
                                           duration = 'temporal duration of forecast (hourly, daily, etc.); follows ISO 8601 duration convention')
 
-
 ## CHANGE THE WAY TO READ THE SCHEMA
 ## just read in example forecast to extract schema information -- ask about better ways of doing this
 # theme <- 'daily'
@@ -36,24 +35,12 @@ forecast_description_create <- data.frame(datetime = 'datetime of the forecasted
 
 print('FIND FORECAST TABLE SCHEMA')
 forecast_theme_df <- arrow::open_dataset(arrow::s3_bucket(config$forecasts_bucket,
-                                                          endpoint_override = config$endpoint, anonymous = TRUE)) #|>
-  #filter(model_id == model_id, site_id = site_id, reference_datetime = reference_datetime)
-# NOTE IF NOT USING FILTER -- THE stac4cast::build_table_columns() NEEDS TO BE UPDATED
-    #(USE strsplit(forecast_theme_df$ToString(), "\n") INSTEAD OF strsplit(forecast_theme_df[[1]]$ToString(), "\n"))
-
-## identify model ids from bucket -- used in generate model items function
-# forecast_data_df <- duckdbfs::open_dataset(glue::glue("s3://{config$inventory_bucket}/catalog/forecasts/project_id={config$project_id}"),
-#                                   s3_endpoint = config$endpoint, anonymous=TRUE) |>
-#   collect()
+                                                          endpoint_override = config$endpoint, anonymous = TRUE))
 
 print('FIND INVENTORY BUCKET')
 forecast_s3 <- arrow::s3_bucket(glue::glue("{config$inventory_bucket}/catalog/forecasts/project_id={config$project_id}"),
                               endpoint_override = "sdsc.osn.xsede.org",
                               anonymous=TRUE)
-
-# forecast_data_df <- duckdbfs::open_dataset(glue::glue("s3://{config$inventory_bucket}/catalog/forecasts"),
-#                                            s3_endpoint = config$endpoint, anonymous=TRUE) |>
-#   collect()
 
 print('OPEN INVENTORY BUCKET')
 forecast_data_df <- arrow::open_dataset(forecast_s3) |>
@@ -71,6 +58,8 @@ forecast_min_date <- forecast_date_range$`min(date)`
 forecast_max_date <- forecast_date_range$`max(date)`
 
 build_description <- paste0("Forecasts are the raw forecasts that includes all ensemble members or distribution parameters. Due to the size of the raw forecasts, we recommend accessing the scores (summaries of the forecasts) to analyze forecasts (unless you need the individual ensemble members). You can access the forecasts at the top level of the dataset where all models, variables, and dates that forecasts were produced (reference_datetime) are available. The code to access the entire dataset is provided as an asset. Given the size of the forecast catalog, it can be time-consuming to access the data at the full dataset level. For quicker access to the forecasts for a particular model (model_id), we also provide the code to access the data at the model_id level as an asset for each model.")
+
+forecast_sites <- forecast_sites$site_id
 
 stac4cast::build_forecast_scores(table_schema = forecast_theme_df,
                       #theme_id = 'Forecasts',
@@ -90,41 +79,12 @@ stac4cast::build_forecast_scores(table_schema = forecast_theme_df,
                       group_sites = forecast_sites$site_id,
                       model_child = TRUE)
 
-## create separate JSON for model landing page
-# if (!dir.exists(paste0(catalog_config$forecast_path,"models"))){
-#   dir.create(paste0(catalog_config$forecast_path,"models"))
-# }
-
-# stac4cast::build_group_variables(table_schema = forecast_theme_df,
-#                       table_description = forecast_description_create,
-#                       start_date = forecast_min_date,
-#                       end_date = forecast_max_date,
-#                       id_value = "models",
-#                       description_string = build_description,
-#                       about_string = catalog_config$about_string,
-#                       about_title = catalog_config$about_title,
-#                       dashboard_string = catalog_config$dashboard_url,
-#                       dashboard_title = catalog_config$dashboard_title,
-#                       theme_title = "Models",
-#                       destination_path = paste0(catalog_config$forecast_path,"models"),
-#                       aws_download_path = catalog_config$aws_download_path_forecasts,
-#                       group_var_items = stac4cast::generate_model_items(model_list = theme_models$model_id),
-#                       thumbnail_link = 'pending',
-#                       thumbnail_title = 'pending',
-#                       group_var_vector = NULL,
-#                       group_sites = NULL)
-
-## CREATE MODELS
+## READ IN GSHEET FILES
 variable_gsheet <- gsheet2tbl(config$target_metadata_gsheet)
 
 ## READ IN MODEL METADATA
 # googlesheets4::gs4_deauth()
-#
 # registered_model_id <- googlesheets4::read_sheet(config$model_metadata_gsheet)
-
-# read in model metadata and filter for the relevant project
-# registered_model_id <- gsheet2tbl(config$model_metadata_gsheet) |>
-#   filter(`What forecasting challenge are you registering for?` == config$project_id)
 
 gsheet_read <- gsheet2tbl(config$model_metadata_gsheet)
 gsheet_read$row_non_na <- rowSums(!is.na(gsheet_read))
@@ -133,74 +93,9 @@ registered_model_id <- gsheet_read |>
   filter(`What forecasting challenge are you registering for?` == config$project_id) |>
   rename(project_id = `What forecasting challenge are you registering for?`) |>
   arrange(row_non_na) |>
-  distinct(model_id, project_id, .keep_all = TRUE)#|>
-#filter(row_non_na > 20) ## estimate based on current number of rows assuming everything (minus model and project) are empty
-
-# forecast_sites <- c()
-#
-# ## LOOP OVER MODEL IDS AND CREATE JSONS
-# for (m in theme_models$model_id){
-#
-#   # make model items directory
-#   if (!dir.exists(paste0(catalog_config$forecast_path,"models/model_items"))){
-#     dir.create(paste0(catalog_config$forecast_path,"models/model_items"))
-#   }
-#
-#   print(m)
-#   model_date_range <- forecast_data_df |> filter(model_id == m) |> dplyr::summarise(min(date),max(date))
-#   model_min_date <- model_date_range$`min(date)`
-#   model_max_date <- model_date_range$`max(date)`
-#
-#   model_var_duration_df <- forecast_data_df |> filter(model_id == m) |> distinct(variable,duration) |>
-#     mutate(duration_name = ifelse(duration == 'P1D', 'Daily', duration)) |>
-#     mutate(duration_name = ifelse(duration == 'PT1H', 'Hourly', duration_name)) |>
-#     mutate(duration_name = ifelse(duration == 'PT30M', '30min', duration_name)) |>
-#     mutate(duration_name = ifelse(duration == 'P1W', 'Weekly', duration_name))
-#
-#   model_var_full_name <- model_var_duration_df |>
-#     left_join((variable_gsheet |>
-#                   select(variable = `"official" targets name`, full_name = `Variable name`) |>
-#                   distinct(variable, .keep_all = TRUE)), by = c('variable'))
-#
-#   model_sites <- forecast_data_df |> filter(model_id == m) |> distinct(site_id)
-#
-#   model_vars <- forecast_data_df |> filter(model_id == m) |> distinct(variable) |> left_join(model_var_full_name, by = 'variable')
-#   model_vars$var_duration_name <- paste0(model_vars$duration_name, " ", model_vars$full_name)
-#
-#   forecast_sites <- append(forecast_sites,  stac4cast::get_site_coords(site_metadata = catalog_config$site_metadata_url,
-#                                                             sites = model_sites$site_id))
-#
-#   idx = which(registered_model_id$model_id == m)
-#
-#   if (is.null(registered_model_id$`Web link to model code`[idx])){
-#     model_code_link <- 'https://projects.ecoforecast.org/neon4cast-ci/'
-#   } else{
-#     model_code_link <- registered_model_id$`Web link to model code`[idx]
-#   }
-#
-#   stac4cast::build_model(model_id = m,
-#                          team_name = registered_model_id$`Long name of the model (can include spaces)`[idx],
-#                          model_description = registered_model_id[idx,"Describe your modeling approach in your own words."][[1]],
-#                          start_date = model_min_date,
-#                          end_date = model_max_date,
-#                          var_values = model_vars$var_duration_name,
-#                          duration_names = model_var_duration_df$duration,
-#                          site_values = model_sites$site_id,
-#                          site_table = catalog_config$site_metadata_url,
-#                          model_documentation = registered_model_id,
-#                          destination_path = paste0(catalog_config$forecast_path,"models/model_items"),
-#                          aws_download_path = catalog_config$aws_download_path_forecasts,
-#                          collection_name = 'forecasts',
-#                          thumbnail_image_name = NULL,
-#                          table_schema = forecast_theme_df,
-#                          table_description = forecast_description_create,
-#                          full_var_df = model_vars,
-#                          code_web_link = model_code_link)
-# }
-
+  distinct(model_id, project_id, .keep_all = TRUE)
 
 ## BUILD VARIABLE GROUPS
-#variable_gsheet <- gsheet2tbl(config$target_metadata_gsheet)
 
 for (i in 1:length(config$variable_groups)){ ## organize variable groups
   print(names(config$variable_groups)[i])
@@ -288,13 +183,21 @@ for (i in 1:length(config$variable_groups)){ ## organize variable groups
       var_min_date <- var_date_range$`min(date)`
       var_max_date <- var_date_range$`max(date)`
 
-      var_models <- var_data |> distinct(model_id)
+      var_models <- var_data |>
+        distinct(model_id) |>
+        filter(model_id %in% registered_model_id$model_id,
+               !grepl("example",model_id))
 
       find_var_sites <- forecast_data_df |>
         filter(variable == var_name) |>
         distinct(site_id)
 
-      var_description <- paste0('This page includes all models for the ',var_formal_name,' variable.')
+      var_metadata <- variable_gsheet |>
+        filter(`"official" targets name` == var_name,
+               duration == duration_name)
+
+      var_description <- paste0('All models for the ',var_formal_name,' variable. The variable description is as follows: ',
+                                var_metadata$Description)
 
       var_path <- var_data$path[1]
 
@@ -325,8 +228,8 @@ for (i in 1:length(config$variable_groups)){ ## organize variable groups
                                        destination_path = file.path(catalog_config$forecast_path,names(config$variable_groups)[i],var_formal_name),
                                        aws_download_path = var_path,
                                        group_var_items = stac4cast::generate_variable_model_items(model_list = var_models$model_id),
-                                       thumbnail_link = 'pending',
-                                       thumbnail_title = 'pending',
+                                       thumbnail_link = config$variable_groups[[i]]$thumbnail_link,
+                                       thumbnail_title = 'Thumbnail Image',
                                        group_var_vector = NULL,
                                        group_sites = find_var_sites$site_id,
                                        citation_values = var_citations,
@@ -373,6 +276,8 @@ for (i in 1:length(config$variable_groups)){ ## organize variable groups
                  duration == duration_name) |>
           distinct(site_id)
 
+        model_site_text <- paste(as.character(model_sites$site_id), sep="' '", collapse=", ")
+
         model_vars <- forecast_data_df |>
           filter(model_id == m,
                  variable == var_name,
@@ -395,10 +300,26 @@ for (i in 1:length(config$variable_groups)){ ## organize variable groups
           model_code_link <- registered_model_id$`Web link to model code`[idx]
         }
 
+        model_description <- paste0("All forecasts for the ",
+                                    var_formal_name,
+                                    ' variable for the ',
+                                    m,
+                                    ' model. Information for the model is provided as follows: ',
+                                    registered_model_id[idx,"Describe your modeling approach in your own words."][[1]],
+                                    '.
+                                    The model predicts this variable at the following sites: ',
+                                    model_site_text,
+                                    '.
+                                    Forecasts are the raw forecasts that includes all ensemble members or distribution parameters. Due to the size of the raw forecasts, we recommend accessing the forecast summaries or scores to analyze forecasts (unless you need the individual ensemble members)')
+
+        model_keywords <- c(list('Forecasts',config$project_id, names(config$variable_groups)[i], m, var_name_full[j], var_name, duration_value, duration_name),
+                            as.list(model_sites$site_id))
+
         stac4cast::build_model(model_id = m,
                                stac_id = stac_id,
                                team_name = registered_model_id$`Long name of the model`[idx],
-                               model_description = registered_model_id[idx,"Describe your modeling approach in your own words."][[1]],
+                               # model_description = registered_model_id[idx,"Describe your modeling approach in your own words."][[1]],
+                               model_description = model_description,
                                start_date = model_min_date,
                                end_date = model_max_date,
                                var_values = model_vars$var_duration_name,
@@ -414,7 +335,8 @@ for (i in 1:length(config$variable_groups)){ ## organize variable groups
                                table_description = forecast_description_create,
                                full_var_df = model_vars,
                                code_web_link = model_code_link,
-                               model_keywords = NULL)
+                               model_keywords = model_keywords)
+
       } ## end model loop
     } ## end duration loop
 
