@@ -13,6 +13,7 @@ catalog_config <- config$catalog_config
 
 ## CREATE table for column descriptions
 forecast_description_create <- data.frame(datetime = 'datetime of the forecasted value (ISO 8601)',
+                                          date = 'date of the forecasted value',
                                           site_id = 'For forecasts that are not on a spatial grid, use of a site dimension that maps to a more detailed geometry (points, polygons, etc.) is allowable. In general this would be documented in the external metadata (e.g., alook-up table that provides lon and lat)',
                                           family = 'For ensembles: “ensemble.” Default value if unspecified for probability distributions: Name of the statistical distribution associated with the reported statistics. The “sample” distribution is synonymous with “ensemble.”For summary statistics: “summary.”',
                                           parameter = 'ensemble member or distribution parameter',
@@ -62,22 +63,22 @@ build_description <- paste0("Forecasts are the raw forecasts that includes all e
 forecast_sites <- forecast_sites$site_id
 
 stac4cast::build_forecast_scores(table_schema = forecast_theme_df,
-                      #theme_id = 'Forecasts',
-                      table_description = forecast_description_create,
-                      start_date = forecast_min_date,
-                      end_date = forecast_max_date,
-                      id_value = "daily-forecasts",
-                      description_string = build_description,
-                      about_string = catalog_config$about_string,
-                      about_title = catalog_config$about_title,
-                      theme_title = "Forecasts",
-                      destination_path = catalog_config$forecast_path,
-                      aws_download_path = catalog_config$aws_download_path_forecasts,
-                      link_items = stac4cast::generate_group_values(group_values = names(config$variable_groups)),
-                      thumbnail_link = catalog_config$forecasts_thumbnail,
-                      thumbnail_title = catalog_config$forecasts_thumbnail_title,
-                      group_sites = forecast_sites,
-                      model_child = TRUE)
+                                 #theme_id = 'Forecasts',
+                                 table_description = forecast_description_create,
+                                 start_date = forecast_min_date,
+                                 end_date = forecast_max_date,
+                                 id_value = "daily-forecasts",
+                                 description_string = build_description,
+                                 about_string = catalog_config$about_string,
+                                 about_title = catalog_config$about_title,
+                                 theme_title = "Forecasts",
+                                 destination_path = catalog_config$forecast_path,
+                                 aws_download_path = catalog_config$aws_download_path_forecasts,
+                                 link_items = stac4cast::generate_group_values(group_values = names(config$variable_groups)),
+                                 thumbnail_link = catalog_config$forecasts_thumbnail,
+                                 thumbnail_title = catalog_config$forecasts_thumbnail_title,
+                                 group_sites = forecast_sites,
+                                 model_child = TRUE)
 
 ## READ IN GSHEET FILES
 variable_gsheet <- gsheet2tbl(config$target_metadata_gsheet)
@@ -238,7 +239,7 @@ for (i in 1:length(config$variable_groups)){ ## organize variable groups
       forecast_sites <- c()
 
       ## LOOP OVER MODEL IDS AND CREATE JSONS
-      for (m in theme_models$model_id){
+      for (m in var_models$model_id){
 
         # make model items directory
         if (!dir.exists(paste0(catalog_config$forecast_path,'/',names(config$variable_groups)[i],'/',var_formal_name,"/models"))){
