@@ -213,7 +213,7 @@ for (i in 1:length(config$variable_groups)){ ## organize variable groups
 
       # variable_name_build <- append(variable_name_build, var_formal_name)
 
-      stac4cast::build_group_variables(table_schema = forecast_data_df,
+      stac4cast::build_group_variables(table_schema = forecast_theme_df,
                                        #theme_id = var_formal_name[j],
                                        table_description = forecast_description_create,
                                        start_date = var_min_date,
