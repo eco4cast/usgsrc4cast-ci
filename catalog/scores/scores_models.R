@@ -7,11 +7,6 @@ library(readr)
 config <- yaml::read_yaml('challenge_configuration.yaml')
 catalog_config <- config$catalog_config
 
-# names(config$variable_groups)
-# variable_groups <- names(config$variable_groups)
-# variable_list <- config$variable_groups
-
-
 ## CREATE table for column descriptions
 scores_description_create <- data.frame(reference_datetime ='datetime that the forecast was initiated (horizon = 0)',
                                  site_id = 'For forecasts that are not on a spatial grid, use of a site dimension that maps to a more detailed geometry (points, polygons, etc.) is allowable. In general this would be documented in the external metadata (e.g., alook-up table that provides lon and lat); however in netCDF this could be handled by the CF Discrete Sampling Geometry data model.',
