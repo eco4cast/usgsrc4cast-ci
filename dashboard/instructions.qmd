@@ -62,7 +62,7 @@ The file is a csv format with the following columns:
 -   `project_id`: use `usgsrc4cast`
 
 -   `model_id`: the short name of the model defined as the model_id in your registration. The model_id should have no spaces.
-    `model_id` should reflect a method to forecast one or a set of target variables and must be unique to the neon4cast challenge.
+    `model_id` should reflect a method to forecast one or a set of target variables and must be unique to the `usgsrc4cast` challenge.
 
 -   `datetime`: forecast timestamp.
     Format `%Y-%m-%d %H:%M:%S` with UTC as the time zone.
@@ -129,8 +129,7 @@ Ensemble (or sample) forecasts are transformed to a probability distribution fun
 Here is an example of a forecast that uses a normal distribution:
 
 ```{r}
-# TODO: need to update to different example
-df <- readr::read_csv("https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/forecasts/raw/T20231102190926_aquatics-2023-10-19-climatology.csv.gz", show_col_types = FALSE)
+df <- readr::read_csv("https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/forecasts/raw/project_id=usgsrc4cast/T20240506050515_usgsrc4cast-2024-05-05-climatology.csv.gz", show_col_types = FALSE)
 ```
 ```{r}
 df |> 
@@ -141,8 +140,7 @@ df |>
 For an ensemble (or sample) forecast, the `family` column uses the word `ensemble` to designate that it is a ensemble forecast and the parameter column is the ensemble member number (`1`, `2`, `3` ...)
 
 ```{r}
-# TODO: need to update to different example 
-df <- readr::read_csv("https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/forecasts/raw/T20231102190926_aquatics-2023-10-19-persistenceRW.csv.gz", show_col_types = FALSE)
+df <- readr::read_csv("https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/forecasts/raw/project_id=usgsrc4cast/T20240506050515_usgsrc4cast-2024-05-05-persistenceRW.csv.gz", show_col_types = FALSE)
 ```
 ```{r}
 df |> 

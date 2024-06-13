@@ -32,8 +32,8 @@
     {
       "rel": "about",
       "href": "https://projects.ecoforecast.org/usgsrc4cast-docs/",
-      "type": "text/html",
-      "title": "EFI-USGS River Chlorophyll Forecasting Challenge Documentation"
+      "title": "EFI-USGS River Chlorophyll Forecasting Challenge Documentation",
+      "type": "text/html"
     },
     {
       "rel": "describedby",
@@ -53,21 +53,21 @@
       "interval": [
         [
           "2024-01-29T00:00:00Z",
-          "2024-03-28T00:00:00Z"
+          "2024-06-02T00:00:00Z"
         ]
       ]
     }
   },
   "table:columns": [
     {
-      "name": "site_id",
-      "type": "string",
-      "description": "For forecasts that are not on a spatial grid, use of a site dimension that maps to a more detailed geometry (points, polygons, etc.) is allowable. In general this would be documented in the external metadata (e.g., alook-up table that provides lon and lat)"
+      "name": "parameter",
+      "type": "double",
+      "description": "ensemble member or distribution parameter"
     },
     {
-      "name": "prediction",
-      "type": "double",
-      "description": "predicted value for variable"
+      "name": "datetime",
+      "type": "timestamp[us, tz=UTC]",
+      "description": "datetime of the forecasted value (ISO 8601)"
     },
     {
       "name": "variable",
@@ -75,19 +75,9 @@
       "description": "name of forecasted variable"
     },
     {
-      "name": "height",
-      "type": "string",
-      "description": "variable height"
-    },
-    {
-      "name": "horizon",
+      "name": "prediction",
       "type": "double",
-      "description": "number of days in forecast"
-    },
-    {
-      "name": "parameter",
-      "type": "int32",
-      "description": "ensemble member or distribution parameter"
+      "description": "predicted value for variable"
     },
     {
       "name": "family",
@@ -96,39 +86,24 @@
     },
     {
       "name": "reference_datetime",
-      "type": "timestamp[us, tz=UTC]",
+      "type": "string",
       "description": "datetime that the forecast was initiated (horizon = 0)"
     },
     {
-      "name": "forecast_valid",
+      "name": "site_id",
       "type": "string",
-      "description": "date when forecast is valid"
-    },
-    {
-      "name": "datetime",
-      "type": "timestamp[us, tz=UTC]",
-      "description": "datetime of the forecasted value (ISO 8601)"
-    },
-    {
-      "name": "longitude",
-      "type": "double",
-      "description": "forecast site longitude"
-    },
-    {
-      "name": "latitude",
-      "type": "double",
-      "description": "forecast site latitude"
+      "description": "For forecasts that are not on a spatial grid, use of a site dimension that maps to a more detailed geometry (points, polygons, etc.) is allowable. In general this would be documented in the external metadata (e.g., alook-up table that provides lon and lat)"
     }
   ],
   "assets": {
     "data": {
-      "href": "s3://anonymous@drivers/noaa/gefs-v12-reprocess/pseudo/parquet?endpoint_override=s3.flare-forecast.org",
+      "href": "s3://anonymous@drivers/noaa/gefs-v12-reprocess//pseudo/parquet?endpoint_override=s3.flare-forecast.org",
       "type": "application/x-parquet",
       "title": "Database Access",
       "roles": [
         "data"
       ],
-      "description": "Use `arrow` for remote access to the database. This R code will return results for NEON forecasts associated with the forecasting challenge.\n\n### R\n\n```{r}\n# Use code below\n\nall_results <- arrow::open_dataset(\"s3://anonymous@drivers/noaa/gefs-v12-reprocess/pseudo/parquet?endpoint_override=s3.flare-forecast.org\")\ndf <- all_results |> dplyr::collect()\n\n```\n       \n\nYou can use dplyr operations before calling `dplyr::collect()` to `summarise`, `select` columns, and/or `filter` rows prior to pulling the data into a local `data.frame`. Reducing the data that is pulled locally will speed up the data download speed and reduce your memory usage.\n\n\n"
+      "description": "Use `arrow` for remote access to the database. This R code will return results for NEON forecasts associated with the forecasting challenge.\n\n### R\n\n```{r}\n# Use code below\n\nall_results <- arrow::open_dataset(\"s3://anonymous@drivers/noaa/gefs-v12-reprocess//pseudo/parquet?endpoint_override=s3.flare-forecast.org\")\ndf <- all_results |> dplyr::collect()\n\n```\n       \n\nYou can use dplyr operations before calling `dplyr::collect()` to `summarise`, `select` columns, and/or `filter` rows prior to pulling the data into a local `data.frame`. Reducing the data that is pulled locally will speed up the data download speed and reduce your memory usage.\n\n\n"
     },
     "thumbnail": {
       "href": "https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/DSC_0001.jpg",

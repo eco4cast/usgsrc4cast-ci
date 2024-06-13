@@ -29,10 +29,14 @@ furrr::future_walk(dplyr::pull(site_list, site_id), function(curr_site_id){
     stage3_df <- stage3_dataset |>
       dplyr::filter(site_id == curr_site_id) |>
       dplyr::collect()
+    if(nrow(stage3_df) == 0){
+      max_date <- NA
+    }else{
+      max_date <- stage3_df |>
+        dplyr::summarise(max = as.character(lubridate::as_date(max(datetime)))) |>
+        dplyr::pull(max)
+    }
 
-    max_date <- stage3_df |>
-      dplyr::summarise(max = as.character(lubridate::as_date(max(datetime)))) |>
-      dplyr::pull(max)
   }else{
     max_date <- NA
   }
@@ -42,11 +46,11 @@ furrr::future_walk(dplyr::pull(site_list, site_id), function(curr_site_id){
                                       endpoint = config$endpoint,
                                       bucket = driver_bucket)
 
-  if(length(stage3_dataset$files) > 0){
+  if(length(stage3_dataset$files) > 0 & nrow(stage3_df) > 0){
     cut_off <- as.character(lubridate::as_date(max_date) - lubridate::days(3))
   }
 
-  if(length(stage3_dataset$files) > 0){
+  if(length(stage3_dataset$files) > 0 & nrow(stage3_df) > 0){
     pseudo_df <- arrow::open_dataset(s3_pseudo) |>
       dplyr::filter(variable %in% c("PRES","TMP","RH","UGRD","VGRD","APCP","DSWRF","DLWRF")) |>
       dplyr::filter(site_id == curr_site_id,
@@ -69,7 +73,7 @@ furrr::future_walk(dplyr::pull(site_list, site_id), function(curr_site_id){
       dplyr::mutate(ensemble = as.numeric(stringr::str_sub(ensemble, start = 4, end = 5))) |>
       dplyr::rename(parameter = ensemble)
 
-    if(length(stage3_dataset$files) > 0){
+    if(length(stage3_dataset$files) > 0 & nrow(stage3_df) > 0){
       stage3_df_update <- stage3_df |>
         dplyr::filter(datetime < min(df2$datetime))
 

@@ -26,7 +26,9 @@ noaa_description_create <- data.frame(site_id = 'For forecasts that are not on a
                                       latitude = 'forecast site latitude')
 
 
-noaa_theme_df <- arrow::open_dataset(arrow::s3_bucket(paste0(config$noaa_forecast_bucket,"stage2/parquet/0/2023-08-01/feea"), endpoint_override = config$noaa_endpoint, anonymous = TRUE))
+noaa_theme_df <- arrow::open_dataset(arrow::s3_bucket(paste0(config$driver_bucket, "/gefs-v12/stage2"),
+                                                      endpoint_override = config$endpoint,
+                                                      anonymous = TRUE))
 
 
 noaa_theme_dates <- arrow::open_dataset(arrow::s3_bucket(paste0(config$driver_bucket,"/gefs-v12/stage2"),
