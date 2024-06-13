@@ -67,7 +67,6 @@ catalog_config:
   forecast_path: 'catalog/forecasts/'
   scores_path: 'catalog/scores/'
   summaries_path: 'catalog/summaries/'
-  # here
   summaries_thumbnail: 'https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/thumbnails/image/Manual%20measurement%20streamgage.jpg'
   summaries_thumbnail_title: "USGS Image"
   inventory_path: 'catalog/inventory'
