@@ -13,6 +13,7 @@ catalog_config <- config$catalog_config
 
 ## CREATE table for column descriptions
 forecast_description_create <- data.frame(datetime = 'datetime of the forecasted value (ISO 8601)',
+                                          date = 'date of the forecasted value',
                                           site_id = 'For forecasts that are not on a spatial grid, use of a site dimension that maps to a more detailed geometry (points, polygons, etc.) is allowable. In general this would be documented in the external metadata (e.g., alook-up table that provides lon and lat)',
                                           family = 'For ensembles: “ensemble.” Default value if unspecified for probability distributions: Name of the statistical distribution associated with the reported statistics. The “sample” distribution is synonymous with “ensemble.”For summary statistics: “summary.”',
                                           parameter = 'ensemble member or distribution parameter',
@@ -34,13 +35,12 @@ forecast_description_create <- data.frame(datetime = 'datetime of the forecasted
 # model_id <- 'climatology'
 
 print('FIND FORECAST TABLE SCHEMA')
-forecast_theme_df <- arrow::open_dataset(arrow::s3_bucket(config$forecasts_bucket,
-                                                          endpoint_override = config$endpoint, anonymous = TRUE))
+forecast_theme_df <- arrow::open_dataset(arrow::s3_bucket(config$forecasts_bucket, endpoint_override = config$endpoint, anonymous = TRUE)) #|>
 
 print('FIND INVENTORY BUCKET')
 forecast_s3 <- arrow::s3_bucket(glue::glue("{config$inventory_bucket}/catalog/forecasts/project_id={config$project_id}"),
-                              endpoint_override = "sdsc.osn.xsede.org",
-                              anonymous=TRUE)
+                                endpoint_override = "sdsc.osn.xsede.org",
+                                anonymous=TRUE)
 
 print('OPEN INVENTORY BUCKET')
 forecast_data_df <- arrow::open_dataset(forecast_s3) |>
@@ -62,22 +62,22 @@ build_description <- paste0("Forecasts are the raw forecasts that includes all e
 forecast_sites <- forecast_sites$site_id
 
 stac4cast::build_forecast_scores(table_schema = forecast_theme_df,
-                      #theme_id = 'Forecasts',
-                      table_description = forecast_description_create,
-                      start_date = forecast_min_date,
-                      end_date = forecast_max_date,
-                      id_value = "daily-forecasts",
-                      description_string = build_description,
-                      about_string = catalog_config$about_string,
-                      about_title = catalog_config$about_title,
-                      theme_title = "Forecasts",
-                      destination_path = catalog_config$forecast_path,
-                      aws_download_path = catalog_config$aws_download_path_forecasts,
-                      link_items = stac4cast::generate_group_values(group_values = names(config$variable_groups)),
-                      thumbnail_link = catalog_config$forecasts_thumbnail,
-                      thumbnail_title = catalog_config$forecasts_thumbnail_title,
-                      group_sites = forecast_sites,
-                      model_child = TRUE)
+                                 #theme_id = 'Forecasts',
+                                 table_description = forecast_description_create,
+                                 start_date = forecast_min_date,
+                                 end_date = forecast_max_date,
+                                 id_value = "daily-forecasts",
+                                 description_string = build_description,
+                                 about_string = catalog_config$about_string,
+                                 about_title = catalog_config$about_title,
+                                 theme_title = "Forecasts",
+                                 destination_path = catalog_config$forecast_path,
+                                 aws_download_path = catalog_config$aws_download_path_forecasts,
+                                 link_items = stac4cast::generate_group_values(group_values = names(config$variable_groups)),
+                                 thumbnail_link = catalog_config$forecasts_thumbnail,
+                                 thumbnail_title = catalog_config$forecasts_thumbnail_title,
+                                 group_sites = forecast_sites,
+                                 model_child = FALSE)
 
 ## READ IN GSHEET FILES
 variable_gsheet <- gsheet2tbl(config$target_metadata_gsheet)
@@ -95,7 +95,7 @@ registered_model_id <- gsheet_read |>
   arrange(row_non_na) |>
   distinct(model_id, project_id, .keep_all = TRUE)
 
-## BUILD VARIABLE GROUPS
+## BUILD VARIABLE GROUPS (variables and models)
 
 for (i in 1:length(config$variable_groups)){ ## organize variable groups
   print(names(config$variable_groups)[i])
@@ -110,12 +110,12 @@ for (i in 1:length(config$variable_groups)){ ## organize variable groups
   }
 
   ## REMOVE STALE OR UNUSED DIRECTORIES
-  current_var_path <- paste0(catalog_config$summaries_path,names(config$variable_groups[i]))
+  current_var_path <- paste0(catalog_config$forecast_path,names(config$variable_groups[i]))
   current_var_dirs <- list.dirs(current_var_path, recursive = FALSE, full.names = TRUE)
   unlink(current_var_dirs, recursive = TRUE)
 
-  if (!dir.exists(paste0(catalog_config$forecast_path,names(config$variable_groups[i])))){
-    dir.create(paste0(catalog_config$forecast_path,names(config$variable_groups[i])))
+  if (!dir.exists(paste0(catalog_config$forecast_path,'/',names(config$variable_groups[i])))){
+    dir.create(paste0(catalog_config$forecast_path,'/',names(config$variable_groups[i])))
   }
 
   # match variable with full name in gsheet
@@ -127,7 +127,7 @@ for (i in 1:length(config$variable_groups)){ ## organize variable groups
   var_name_full <- var_gsheet_arrange[which(var_gsheet_arrange$`"official" targets name` %in% var_values),1][[1]]
 
   ## CREATE VARIABLE GROUP JSONS
-  group_description <- paste0('This page includes variables for the ',names(config$variable_groups[i]),' group.')
+  group_description <- paste0('All variables for the ',names(config$variable_groups[i]),' group.')
 
   ## find group sites
   find_group_sites <- forecast_data_df |>
@@ -142,7 +142,6 @@ for (i in 1:length(config$variable_groups)){ ## organize variable groups
   variable_name_build <- c()
 
   for(j in 1:length(config$variable_groups[[i]]$group_vars)){ # FOR EACH VARIABLE WITHIN A MODEL GROUP
-
 
     var_name <- names(config$variable_groups[[i]]$group_vars[j])
     print(var_name)
@@ -199,6 +198,7 @@ for (i in 1:length(config$variable_groups)){ ## organize variable groups
       var_description <- paste0('All models for the ',var_formal_name,' variable. The variable description is as follows: ',
                                 var_metadata$Description)
 
+      #var_path <- gsub('forecasts','scores',var_data$path[1])
       var_path <- var_data$path[1]
 
       ## build lists for creating publication items
@@ -211,7 +211,7 @@ for (i in 1:length(config$variable_groups)){ ## organize variable groups
 
       variable_name_build <- append(variable_name_build, var_formal_name)
 
-      # variable_name_build <- append(variable_name_build, var_formal_name)
+      #variable_name_build <- append(variable_name_build, var_formal_name)
 
       stac4cast::build_group_variables(table_schema = forecast_theme_df,
                                        #theme_id = var_formal_name[j],
@@ -229,7 +229,7 @@ for (i in 1:length(config$variable_groups)){ ## organize variable groups
                                        aws_download_path = var_path,
                                        group_var_items = stac4cast::generate_variable_model_items(model_list = var_models$model_id),
                                        thumbnail_link = config$variable_groups[[i]]$thumbnail_link,
-                                       thumbnail_title = 'Thumbnail Image',
+                                       thumbnail_title = "Thumbnail Image",
                                        group_var_vector = NULL,
                                        group_sites = find_var_sites$site_id,
                                        citation_values = var_citations,
@@ -238,7 +238,7 @@ for (i in 1:length(config$variable_groups)){ ## organize variable groups
       forecast_sites <- c()
 
       ## LOOP OVER MODEL IDS AND CREATE JSONS
-      for (m in theme_models$model_id){
+      for (m in var_models$model_id){
 
         # make model items directory
         if (!dir.exists(paste0(catalog_config$forecast_path,'/',names(config$variable_groups)[i],'/',var_formal_name,"/models"))){
@@ -267,8 +267,8 @@ for (i in 1:length(config$variable_groups)){ ## organize variable groups
 
         model_var_full_name <- model_var_duration_df |>
           left_join((variable_gsheet |>
-                        select(variable = `"official" targets name`, full_name = `Variable name`) |>
-                        distinct(variable, .keep_all = TRUE)), by = c('variable'))
+                       select(variable = `"official" targets name`, full_name = `Variable name`) |>
+                       distinct(variable, .keep_all = TRUE)), by = c('variable'))
 
         model_sites <- forecast_data_df |>
           filter(model_id == m,
@@ -288,7 +288,7 @@ for (i in 1:length(config$variable_groups)){ ## organize variable groups
         model_vars$var_duration_name <- paste0(model_vars$duration_name, " ", model_vars$full_name)
 
         forecast_sites <- append(forecast_sites,  stac4cast::get_site_coords(site_metadata = catalog_config$site_metadata_url,
-                                                                  sites = model_sites$site_id))
+                                                                             sites = model_sites$site_id))
 
         idx = which(registered_model_id$model_id == m)
 
@@ -318,7 +318,7 @@ for (i in 1:length(config$variable_groups)){ ## organize variable groups
         stac4cast::build_model(model_id = m,
                                stac_id = stac_id,
                                team_name = registered_model_id$`Long name of the model`[idx],
-                               # model_description = registered_model_id[idx,"Describe your modeling approach in your own words."][[1]],
+                               #model_description = registered_model_id[idx,"Describe your modeling approach in your own words."][[1]],
                                model_description = model_description,
                                start_date = model_min_date,
                                end_date = model_max_date,
@@ -343,7 +343,7 @@ for (i in 1:length(config$variable_groups)){ ## organize variable groups
   } ## end variable loop
 
   ## BUILD THE GROUP PAGES WITH UPDATED VAR/PUB INFORMATION
-  stac4cast::build_group_variables(table_schema = forecast_data_df,
+  stac4cast::build_group_variables(table_schema = forecast_theme_df,
                                    table_description = forecast_description_create,
                                    start_date = forecast_min_date,
                                    end_date = forecast_max_date,

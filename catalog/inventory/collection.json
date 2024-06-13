@@ -27,7 +27,7 @@
     },
     {
       "rel": "cite-as",
-      "href": "https://doi.org/10.1002/fee.2616"
+      "href": "10.1002/fee.2616"
     },
     {
       "rel": "about",
@@ -37,7 +37,7 @@
     },
     {
       "rel": "describedby",
-      "href": "https://projects.ecoforecast.org/usgsrc4cast-docs/",
+      "href": "https://projects.ecoforecast.org/usgsrc4cast-ci/",
       "title": "EFI-USGS River Chlorophyll Forecast Challenge Dashboard",
       "type": "text/html"
     }
@@ -58,12 +58,17 @@
       "interval": [
         [
           "2024-02-07T00:00:00Z",
-          "2024-03-17T00:00:00Z"
+          "2024-07-17T00:00:00Z"
         ]
       ]
     }
   },
   "table:columns": [
+    {
+      "name": "14 columns",
+      "type": null,
+      "description": {}
+    },
     {
       "name": "duration",
       "type": "string",
@@ -126,11 +131,6 @@
     },
     {
       "name": "latitude",
-      "type": "double",
-      "description": {}
-    },
-    {
-      "name": "longitude",
       "type": "double",
       "description": {}
     }

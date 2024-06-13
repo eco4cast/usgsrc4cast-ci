@@ -67,7 +67,6 @@ catalog_config:
   forecast_path: 'catalog/forecasts/'
   scores_path: 'catalog/scores/'
   summaries_path: 'catalog/summaries/'
-  # here
   summaries_thumbnail: 'https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/thumbnails/image/Manual%20measurement%20streamgage.jpg'
   summaries_thumbnail_title: "USGS Image"
   inventory_path: 'catalog/inventory'
@@ -88,7 +87,8 @@ catalog_config:
     min_lon: -122.6692
   site_type: 'MultiPoint'
   base_image_path: 'https://data.ecoforecast.org/usgsrc4cast-catalog'
-  citation_doi: "https://doi.org/10.1002/fee.2616"
+  citation_doi_link: "https://doi.org/10.1002/fee.2616"
+  citation_doi: "10.1002/fee.2616"
   citation_text: "Thomas, R.Q., C. Boettiger, C.C. Carey, M.C. Dietze, L.R. Johnson, M.A. Kenney, J.S. Mclachlan, J.A. Peters, E.R. Sokol, J.F. Weltzin, A. Willson, W.M. Woelmer, and Challenge Contributors. 2023. The NEON Ecological Forecasting Challenge. Frontiers in Ecology and Environment 21: 112-113."
   dashboard_url: "https://projects.ecoforecast.org/usgsrc4cast-ci/"
   dashboard_title: "EFI-USGS River Chlorophyll Forecast Challenge Dashboard"

@@ -17,12 +17,6 @@
       "title": "aquatics"
     },
     {
-      "rel": "child",
-      "type": "application/json",
-      "href": "models/collection.json",
-      "title": "group item"
-    },
-    {
       "rel": "parent",
       "type": "application/json",
       "href": "../catalog.json"
@@ -49,7 +43,7 @@
     },
     {
       "rel": "describedby",
-      "href": "https://projects.ecoforecast.org/usgsrc4cast-docs/",
+      "href": "https://projects.ecoforecast.org/usgsrc4cast-ci/",
       "title": "EFI-USGS River Chlorophyll Forecast Challenge Dashboard",
       "type": "text/html"
     }
@@ -58,28 +52,23 @@
   "extent": {
     "spatial": {
       "bbox": [
-        [
-          -122.6692,
-          39.6327,
-          -74.7781,
-          45.5175
-        ]
+        [-122.6692, 39.6328, -74.7781, 45.5175]
       ]
     },
     "temporal": {
       "interval": [
         [
           "2024-02-07T00:00:00Z",
-          "2024-03-17T00:00:00Z"
+          "2024-07-17T00:00:00Z"
         ]
       ]
     }
   },
   "table:columns": [
     {
-      "name": "reference_datetime",
-      "type": "timestamp[us, tz=UTC]",
-      "description": "datetime that the forecast was initiated (horizon = 0)"
+      "name": "13 columns",
+      "type": null,
+      "description": {}
     },
     {
       "name": "datetime",
@@ -92,9 +81,9 @@
       "description": "For forecasts that are not on a spatial grid, use of a site dimension that maps to a more detailed geometry (points, polygons, etc.) is allowable. In general this would be documented in the external metadata (e.g., alook-up table that provides lon and lat)"
     },
     {
-      "name": "family",
-      "type": "string",
-      "description": "For ensembles: “ensemble.” Default value if unspecified for probability distributions: Name of the statistical distribution associated with the reported statistics. The “sample” distribution is synonymous with “ensemble.”For summary statistics: “summary.”"
+      "name": "prediction",
+      "type": "double",
+      "description": "predicted value for variable"
     },
     {
       "name": "parameter",
@@ -102,14 +91,24 @@
       "description": "ensemble member or distribution parameter"
     },
     {
-      "name": "prediction",
-      "type": "double",
-      "description": "predicted value for variable"
+      "name": "family",
+      "type": "string",
+      "description": "For ensembles: “ensemble.” Default value if unspecified for probability distributions: Name of the statistical distribution associated with the reported statistics. The “sample” distribution is synonymous with “ensemble.”For summary statistics: “summary.”"
+    },
+    {
+      "name": "reference_datetime",
+      "type": "timestamp[us, tz=UTC]",
+      "description": "datetime that the forecast was initiated (horizon = 0)"
     },
     {
       "name": "pub_datetime",
       "type": "timestamp[us, tz=UTC]",
       "description": "datetime that forecast was submitted"
+    },
+    {
+      "name": "date",
+      "type": "date32[day]",
+      "description": "date of the forecasted value"
     },
     {
       "name": "project_id",
@@ -130,11 +129,6 @@
       "name": "model_id",
       "type": "string",
       "description": "unique model identifier"
-    },
-    {
-      "name": "reference_date",
-      "type": "string",
-      "description": "date that the forecast was initiated"
     }
   ],
   "assets": {
