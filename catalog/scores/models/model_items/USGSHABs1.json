@@ -4,7 +4,7 @@
     "https://stac-extensions.github.io/table/v1.2.0/schema.json"
   ],
   "type": "Feature",
-  "id": "climatology",
+  "id": "USGSHABs1",
   "bbox": [
     [
       -122.6692,
@@ -23,14 +23,12 @@
       [],
       [],
       [],
-      [],
-      [],
       []
     ]
   },
   "properties": {
-    "description": "\nmodel info: Forecasts stream chlorophyll-a based on the historic average and standard deviation for that given site and day-of-year.\n\nSites: USGS-01427510, USGS-01463500, USGS-05543010, USGS-05553700, USGS-05558300, USGS-05586300, USGS-14181500, USGS-14211010, USGS-14211720, USGS-05549500\n\nVariables: Daily Chlorophyll_a",
-    "start_datetime": "2024-02-07",
+    "description": "\nmodel info: Uses the randomForest::randomForest() R package model to train site-specific models for predicting river chl-a. Uses ensemble Kalman filter to adjust predicted chl-a states.\n\nSites: USGS-05543010, USGS-05549500, USGS-05553700, USGS-05558300, USGS-05586300, USGS-14181500, USGS-14211720, USGS-01427510\n\nVariables: Daily Chlorophyll_a",
+    "start_datetime": "2024-02-13",
     "end_datetime": "2024-04-30",
     "providers": [
       {
@@ -165,7 +163,7 @@
       "rel": "collection",
       "href": "../collection.json",
       "type": "application/json",
-      "title": "climatology"
+      "title": "USGSHABs1"
     },
     {
       "rel": "root",
@@ -177,11 +175,11 @@
       "rel": "parent",
       "href": "../collection.json",
       "type": "application/json",
-      "title": "climatology"
+      "title": "USGSHABs1"
     },
     {
       "rel": "self",
-      "href": "climatology.json",
+      "href": "USGSHABs1.json",
       "type": "application/json",
       "title": "Model Forecast"
     },
@@ -196,8 +194,8 @@
     "1": {
       "type": "application/json",
       "title": "Model Metadata",
-      "href": "https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/metadata/model_id/climatology.json",
-      "description": "Use `jsonlite::fromJSON()` to download the model metadata JSON file. This R code will return metadata provided during the model registration.\n      \n\n### R\n\n```{r}\n# Use code below\n\nmodel_metadata <- jsonlite::fromJSON(\"https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/metadata/model_id/climatology.json\")\n\n"
+      "href": "https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/metadata/model_id/USGSHABs1.json",
+      "description": "Use `jsonlite::fromJSON()` to download the model metadata JSON file. This R code will return metadata provided during the model registration.\n      \n\n### R\n\n```{r}\n# Use code below\n\nmodel_metadata <- jsonlite::fromJSON(\"https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/metadata/model_id/USGSHABs1.json\")\n\n"
     },
     "2": {
       "type": "text/html",
@@ -208,8 +206,8 @@
     "3": {
       "type": "application/x-parquet",
       "title": "Database Access for Daily Chlorophyll_a",
-      "href": "s3://anonymous@bio230014-bucket01/challenges/scoresproject_id=/duration=P1D/variable=chla/model_id=climatology?endpoint_override=sdsc.osn.xsede.org",
-      "description": "Use `arrow` for remote access to the database. This R code will return results for this variable and model combination.\n\n### R\n\n```{r}\n# Use code below\n\nall_results <- arrow::open_dataset(\"s3://anonymous@bio230014-bucket01/challenges/scoresproject_id=/duration=P1D/variable=chla/model_id=climatology?endpoint_override=sdsc.osn.xsede.org\")\ndf <- all_results |> dplyr::collect()\n\n```\n       \n\nYou can use dplyr operations before calling `dplyr::collect()` to `summarise`, `select` columns, and/or `filter` rows prior to pulling the data into a local `data.frame`. Reducing the data that is pulled locally will speed up the data download speed and reduce your memory usage.\n\n\n"
+      "href": "s3://anonymous@bio230014-bucket01/challenges/scoresproject_id=/duration=P1D/variable=chla/model_id=USGSHABs1?endpoint_override=sdsc.osn.xsede.org",
+      "description": "Use `arrow` for remote access to the database. This R code will return results for this variable and model combination.\n\n### R\n\n```{r}\n# Use code below\n\nall_results <- arrow::open_dataset(\"s3://anonymous@bio230014-bucket01/challenges/scoresproject_id=/duration=P1D/variable=chla/model_id=USGSHABs1?endpoint_override=sdsc.osn.xsede.org\")\ndf <- all_results |> dplyr::collect()\n\n```\n       \n\nYou can use dplyr operations before calling `dplyr::collect()` to `summarise`, `select` columns, and/or `filter` rows prior to pulling the data into a local `data.frame`. Reducing the data that is pulled locally will speed up the data download speed and reduce your memory usage.\n\n\n"
     }
   }
 }

@@ -88,21 +88,21 @@
       "interval": [
         [
           "2024-01-29T00:00:00Z",
-          "2024-03-16T00:00:00Z"
+          "2024-06-02T00:00:00Z"
         ]
       ]
     }
   },
   "table:columns": [
     {
-      "name": "site_id",
-      "type": "string",
-      "description": "For forecasts that are not on a spatial grid, use of a site dimension that maps to a more detailed geometry (points, polygons, etc.) is allowable. In general this would be documented in the external metadata (e.g., alook-up table that provides lon and lat)"
+      "name": "parameter",
+      "type": "double",
+      "description": "ensemble member or distribution parameter"
     },
     {
-      "name": "prediction",
-      "type": "double",
-      "description": "predicted value for variable"
+      "name": "datetime",
+      "type": "timestamp[us, tz=UTC]",
+      "description": "datetime of the forecasted value (ISO 8601)"
     },
     {
       "name": "variable",
@@ -110,19 +110,9 @@
       "description": "name of forecasted variable"
     },
     {
-      "name": "height",
-      "type": "string",
-      "description": "variable height"
-    },
-    {
-      "name": "horizon",
+      "name": "prediction",
       "type": "double",
-      "description": "number of days in forecast"
-    },
-    {
-      "name": "parameter",
-      "type": "int32",
-      "description": "ensemble member or distribution parameter"
+      "description": "predicted value for variable"
     },
     {
       "name": "family",
@@ -131,28 +121,13 @@
     },
     {
       "name": "reference_datetime",
-      "type": "timestamp[us, tz=UTC]",
+      "type": "string",
       "description": "datetime that the forecast was initiated (horizon = 0)"
     },
     {
-      "name": "forecast_valid",
+      "name": "site_id",
       "type": "string",
-      "description": "date when forecast is valid"
-    },
-    {
-      "name": "datetime",
-      "type": "timestamp[us, tz=UTC]",
-      "description": "datetime of the forecasted value (ISO 8601)"
-    },
-    {
-      "name": "longitude",
-      "type": "double",
-      "description": "forecast site longitude"
-    },
-    {
-      "name": "latitude",
-      "type": "double",
-      "description": "forecast site latitude"
+      "description": "For forecasts that are not on a spatial grid, use of a site dimension that maps to a more detailed geometry (points, polygons, etc.) is allowable. In general this would be documented in the external metadata (e.g., alook-up table that provides lon and lat)"
     }
   ],
   "assets": {

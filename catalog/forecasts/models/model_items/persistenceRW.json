@@ -4,7 +4,7 @@
     "https://stac-extensions.github.io/table/v1.2.0/schema.json"
   ],
   "type": "Feature",
-  "id": "climatology",
+  "id": "persistenceRW",
   "bbox": [
     [
       -122.6692,
@@ -29,9 +29,9 @@
     ]
   },
   "properties": {
-    "description": "\nmodel info: Forecasts stream chlorophyll-a based on the historic average and standard deviation for that given site and day-of-year.\n\nSites: USGS-01427510, USGS-01463500, USGS-05543010, USGS-05553700, USGS-05558300, USGS-05586300, USGS-14181500, USGS-14211010, USGS-14211720, USGS-05549500\n\nVariables: Daily Chlorophyll_a",
+    "description": "\nmodel info: Random walk model based on most recent stream chl-a observations using the fable::RW() model.\n\nSites: USGS-01427510, USGS-01463500, USGS-05543010, USGS-05549500, USGS-05553700, USGS-05558300, USGS-05586300, USGS-14181500, USGS-14211010, USGS-14211720\n\nVariables: Daily Chlorophyll_a",
     "start_datetime": "2024-02-07",
-    "end_datetime": "2024-06-03",
+    "end_datetime": "2024-06-02",
     "providers": [
       {
         "url": "pending",
@@ -58,9 +58,9 @@
     ],
     "table:columns": [
       {
-        "name": "reference_datetime",
+        "name": "datetime",
         "type": "timestamp[us, tz=UTC]",
-        "description": "datetime that the forecast was initiated (horizon = 0)"
+        "description": "datetime of the forecasted value (ISO 8601)"
       },
       {
         "name": "site_id",
@@ -68,9 +68,14 @@
         "description": "For forecasts that are not on a spatial grid, use of a site dimension that maps to a more detailed geometry (points, polygons, etc.) is allowable. In general this would be documented in the external metadata (e.g., alook-up table that provides lon and lat)"
       },
       {
-        "name": "datetime",
-        "type": "timestamp[us, tz=UTC]",
-        "description": "datetime of the forecasted value (ISO 8601)"
+        "name": "prediction",
+        "type": "double",
+        "description": "predicted value for variable"
+      },
+      {
+        "name": "parameter",
+        "type": "string",
+        "description": "ensemble member or distribution parameter"
       },
       {
         "name": "family",
@@ -78,44 +83,19 @@
         "description": "For ensembles: “ensemble.” Default value if unspecified for probability distributions: Name of the statistical distribution associated with the reported statistics. The “sample” distribution is synonymous with “ensemble.”For summary statistics: “summary.”"
       },
       {
+        "name": "reference_datetime",
+        "type": "timestamp[us, tz=UTC]",
+        "description": "datetime that the forecast was initiated (horizon = 0)"
+      },
+      {
         "name": "pub_datetime",
         "type": "timestamp[us, tz=UTC]",
         "description": "datetime that forecast was submitted"
       },
       {
-        "name": "mean",
-        "type": "double",
-        "description": "mean forecast prediction"
-      },
-      {
-        "name": "median",
-        "type": "double",
-        "description": "median forecast prediction"
-      },
-      {
-        "name": "sd",
-        "type": "double",
-        "description": "standard deviation forecasts"
-      },
-      {
-        "name": "quantile97.5",
-        "type": "double",
-        "description": "upper 97.5 percentile value of forecast"
-      },
-      {
-        "name": "quantile02.5",
-        "type": "double",
-        "description": "upper 2.5 percentile value of forecast"
-      },
-      {
-        "name": "quantile90",
-        "type": "double",
-        "description": "upper 90 percentile value of forecast"
-      },
-      {
-        "name": "quantile10",
-        "type": "double",
-        "description": "upper 10 percentile value of forecast"
+        "name": "date",
+        "type": "date32[day]",
+        "description": {}
       },
       {
         "name": "project_id",
@@ -150,7 +130,7 @@
       "rel": "collection",
       "href": "../collection.json",
       "type": "application/json",
-      "title": "climatology"
+      "title": "persistenceRW"
     },
     {
       "rel": "root",
@@ -162,17 +142,17 @@
       "rel": "parent",
       "href": "../collection.json",
       "type": "application/json",
-      "title": "climatology"
+      "title": "persistenceRW"
     },
     {
       "rel": "self",
-      "href": "climatology.json",
+      "href": "persistenceRW.json",
       "type": "application/json",
       "title": "Model Forecast"
     },
     {
       "rel": "item",
-      "href": "https://github.com/eco4cast/usgsrc4cast-ci/blob/main/baseline_models/models/aquatics_climatology.R",
+      "href": "pending",
       "type": "text/html",
       "title": "Link for Model Code"
     }
@@ -181,20 +161,20 @@
     "1": {
       "type": "application/json",
       "title": "Model Metadata",
-      "href": "https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/metadata/model_id/climatology.json",
-      "description": "Use `jsonlite::fromJSON()` to download the model metadata JSON file. This R code will return metadata provided during the model registration.\n      \n\n### R\n\n```{r}\n# Use code below\n\nmodel_metadata <- jsonlite::fromJSON(\"https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/metadata/model_id/climatology.json\")\n\n"
+      "href": "https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/metadata/model_id/persistenceRW.json",
+      "description": "Use `jsonlite::fromJSON()` to download the model metadata JSON file. This R code will return metadata provided during the model registration.\n      \n\n### R\n\n```{r}\n# Use code below\n\nmodel_metadata <- jsonlite::fromJSON(\"https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/metadata/model_id/persistenceRW.json\")\n\n"
     },
     "2": {
       "type": "text/html",
       "title": "Link for Model Code",
-      "href": "https://github.com/eco4cast/usgsrc4cast-ci/blob/main/baseline_models/models/aquatics_climatology.R",
+      "href": "pending",
       "description": "The link to the model code provided by the model submission team"
     },
     "3": {
       "type": "application/x-parquet",
       "title": "Database Access for Daily Chlorophyll_a",
-      "href": "s3://anonymous@bio230014-bucket01/challenges/forecasts/summariesproject_id=/duration=P1D/variable=chla/model_id=climatology?endpoint_override=sdsc.osn.xsede.org",
-      "description": "Use `arrow` for remote access to the database. This R code will return results for this variable and model combination.\n\n### R\n\n```{r}\n# Use code below\n\nall_results <- arrow::open_dataset(\"s3://anonymous@bio230014-bucket01/challenges/forecasts/summariesproject_id=/duration=P1D/variable=chla/model_id=climatology?endpoint_override=sdsc.osn.xsede.org\")\ndf <- all_results |> dplyr::collect()\n\n```\n       \n\nYou can use dplyr operations before calling `dplyr::collect()` to `summarise`, `select` columns, and/or `filter` rows prior to pulling the data into a local `data.frame`. Reducing the data that is pulled locally will speed up the data download speed and reduce your memory usage.\n\n\n"
+      "href": "s3://anonymous@bio230014-bucket01/challenges/forecastsproject_id=/duration=P1D/variable=chla/model_id=persistenceRW?endpoint_override=sdsc.osn.xsede.org",
+      "description": "Use `arrow` for remote access to the database. This R code will return results for this variable and model combination.\n\n### R\n\n```{r}\n# Use code below\n\nall_results <- arrow::open_dataset(\"s3://anonymous@bio230014-bucket01/challenges/forecastsproject_id=/duration=P1D/variable=chla/model_id=persistenceRW?endpoint_override=sdsc.osn.xsede.org\")\ndf <- all_results |> dplyr::collect()\n\n```\n       \n\nYou can use dplyr operations before calling `dplyr::collect()` to `summarise`, `select` columns, and/or `filter` rows prior to pulling the data into a local `data.frame`. Reducing the data that is pulled locally will speed up the data download speed and reduce your memory usage.\n\n\n"
     }
   }
 }
