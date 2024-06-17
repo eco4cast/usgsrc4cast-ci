@@ -14,7 +14,7 @@ We provide an overview of the steps for submitting with the details below:
 2)  Register and describe your model at <https://forms.gle/kg2Vkpho9BoMXSy57>. You are not required to register if your forecast submission uses the word "example" in your model_id". Any forecasts with "example" in the model_id will not be used in forecast evaluation analyses. Use `usgsrc4cast` as the challenge you are registering for. 
 3)  Generate a forecast!
 4)  Write the forecast output to a file that follows our standardized format (described below).
-5)  Submit your forecast using an R function (provided below).
+5)  Submit your forecast using an R or python function (provided below).
 6)  Watch your forecast be evaluated as new data are collected.
 
 ## Generating a forecast
@@ -47,8 +47,8 @@ See the [variable tables](targets.qmd#sec-targets) for the horizon that is assoc
 ### Forecasts can be submitted everyday
 
 Since forecasts can be submitted everyday, automation is important.
-We provide an [example GitHub](https://github.com/eco4cast/neon4cast-example) repository that can be used to automate your forecast with GitHub Actions.
-It also includes the use of a custom Docker Container [eco4cast/rocker-neon4cast:latest](https://github.com/eco4cast/neon4cast-ci/blob/main/Dockerfile) that has many of the packages and functions needed to generate and submit forecasts.
+We provide an example GitHub repository for both [R](https://github.com/eco4cast/usgsrc4cast-R-example) and [Python](https://github.com/eco4cast/usgsrc4cast-python-example) that can be used to automate your forecast with GitHub Actions.
+It also includes the use of a custom Docker Container for [R (eco4cast/rocker-neon4cast:latest)](https://github.com/eco4cast/neon4cast-ci/blob/main/Dockerfile) or [Python (eco4cast/usgsrc4cast-python:latest)](https://github.com/eco4cast/usgsrc4cast-ci/blob/main/python/Dockerfile) that has many of the packages and functions needed to generate and submit forecasts.
 
 ## You can forecast at any of the USGS sites
 
@@ -172,17 +172,29 @@ Individual forecast files can be uploaded any time.
 Teams will submit their forecast csv files through an R function.
 The csv file can only contain one unique `model_id` and one unique `project_id`.
 
-The function is available using the following code
+The submit function is available using the following code in R 
 
 ```{r eval = FALSE}
 source("https://raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/prod/R/eco4cast-helpers/submit.R") 
 source("https://raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/prod/R/eco4cast-helpers/forecast_output_validator.R")
+
+submit(forecast_file = "project_id-year-month-day-model_id.csv", project_id = "usgsrc4cast")
 ```
 
-The submit function is
+or Python 
 
-```{r eval = FALSE}
-submit(forecast_file = "project_id-year-month-day-model_id.csv")
+```{python eval = FALSE}
+import requests
+
+def download_and_exec_script(url):
+    response = requests.get(url)
+    response.raise_for_status() 
+    exec(response.text, globals())
+    
+download_and_exec_script("https://raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/prod/python/submit.py")
+download_and_exec_script("https://raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/prod/python/forecast_output_validator.py")
+
+submit(forecast_file = "project_id-year-month-day-model_id.csv", project_id = "usgsrc4cast")
 ```
 
 ## Post-submission
