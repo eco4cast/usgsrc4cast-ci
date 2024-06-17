@@ -66,6 +66,11 @@ jobs:
           fetch-depth: 0
           set-safe-directory: '*'
 
+      - name: Install Python packages
+        run: |
+          apt-get update && apt-get install -y python3-pip
+          pip3 install pandas
+
       - uses: quarto-dev/quarto-actions/setup@v2
         with:
           version: 1.4.146
