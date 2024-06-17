@@ -13,7 +13,7 @@ RUN sudo ./aws/install
 RUN apt-get update && apt-get -y install python3 python3-pip
 
 # Install Python packages
-RUN pip install --no-cache-dir pandas pyarrow statsmodels boto3 requests
+RUN pip install --no-cache-dir pandas pyarrow statsmodels boto3 requests matplotlib
 
 
 COPY cron.sh /etc/services.d/cron/run

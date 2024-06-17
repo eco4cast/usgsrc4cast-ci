@@ -74,10 +74,19 @@ The daily mean target file is located at the following URL.
 url <- "https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/targets/project_id=usgsrc4cast/duration=P1D/river-chl-targets.csv.gz"
 ```
 
-You can directly load it into R using the following
+You can directly load it into memory for R
 
 ```{r}
-aquatics_targets <- read_csv(url, show_col_types = FALSE)
+aquatics_targets <- readr::read_csv(url, show_col_types = FALSE)
+```
+
+or python
+
+```{python}
+import pandas as pd
+
+url = "https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/targets/project_id=usgsrc4cast/duration=P1D/river-chl-targets.csv.gz"
+aquatics_targets = pd.read_csv(url)
 ```
 
 The file contains the following columns
