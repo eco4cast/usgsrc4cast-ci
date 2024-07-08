@@ -25,19 +25,20 @@ noaa_description_create <- data.frame(site_id = 'For forecasts that are not on a
                                       longitude = 'forecast site longitude',
                                       latitude = 'forecast site latitude')
 
+noaa_theme_df <- arrow::open_dataset(arrow::s3_bucket(paste0(config$noaa_forecast_bucket,"/stage2/reference_datetime=2024-03-21/site_id=USGS-05553700"), endpoint_override = config$noaa_endpoint, anonymous = TRUE))
 
-noaa_theme_df <- arrow::open_dataset(arrow::s3_bucket(paste0(config$driver_bucket, "/gefs-v12/stage2"),
-                                                      endpoint_override = config$endpoint,
-                                                      anonymous = TRUE))
+#noaa_theme_dates <- arrow::open_dataset(arrow::s3_bucket(paste0(config$noaa_forecast_bucket,"/stage2"), endpoint_override = config$noaa_endpoint, anonymous = TRUE)) |>
+#  dplyr::summarise(min(datetime),max(datetime)) |>
+#  collect()
+#noaa_min_date <- noaa_theme_dates$`min(datetime)`
+#noaa_max_date <- noaa_theme_dates$`max(datetime)`
 
+noaa_min_date <- as.Date('2020-01-01')
+noaa_max_date <- Sys.Date()
 
-noaa_theme_dates <- arrow::open_dataset(arrow::s3_bucket(paste0(config$driver_bucket,"/gefs-v12/stage2"),
-                                                         endpoint_override = config$endpoint,
-                                                         anonymous = TRUE)) |>
-  dplyr::summarise(min(datetime),max(datetime)) |>
-  collect()
-noaa_min_date <- noaa_theme_dates$`min(datetime)`
-noaa_max_date <- noaa_theme_dates$`max(datetime)`
+## find group sites
+find_noaa_sites <- read_csv(config$site_table) |>
+  distinct(site_id)
 
 #filter(model_id == model_id, site_id = site_id, reference_datetime = reference_datetime)
 # NOTE IF NOT USING FILTER -- THE stac4cast::build_table_columns() NEEDS TO BE UPDATED
@@ -51,10 +52,6 @@ noaa_max_date <- noaa_theme_dates$`max(datetime)`
 # theme_models <- forecast_data_df |>
 #   distinct(model_id)
 
-###  SET TO PENDING FOR NOW
-# noaa_date_range <- noaa_data_df |> dplyr::summarise(min(datetime),max(datetime))
-# noaa_min_date <- noaa_date_range$`min(datetime)`
-# noaa_max_date <- noaa_date_range$`max(datetime)`
 
 build_description <- paste0("The catalog contains NOAA forecasts used for the ", config$challenge_long_name,". The forecasts are the raw forecasts that include all ensemble members (if a forecast represents uncertainty using an ensemble). You can access the forecasts at the top level of the dataset where all models, variables, and dates that forecasts were produced (reference_datetime) are available. The code to access the entire dataset is provided as an asset. Given the size of the forecast catalog, it can be time-consuming to access the data at the full dataset level. For quicker access to the forecasts for a site or datetime, we also provide the code to access the data at the site_id and datetime level as an asset for each forecast")
 
@@ -73,13 +70,11 @@ stac4cast::build_forecast_scores(table_schema = noaa_theme_df,
                                  link_items = stac4cast::generate_group_values(group_values = config$noaa_forecast_groups),
                                  thumbnail_link = catalog_config$noaa_thumbnail,
                                  thumbnail_title = catalog_config$noaa_thumbnail_title,
+                                 group_sites = find_noaa_sites$site_id,
                                  model_child = FALSE)
 
 
 ## BUILD VARIABLE GROUPS
-## find group sites
-find_noaa_sites <- read_csv(config$site_table) |>
-  distinct(site_id)
 
 for (i in 1:length(config$noaa_forecast_groups)){ ## organize variable groups
   print(config$noaa_forecast_groups[i])
