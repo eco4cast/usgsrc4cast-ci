@@ -59,7 +59,7 @@
       "interval": [
         [
           "2024-02-07T00:00:00Z",
-          "2024-08-01T00:00:00Z"
+          "2024-08-11T00:00:00Z"
         ]
       ]
     }
@@ -103,7 +103,7 @@
     {
       "name": "date",
       "type": "date32[day]",
-      "description": "date of the forecasted value"
+      "description": {}
     },
     {
       "name": "project_id",

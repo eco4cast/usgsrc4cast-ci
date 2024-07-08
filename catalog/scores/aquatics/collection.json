@@ -1,6 +1,6 @@
 {
-  "id": "daily-scores",
-  "description": "The catalog contains scores for the EFI-USGS River Chlorophyll Forecasting Challenge. The scores are summaries of the forecasts (i.e., mean, median, confidence intervals), matched observations (if available), and scores (metrics of how well the model distribution compares to observations). You can access the scores at the top level of the dataset where all models, variables, and dates that forecasts were produced (reference_datetime) are available. The code to access the entire dataset is provided as an asset. Given the size of the scores catalog, it can be time-consuming to access the data at the full dataset level. For quicker access to the scores for a particular model (model_id), we also provide the code to access the data at the model_id level as an asset for each model.",
+  "id": "aquatics",
+  "description": "All variables for the aquatics group.",
   "stac_version": "1.0.0",
   "license": "CC0-1.0",
   "stac_extensions": [
@@ -9,22 +9,23 @@
     "https://stac-extensions.github.io/table/v1.2.0/schema.json"
   ],
   "type": "Collection",
+  "sci:doi": "10.1002/fee.2616",
+  "sci:publications": {},
   "links": [
     {
       "rel": "child",
       "type": "application/json",
-      "href": "aquatics/collection.json",
-      "title": "aquatics"
+      "href": "Daily_Chlorophyll_a/collection.json"
     },
     {
       "rel": "parent",
       "type": "application/json",
-      "href": "../catalog.json"
+      "href": "../collection.json"
     },
     {
       "rel": "root",
       "type": "application/json",
-      "href": "../catalog.json"
+      "href": "../collection.json"
     },
     {
       "rel": "self",
@@ -48,7 +49,7 @@
       "type": "text/html"
     }
   ],
-  "title": "Scores",
+  "title": "aquatics",
   "extent": {
     "spatial": {
       "bbox": [
@@ -169,7 +170,7 @@
       "roles": [
         "data"
       ],
-      "description": "Use `arrow` for remote access to the database. This R code will return results for the Forecasting Challenge.\n\n### R\n\n```{r}\n# Use code below\n\nall_results <- arrow::open_dataset(\"s3://anonymous@bio230014-bucket01/challenges/scores/parquet/?endpoint_override=sdsc.osn.xsede.org\")\ndf <- all_results |> dplyr::collect()\n\n```\n       \n\nYou can use dplyr operations before calling `dplyr::collect()` to `summarise`, `select` columns, and/or `filter` rows prior to pulling the data into a local `data.frame`. Reducing the data that is pulled locally will speed up the data download speed and reduce your memory usage.\n\n\n"
+      "description": "Use `arrow` for remote access to the database. This R code will return results for the NEON Ecological Forecasting Aquatics theme.\n\n### R\n\n```{r}\n# Use code below\n\nall_results <- arrow::open_dataset(\"s3://anonymous@bio230014-bucket01/challenges/scores/parquet/?endpoint_override=sdsc.osn.xsede.org\")\ndf <- all_results |>\n dplyr::filter(variable %in% c(\"chla\")) |>\n dplyr::collect()\n\n```\n       \n\nYou can use dplyr operations before calling `dplyr::collect()` to `summarise`, `select` columns, and/or `filter` rows prior to pulling the data into a local `data.frame`. Reducing the data that is pulled locally will speed up the data download speed and reduce your memory usage.\n\n\n"
     },
     "thumbnail": {
       "href": "https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/thumbnails/image/Back-b.jpg",

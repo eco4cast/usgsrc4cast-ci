@@ -1,6 +1,6 @@
 {
-  "id": "daily-scores",
-  "description": "The catalog contains scores for the EFI-USGS River Chlorophyll Forecasting Challenge. The scores are summaries of the forecasts (i.e., mean, median, confidence intervals), matched observations (if available), and scores (metrics of how well the model distribution compares to observations). You can access the scores at the top level of the dataset where all models, variables, and dates that forecasts were produced (reference_datetime) are available. The code to access the entire dataset is provided as an asset. Given the size of the scores catalog, it can be time-consuming to access the data at the full dataset level. For quicker access to the scores for a particular model (model_id), we also provide the code to access the data at the model_id level as an asset for each model.",
+  "id": "aquatics",
+  "description": "All variables for the aquatics group.",
   "stac_version": "1.0.0",
   "license": "CC0-1.0",
   "stac_extensions": [
@@ -9,22 +9,23 @@
     "https://stac-extensions.github.io/table/v1.2.0/schema.json"
   ],
   "type": "Collection",
+  "sci:doi": "10.1002/fee.2616",
+  "sci:publications": {},
   "links": [
     {
       "rel": "child",
       "type": "application/json",
-      "href": "aquatics/collection.json",
-      "title": "aquatics"
+      "href": "Daily_Chlorophyll_a/collection.json"
     },
     {
       "rel": "parent",
       "type": "application/json",
-      "href": "../catalog.json"
+      "href": "../collection.json"
     },
     {
       "rel": "root",
       "type": "application/json",
-      "href": "../catalog.json"
+      "href": "../collection.json"
     },
     {
       "rel": "self",
@@ -48,7 +49,7 @@
       "type": "text/html"
     }
   ],
-  "title": "Scores",
+  "title": "aquatics",
   "extent": {
     "spatial": {
       "bbox": [
@@ -59,7 +60,7 @@
       "interval": [
         [
           "2024-02-07T00:00:00Z",
-          "2024-07-08T00:00:00Z"
+          "2024-08-11T00:00:00Z"
         ]
       ]
     }
@@ -73,7 +74,7 @@
     {
       "name": "site_id",
       "type": "string",
-      "description": "For forecasts that are not on a spatial grid, use of a site dimension that maps to a more detailed geometry (points, polygons, etc.) is allowable. In general this would be documented in the external metadata (e.g., alook-up table that provides lon and lat); however in netCDF this could be handled by the CF Discrete Sampling Geometry data model."
+      "description": "For forecasts that are not on a spatial grid, use of a site dimension that maps to a more detailed geometry (points, polygons, etc.) is allowable. In general this would be documented in the external metadata (e.g., alook-up table that provides lon and lat)"
     },
     {
       "name": "datetime",
@@ -83,27 +84,12 @@
     {
       "name": "family",
       "type": "string",
-      "description": "For ensembles: “ensemble.” Default value if unspecified For probability distributions: Name of the statistical distribution associated with the reported statistics. The “sample” distribution is synonymous with “ensemble.” For summary statistics: “summary.”If this dimension does not vary, it is permissible to specify family as a variable attribute if the file format being used supports this (e.g.,netCDF)."
+      "description": "For ensembles: “ensemble.” Default value if unspecified for probability distributions: Name of the statistical distribution associated with the reported statistics. The “sample” distribution is synonymous with “ensemble.”For summary statistics: “summary.”"
     },
     {
       "name": "pub_datetime",
       "type": "timestamp[us, tz=UTC]",
       "description": "datetime that forecast was submitted"
-    },
-    {
-      "name": "observation",
-      "type": "double",
-      "description": "observed value for variable"
-    },
-    {
-      "name": "crps",
-      "type": "double",
-      "description": "crps forecast score"
-    },
-    {
-      "name": "logs",
-      "type": "double",
-      "description": "logs forecast score"
     },
     {
       "name": "mean",
@@ -143,12 +129,12 @@
     {
       "name": "project_id",
       "type": "string",
-      "description": "unique project identifier"
+      "description": "unique identifier for the forecast project"
     },
     {
       "name": "duration",
       "type": "string",
-      "description": "temporal duration of forecast (hourly = PT1H, daily = P1D, etc.); follows ISO 8601 duration convention"
+      "description": "temporal duration of forecast (hourly, daily, etc.); follows ISO 8601 duration convention"
     },
     {
       "name": "variable",
@@ -163,13 +149,13 @@
   ],
   "assets": {
     "data": {
-      "href": "s3://anonymous@bio230014-bucket01/challenges/scores/parquet/?endpoint_override=sdsc.osn.xsede.org",
+      "href": "s3://anonymous@?endpoint_override=sdsc.osn.xsede.org",
       "type": "application/x-parquet",
       "title": "Database Access",
       "roles": [
         "data"
       ],
-      "description": "Use `arrow` for remote access to the database. This R code will return results for the Forecasting Challenge.\n\n### R\n\n```{r}\n# Use code below\n\nall_results <- arrow::open_dataset(\"s3://anonymous@bio230014-bucket01/challenges/scores/parquet/?endpoint_override=sdsc.osn.xsede.org\")\ndf <- all_results |> dplyr::collect()\n\n```\n       \n\nYou can use dplyr operations before calling `dplyr::collect()` to `summarise`, `select` columns, and/or `filter` rows prior to pulling the data into a local `data.frame`. Reducing the data that is pulled locally will speed up the data download speed and reduce your memory usage.\n\n\n"
+      "description": "Use `arrow` for remote access to the database. This R code will return results for the NEON Ecological Forecasting Aquatics theme.\n\n### R\n\n```{r}\n# Use code below\n\nall_results <- arrow::open_dataset(\"s3://anonymous@?endpoint_override=sdsc.osn.xsede.org\")\ndf <- all_results |>\n dplyr::filter(variable %in% c(\"chla\")) |>\n dplyr::collect()\n\n```\n       \n\nYou can use dplyr operations before calling `dplyr::collect()` to `summarise`, `select` columns, and/or `filter` rows prior to pulling the data into a local `data.frame`. Reducing the data that is pulled locally will speed up the data download speed and reduce your memory usage.\n\n\n"
     },
     "thumbnail": {
       "href": "https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/thumbnails/image/Back-b.jpg",

@@ -22,7 +22,7 @@ site_description_create <- data.frame(site_id = 'site identifier',
 
 #inventory_theme_df <- arrow::open_dataset(glue::glue("s3://{config$inventory_bucket}/catalog/forecasts/project_id={config$project_id}"), endpoint_override = config$endpoint, anonymous = TRUE) #|>
 
-#target_url <- "https://renc.osn.xsede.org/bio230121-bucket01/vera4cast/targets/project_id=vera4cast/duration=P1D/daily-insitu-targets.csv.gz"
+target_url <- config$target_groups$aquatics$targets_file
 site_df <- read_csv(config$site_table, show_col_types = FALSE)
 
 # inventory_theme_df <- arrow::open_dataset(arrow::s3_bucket(config$inventory_bucket, endpoint_override = config$endpoint, anonymous = TRUE))
@@ -34,17 +34,19 @@ site_df <- read_csv(config$site_table, show_col_types = FALSE)
 # theme_models <- inventory_data_df |>
 #   distinct(model_id)
 
-# target_date_range <- targets |> dplyr::summarise(min(datetime),max(datetime))
-# target_min_date <- as.Date(target_date_range$`min(datetime)`)
-# target_max_date <- as.Date(target_date_range$`max(datetime)`)
+targets <- read_csv(target_url)
+
+target_date_range <- targets |> dplyr::summarise(min(datetime),max(datetime))
+target_min_date <- as.Date(target_date_range$`min(datetime)`)
+target_max_date <- as.Date(target_date_range$`max(datetime)`)
 
 build_description <- paste0("The catalog contains site metadata for the ", config$challenge_long_name)
 
 
 stac4cast::build_sites(table_schema = site_df,
                        table_description = site_description_create,
-                       # start_date = target_min_date,
-                       # end_date = target_max_date,
+                       start_date = target_min_date,
+                       end_date = target_max_date,
                        id_value = "sites",
                        description_string = build_description,
                        about_string = catalog_config$about_string,
