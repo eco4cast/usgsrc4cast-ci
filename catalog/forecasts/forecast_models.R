@@ -13,7 +13,6 @@ catalog_config <- config$catalog_config
 
 ## CREATE table for column descriptions
 forecast_description_create <- data.frame(datetime = 'datetime of the forecasted value (ISO 8601)',
-                                          date = 'date of the forecasted value',
                                           site_id = 'For forecasts that are not on a spatial grid, use of a site dimension that maps to a more detailed geometry (points, polygons, etc.) is allowable. In general this would be documented in the external metadata (e.g., alook-up table that provides lon and lat)',
                                           family = 'For ensembles: “ensemble.” Default value if unspecified for probability distributions: Name of the statistical distribution associated with the reported statistics. The “sample” distribution is synonymous with “ensemble.”For summary statistics: “summary.”',
                                           parameter = 'ensemble member or distribution parameter',
@@ -26,6 +25,7 @@ forecast_description_create <- data.frame(datetime = 'datetime of the forecasted
                                           project_id = 'unique identifier for the forecast project',
                                           depth_m = 'depth (meters) in water column of prediction',
                                           duration = 'temporal duration of forecast (hourly, daily, etc.); follows ISO 8601 duration convention')
+
 
 ## CHANGE THE WAY TO READ THE SCHEMA
 ## just read in example forecast to extract schema information -- ask about better ways of doing this
@@ -231,6 +231,8 @@ for (i in 1:length(config$variable_groups)){ ## organize variable groups
                                        thumbnail_link = config$variable_groups[[i]]$thumbnail_link,
                                        thumbnail_title = "Thumbnail Image",
                                        group_var_vector = NULL,
+                                       single_var_name = var_name,
+                                       group_duration_value = duration_value,
                                        group_sites = find_var_sites$site_id,
                                        citation_values = var_citations,
                                        doi_values = doi_citations)
@@ -317,18 +319,19 @@ for (i in 1:length(config$variable_groups)){ ## organize variable groups
 
         stac4cast::build_model(model_id = m,
                                stac_id = stac_id,
-                               team_name = registered_model_id$`Long name of the model`[idx],
+                               team_name = registered_model_id$`Long name of the model (can include spaces)`[idx],
                                #model_description = registered_model_id[idx,"Describe your modeling approach in your own words."][[1]],
                                model_description = model_description,
                                start_date = model_min_date,
                                end_date = model_max_date,
                                var_values = model_vars$var_duration_name,
                                duration_names = model_var_duration_df$duration,
+                               duration_value = duration_name,
                                site_values = model_sites$site_id,
                                site_table = catalog_config$site_metadata_url,
                                model_documentation = registered_model_id,
                                destination_path = paste0(catalog_config$forecast_path,'/',names(config$variable_groups)[i],'/',var_formal_name,"/models"),
-                               aws_download_path = catalog_config$aws_download_path_forecasts,
+                               aws_download_path = catalog_config$aws_download_path_forecasts, # CHANGE THIS BUCKET NAME
                                collection_name = 'forecasts',
                                thumbnail_image_name = NULL,
                                table_schema = forecast_theme_df,
@@ -360,6 +363,8 @@ for (i in 1:length(config$variable_groups)){ ## organize variable groups
                                    thumbnail_link = config$variable_groups[[i]]$thumbnail_link,
                                    thumbnail_title = config$variable_groups[[i]]$thumbnail_title,
                                    group_var_vector = unique(var_values),
+                                   single_var_name = NULL,
+                                   group_duration_value = NULL,
                                    group_sites = find_group_sites$site_id,
                                    citation_values = citation_build,
                                    doi_values = doi_build)

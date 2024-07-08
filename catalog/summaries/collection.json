@@ -17,12 +17,6 @@
       "title": "aquatics"
     },
     {
-      "rel": "child",
-      "type": "application/json",
-      "href": "models/collection.json",
-      "title": "group item"
-    },
-    {
       "rel": "parent",
       "type": "application/json",
       "href": "../catalog.json"
@@ -49,7 +43,7 @@
     },
     {
       "rel": "describedby",
-      "href": "https://projects.ecoforecast.org/usgsrc4cast-docs/",
+      "href": "https://projects.ecoforecast.org/usgsrc4cast-ci/",
       "title": "EFI-USGS River Chlorophyll Forecast Challenge Dashboard",
       "type": "text/html"
     }
@@ -58,19 +52,14 @@
   "extent": {
     "spatial": {
       "bbox": [
-        [
-          -122.6692,
-          39.6327,
-          -74.7781,
-          45.5175
-        ]
+        [-122.6692, 39.6328, -74.7781, 45.5175]
       ]
     },
     "temporal": {
       "interval": [
         [
           "2024-02-07T00:00:00Z",
-          "2024-06-03T00:00:00Z"
+          "2024-08-11T00:00:00Z"
         ]
       ]
     }
@@ -155,11 +144,6 @@
       "name": "model_id",
       "type": "string",
       "description": "unique model identifier"
-    },
-    {
-      "name": "reference_date",
-      "type": "string",
-      "description": "date that the forecast was initiated"
     }
   ],
   "assets": {
