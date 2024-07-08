@@ -1,6 +1,6 @@
 {
-  "id": "summaries",
-  "description": "Summaries are the forecasts statistics of the raw forecasts (i.e., mean, median, confidence intervals). You can access the summaries at the top level of the dataset where all models, variables, and dates that forecasts were produced (reference_datetime) are available. The code to access the entire dataset is provided as an asset. Given the size of the forecast catalog, it can be time-consuming to access the data at the full dataset level. For quicker access to the forecasts for a particular model (model_id), we also provide the code to access the data at the model_id level as an asset for each model.",
+  "id": "Daily_Chlorophyll_a",
+  "description": "All models for the Daily_Chlorophyll_a variable. The variable description is as follows: daily mean Chlorophyll-a (ug/L)",
   "stac_version": "1.0.0",
   "license": "CC0-1.0",
   "stac_extensions": [
@@ -9,22 +9,33 @@
     "https://stac-extensions.github.io/table/v1.2.0/schema.json"
   ],
   "type": "Collection",
+  "sci:doi": "10.1002/fee.2616",
+  "sci:publications": {},
   "links": [
     {
-      "rel": "child",
+      "rel": "item",
       "type": "application/json",
-      "href": "aquatics/collection.json",
-      "title": "aquatics"
+      "href": "./models/climatology.json"
+    },
+    {
+      "rel": "item",
+      "type": "application/json",
+      "href": "./models/persistenceRW.json"
+    },
+    {
+      "rel": "item",
+      "type": "application/json",
+      "href": "./models/USGSHABs1.json"
     },
     {
       "rel": "parent",
       "type": "application/json",
-      "href": "../catalog.json"
+      "href": "../collection.json"
     },
     {
       "rel": "root",
       "type": "application/json",
-      "href": "../catalog.json"
+      "href": "../collection.json"
     },
     {
       "rel": "self",
@@ -48,7 +59,7 @@
       "type": "text/html"
     }
   ],
-  "title": "Forecast Summaries",
+  "title": "Daily_Chlorophyll_a",
   "extent": {
     "spatial": {
       "bbox": [
@@ -148,21 +159,21 @@
   ],
   "assets": {
     "data": {
-      "href": "s3://anonymous@bio230014-bucket01/vera4cast/forecasts/summaries/parquet/?endpoint_override=sdsc.osn.xsede.org",
+      "href": "\"s3://anonymous@bio230014-bucket01/challenges/forecasts/parquet/project_id=usgsrc4cast/duration=P1D/variable=chla/project_id=usgsrc4cast/duration=Daily/variable=chla?endpoint_override=sdsc.osn.xsede.org\"",
       "type": "application/x-parquet",
       "title": "Database Access",
       "roles": [
         "data"
       ],
-      "description": "Use `arrow` for remote access to the database. This R code will return results for the Forecasting Challenge.\n\n### R\n\n```{r}\n# Use code below\n\nall_results <- arrow::open_dataset(\"s3://anonymous@bio230014-bucket01/vera4cast/forecasts/summaries/parquet/?endpoint_override=sdsc.osn.xsede.org\")\ndf <- all_results |> dplyr::collect()\n\n```\n       \n\nYou can use dplyr operations before calling `dplyr::collect()` to `summarise`, `select` columns, and/or `filter` rows prior to pulling the data into a local `data.frame`. Reducing the data that is pulled locally will speed up the data download speed and reduce your memory usage.\n\n\n"
+      "description": "Use `arrow` for remote access to the database. This R code will return results for forecasts of the variable by the specific model .\n\n### R\n\n```{r}\n# Use code below\n\nall_results <- arrow::open_dataset(\"s3://anonymous@bio230014-bucket01/challenges/forecasts/parquet/project_id=usgsrc4cast/duration=P1D/variable=chla/project_id=usgsrc4cast/duration=Daily/variable=chla?endpoint_override=sdsc.osn.xsede.org\")\ndf <- all_results |> dplyr::collect()\n\n```\n       \n\nYou can use dplyr operations before calling `dplyr::collect()` to `summarise`, `select` columns, and/or `filter` rows prior to pulling the data into a local `data.frame`. Reducing the data that is pulled locally will speed up the data download speed and reduce your memory usage.\n\n\n"
     },
     "thumbnail": {
-      "href": "https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/thumbnails/image/Manual%20measurement%20streamgage.jpg",
+      "href": "https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/thumbnails/image/Back-b.jpg",
       "type": "image/JPEG",
       "roles": [
         "thumbnail"
       ],
-      "title": "USGS Image"
+      "title": "Thumbnail Image"
     }
   }
 }
