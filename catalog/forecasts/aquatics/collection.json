@@ -60,17 +60,12 @@
       "interval": [
         [
           "2024-02-07T00:00:00Z",
-          "2024-07-17T00:00:00Z"
+          "2024-08-11T00:00:00Z"
         ]
       ]
     }
   },
   "table:columns": [
-    {
-      "name": "13 columns",
-      "type": null,
-      "description": {}
-    },
     {
       "name": "datetime",
       "type": "timestamp[us, tz=UTC]",
@@ -109,7 +104,7 @@
     {
       "name": "date",
       "type": "date32[day]",
-      "description": "date of the forecasted value"
+      "description": {}
     },
     {
       "name": "project_id",
