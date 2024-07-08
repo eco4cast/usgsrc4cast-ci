@@ -24,6 +24,8 @@ inventory_description_create <- data.frame(duration = 'sample duration code for 
 
 #inventory_theme_df <- arrow::open_dataset(glue::glue("s3://{config$inventory_bucket}/catalog/forecasts/project_id={config$project_id}"), endpoint_override = config$endpoint, anonymous = TRUE) #|>
 
+interest_variables <- unlist(sapply(1:length(config$variable_groups), function(i) {config$variable_groups[[i]]$variable}))
+
 inventory_theme_df <- arrow::open_dataset(arrow::s3_bucket(config$inventory_bucket, endpoint_override = config$endpoint, anonymous = TRUE))
 
 # inventory_data_df <- duckdbfs::open_dataset(glue::glue("s3://{config$inventory_bucket}/catalog"),
@@ -32,9 +34,9 @@ inventory_theme_df <- arrow::open_dataset(arrow::s3_bucket(config$inventory_buck
 #   collect()
 
 inventory_data_df <- duckdbfs::open_dataset(glue::glue("s3://{config$inventory_bucket}/catalog/forecasts"),
-                       s3_endpoint = config$endpoint, anonymous=TRUE) |>
-  collect() |>
-  dplyr::filter(project_id == config$project_id)
+                                            s3_endpoint = config$endpoint, anonymous=TRUE) |>
+  filter(variable %in% interest_variables) |>
+  collect()
 
 theme_models <- inventory_data_df |>
   distinct(model_id)
