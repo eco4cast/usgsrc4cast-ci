@@ -77,7 +77,7 @@ catalog_config:
   noaa_thumbnail_title: "USGS Image"
   aws_download_path_forecasts: 'bio230014-bucket01/challenges/forecasts/parquet/'
   aws_download_path_scores: 'bio230014-bucket01/challenges/scores/parquet/'
-  summaries_download_path: 'bio230014-bucket01/vera4cast/forecasts/summaries/parquet/'
+  summaries_download_path: 'bio230014-bucket01/challenges/forecasts/summaries/'
   host_url: "https://www.ecoforecastprojectvt.org"
   host_name: "Ecoforecast Challenge"
   bbox:
