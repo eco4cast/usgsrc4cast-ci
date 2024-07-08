@@ -1,0 +1,221 @@
+{
+  "stac_version": "1.0.0",
+  "stac_extensions": [
+    "https://stac-extensions.github.io/table/v1.2.0/schema.json"
+  ],
+  "type": "Feature",
+  "id": "USGSHABs1_chla_P1D_scores",
+  "bbox": [
+    [-122.6692, 39.6328, -74.7781, 45.5175]
+  ],
+  "geometry": {
+    "type": "MultiPoint",
+    "coordinates": [
+      [-75.0574, 41.7567],
+      [-88.6142, 41.2999],
+      [-88.2515, 42.31],
+      [-88.984, 41.3248],
+      [-89.3562, 41.1073],
+      [-90.6077, 39.6328],
+      [-122.2974, 44.7538],
+      [-122.6692, 45.5175],
+      [-74.7781, 40.2217],
+      [-122.5773, 45.3793]
+    ]
+  },
+  "properties": {
+    "title": "USGSHABs1",
+    "description": "All scores for the Daily_Chlorophyll_a variable for the USGSHABs1 model. Information for the model is provided as follows: Uses the randomForest::randomForest() R package model to train site-specific models for predicting river chl-a. Uses ensemble Kalman filter to adjust predicted chl-a states..\n                                    The model predicts this variable at the following sites: USGS-01427510, USGS-05543010, USGS-05549500, USGS-05553700, USGS-05558300, USGS-05586300, USGS-14181500, USGS-14211720, USGS-01463500, USGS-14211010.\n                                    Scores are metrics that describe how well forecasts compare to observations. The scores catalog includes are summaries of the forecasts (i.e., mean, median, confidence intervals), matched observations (if available), and scores (metrics of how well the model distribution compares to observations)",
+    "start_datetime": "2024-02-13",
+    "end_datetime": "2024-07-08",
+    "providers": [
+      {
+        "url": "jzwart@usgs.gov",
+        "name": "Jacob Zwart",
+        "roles": [
+          "producer",
+          "processor",
+          "licensor"
+        ]
+      },
+      {
+        "url": "https://www.ecoforecastprojectvt.org",
+        "name": "Ecoforecast Challenge",
+        "roles": [
+          "host"
+        ]
+      }
+    ],
+    "license": "CC0-1.0",
+    "keywords": [
+      "Scores",
+      "usgsrc4cast",
+      "aquatics",
+      "USGSHABs1",
+      "Chlorophyll_a",
+      "chla",
+      "Daily",
+      "P1D",
+      "USGS-01427510",
+      "USGS-05543010",
+      "USGS-05549500",
+      "USGS-05553700",
+      "USGS-05558300",
+      "USGS-05586300",
+      "USGS-14181500",
+      "USGS-14211720",
+      "USGS-01463500",
+      "USGS-14211010"
+    ],
+    "table:columns": [
+      {
+        "name": "reference_datetime",
+        "type": "timestamp[us, tz=UTC]",
+        "description": "datetime that the forecast was initiated (horizon = 0)"
+      },
+      {
+        "name": "site_id",
+        "type": "string",
+        "description": "For forecasts that are not on a spatial grid, use of a site dimension that maps to a more detailed geometry (points, polygons, etc.) is allowable. In general this would be documented in the external metadata (e.g., alook-up table that provides lon and lat); however in netCDF this could be handled by the CF Discrete Sampling Geometry data model."
+      },
+      {
+        "name": "datetime",
+        "type": "timestamp[us, tz=UTC]",
+        "description": "datetime of the forecasted value (ISO 8601)"
+      },
+      {
+        "name": "family",
+        "type": "string",
+        "description": "For ensembles: “ensemble.” Default value if unspecified For probability distributions: Name of the statistical distribution associated with the reported statistics. The “sample” distribution is synonymous with “ensemble.” For summary statistics: “summary.”If this dimension does not vary, it is permissible to specify family as a variable attribute if the file format being used supports this (e.g.,netCDF)."
+      },
+      {
+        "name": "pub_datetime",
+        "type": "timestamp[us, tz=UTC]",
+        "description": "datetime that forecast was submitted"
+      },
+      {
+        "name": "observation",
+        "type": "double",
+        "description": "observed value for variable"
+      },
+      {
+        "name": "crps",
+        "type": "double",
+        "description": "crps forecast score"
+      },
+      {
+        "name": "logs",
+        "type": "double",
+        "description": "logs forecast score"
+      },
+      {
+        "name": "mean",
+        "type": "double",
+        "description": "mean forecast prediction"
+      },
+      {
+        "name": "median",
+        "type": "double",
+        "description": "median forecast prediction"
+      },
+      {
+        "name": "sd",
+        "type": "double",
+        "description": "standard deviation forecasts"
+      },
+      {
+        "name": "quantile97.5",
+        "type": "double",
+        "description": "upper 97.5 percentile value of forecast"
+      },
+      {
+        "name": "quantile02.5",
+        "type": "double",
+        "description": "upper 2.5 percentile value of forecast"
+      },
+      {
+        "name": "quantile90",
+        "type": "double",
+        "description": "upper 90 percentile value of forecast"
+      },
+      {
+        "name": "quantile10",
+        "type": "double",
+        "description": "upper 10 percentile value of forecast"
+      },
+      {
+        "name": "project_id",
+        "type": "string",
+        "description": "unique project identifier"
+      },
+      {
+        "name": "duration",
+        "type": "string",
+        "description": "temporal duration of forecast (hourly = PT1H, daily = P1D, etc.); follows ISO 8601 duration convention"
+      },
+      {
+        "name": "variable",
+        "type": "string",
+        "description": "name of forecasted variable"
+      },
+      {
+        "name": "model_id",
+        "type": "string",
+        "description": "unique model identifier"
+      }
+    ]
+  },
+  "collection": "scores",
+  "links": [
+    {
+      "rel": "collection",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "USGSHABs1"
+    },
+    {
+      "rel": "root",
+      "href": "../../../catalog.json",
+      "type": "application/json",
+      "title": "Forecast Catalog"
+    },
+    {
+      "rel": "parent",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "USGSHABs1"
+    },
+    {
+      "rel": "self",
+      "href": "USGSHABs1.json",
+      "type": "application/json",
+      "title": "Model Forecast"
+    },
+    {
+      "rel": "item",
+      "href": "https://code.usgs.gov/wma/proxies/habs/habs-forecast-chl-usgsrc4cast/-/blob/main/2_model/src/chla_models.R?ref_type=heads",
+      "type": "text/html",
+      "title": "Link for Model Code"
+    }
+  ],
+  "assets": {
+    "1": {
+      "type": "application/json",
+      "title": "Model Metadata",
+      "href": "https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/metadata/model_id/USGSHABs1.json",
+      "description": "Use `jsonlite::fromJSON()` to download the model metadata JSON file. This R code will return metadata provided during the model registration.\n      \n\n### R\n\n```{r}\n# Use code below\n\nmodel_metadata <- jsonlite::fromJSON(\"https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/metadata/model_id/USGSHABs1.json\")\n\n"
+    },
+    "2": {
+      "type": "text/html",
+      "title": "Link for Model Code",
+      "href": "https://code.usgs.gov/wma/proxies/habs/habs-forecast-chl-usgsrc4cast/-/blob/main/2_model/src/chla_models.R?ref_type=heads",
+      "description": "The link to the model code provided by the model submission team"
+    },
+    "3": {
+      "type": "application/x-parquet",
+      "title": "Database Access for Daily Chlorophyll_a",
+      "href": "s3://anonymous@bio230014-bucket01/challenges/scores/parquet/project_id=usgsrc4cast/duration=P1D/variable=chla/model_id=USGSHABs1?endpoint_override=sdsc.osn.xsede.org",
+      "description": "Use `arrow` for remote access to the database. This R code will return results for this variable and model combination.\n\n### R\n\n```{r}\n# Use code below\n\nall_results <- arrow::open_dataset(\"s3://anonymous@bio230014-bucket01/challenges/scores/parquet/project_id=usgsrc4cast/duration=P1D/variable=chla/model_id=USGSHABs1?endpoint_override=sdsc.osn.xsede.org\")\ndf <- all_results |> dplyr::collect()\n\n```\n       \n\nYou can use dplyr operations before calling `dplyr::collect()` to `summarise`, `select` columns, and/or `filter` rows prior to pulling the data into a local `data.frame`. Reducing the data that is pulled locally will speed up the data download speed and reduce your memory usage.\n\n\n"
+    }
+  }
+}
