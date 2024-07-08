@@ -11,23 +11,23 @@
   "geometry": {
     "type": "MultiPoint",
     "coordinates": [
+      [-122.2974, 44.7538],
+      [-122.5773, 45.3793],
+      [-122.6692, 45.5175],
       [-75.0574, 41.7567],
       [-74.7781, 40.2217],
       [-88.6142, 41.2999],
       [-88.2515, 42.31],
       [-88.984, 41.3248],
       [-89.3562, 41.1073],
-      [-90.6077, 39.6328],
-      [-122.2974, 44.7538],
-      [-122.5773, 45.3793],
-      [-122.6692, 45.5175]
+      [-90.6077, 39.6328]
     ]
   },
   "properties": {
     "title": "persistenceRW",
-    "description": "All summaries for the Daily_Chlorophyll_a variable for the persistenceRW model. Information for the model is provided as follows: Random walk model based on most recent stream chl-a observations using the fable::RW() model..\n                                    The model predicts this variable at the following sites: USGS-01427510, USGS-01463500, USGS-05543010, USGS-05549500, USGS-05553700, USGS-05558300, USGS-05586300, USGS-14181500, USGS-14211010, USGS-14211720.\n                                    Summaries are the forecasts statistics of the raw forecasts (i.e., mean, median, confidence intervals)",
+    "description": "All summaries for the Daily_Chlorophyll_a variable for the persistenceRW model. Information for the model is provided as follows: Random walk model based on most recent stream chl-a observations using the fable::RW() model..\n                                    The model predicts this variable at the following sites: USGS-14181500, USGS-14211010, USGS-14211720, USGS-01427510, USGS-01463500, USGS-05543010, USGS-05549500, USGS-05553700, USGS-05558300, USGS-05586300.\n                                    Summaries are the forecasts statistics of the raw forecasts (i.e., mean, median, confidence intervals)",
     "start_datetime": "2024-02-07",
-    "end_datetime": "2024-08-10",
+    "end_datetime": "2024-08-11",
     "providers": [
       {
         "url": "jzwart@usgs.gov",
@@ -56,16 +56,16 @@
       "chla",
       "Daily",
       "P1D",
+      "USGS-14181500",
+      "USGS-14211010",
+      "USGS-14211720",
       "USGS-01427510",
       "USGS-01463500",
       "USGS-05543010",
       "USGS-05549500",
       "USGS-05553700",
       "USGS-05558300",
-      "USGS-05586300",
-      "USGS-14181500",
-      "USGS-14211010",
-      "USGS-14211720"
+      "USGS-05586300"
     ],
     "table:columns": [
       {
@@ -199,8 +199,8 @@
     "3": {
       "type": "application/x-parquet",
       "title": "Database Access for Daily Chlorophyll_a",
-      "href": "s3://anonymous@bio230014-bucket01/vera4cast/forecasts/summaries/parquet/project_id=usgsrc4cast/duration=P1D/variable=chla/model_id=persistenceRW?endpoint_override=sdsc.osn.xsede.org",
-      "description": "Use `arrow` for remote access to the database. This R code will return results for this variable and model combination.\n\n### R\n\n```{r}\n# Use code below\n\nall_results <- arrow::open_dataset(\"s3://anonymous@bio230014-bucket01/vera4cast/forecasts/summaries/parquet/project_id=usgsrc4cast/duration=P1D/variable=chla/model_id=persistenceRW?endpoint_override=sdsc.osn.xsede.org\")\ndf <- all_results |> dplyr::collect()\n\n```\n       \n\nYou can use dplyr operations before calling `dplyr::collect()` to `summarise`, `select` columns, and/or `filter` rows prior to pulling the data into a local `data.frame`. Reducing the data that is pulled locally will speed up the data download speed and reduce your memory usage.\n\n\n"
+      "href": "s3://anonymous@bio230014-bucket01/challenges/forecasts/summaries/project_id=usgsrc4cast/duration=P1D/variable=chla/model_id=persistenceRW?endpoint_override=sdsc.osn.xsede.org",
+      "description": "Use `arrow` for remote access to the database. This R code will return results for this variable and model combination.\n\n### R\n\n```{r}\n# Use code below\n\nall_results <- arrow::open_dataset(\"s3://anonymous@bio230014-bucket01/challenges/forecasts/summaries/project_id=usgsrc4cast/duration=P1D/variable=chla/model_id=persistenceRW?endpoint_override=sdsc.osn.xsede.org\")\ndf <- all_results |> dplyr::collect()\n\n```\n       \n\nYou can use dplyr operations before calling `dplyr::collect()` to `summarise`, `select` columns, and/or `filter` rows prior to pulling the data into a local `data.frame`. Reducing the data that is pulled locally will speed up the data download speed and reduce your memory usage.\n\n\n"
     }
   }
 }
