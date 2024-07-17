@@ -5,9 +5,7 @@
   ],
   "type": "Feature",
   "id": "USGSHABs1_chla_P1D_forecast",
-  "bbox": [
-    [-122.6692, 39.6328, -74.7781, 45.5175]
-  ],
+  "bbox": [-122.6692, 39.6328, -74.7781, 45.5175],
   "geometry": {
     "type": "MultiPoint",
     "coordinates": [
