@@ -9,7 +9,7 @@
   ],
   "type": "Collection",
   "sci:doi": "10.1002/fee.2616",
-  "sci:publications": {},
+  "sci:publications": [null],
   "links": [
     {
       "rel": "child",
@@ -59,7 +59,7 @@
       "interval": [
         [
           "2024-02-07T00:00:00Z",
-          "2024-08-20T00:00:00Z"
+          "2024-08-21T00:00:00Z"
         ]
       ]
     }
