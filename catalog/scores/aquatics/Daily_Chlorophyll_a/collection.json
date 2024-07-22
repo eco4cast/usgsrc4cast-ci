@@ -11,17 +11,17 @@
     {
       "rel": "item",
       "type": "application/json",
+      "href": "./models/persistenceRW.json"
+    },
+    {
+      "rel": "item",
+      "type": "application/json",
       "href": "./models/USGSHABs1.json"
     },
     {
       "rel": "item",
       "type": "application/json",
       "href": "./models/climatology.json"
-    },
-    {
-      "rel": "item",
-      "type": "application/json",
-      "href": "./models/persistenceRW.json"
     },
     {
       "rel": "parent",
@@ -66,7 +66,7 @@
       "interval": [
         [
           "2024-02-07T00:00:00Z",
-          "2024-07-21T00:00:00Z"
+          "2024-07-22T00:00:00Z"
         ]
       ]
     }
@@ -148,14 +148,14 @@
       "description": "upper 10 percentile value of forecast"
     },
     {
-      "name": "project_id",
-      "type": "string",
-      "description": "unique project identifier"
-    },
-    {
       "name": "duration",
       "type": "string",
       "description": "temporal duration of forecast (hourly = PT1H, daily = P1D, etc.); follows ISO 8601 duration convention"
+    },
+    {
+      "name": "model_id",
+      "type": "string",
+      "description": "unique model identifier"
     },
     {
       "name": "variable",
@@ -163,9 +163,9 @@
       "description": "name of forecasted variable"
     },
     {
-      "name": "model_id",
+      "name": "project_id",
       "type": "string",
-      "description": "unique model identifier"
+      "description": "unique project identifier"
     }
   ],
   "assets": {
