@@ -52,6 +52,7 @@ if(nrow(submit_files) > 0){
   submissions <- fs::dir_ls(local_dir,
                             recurse = TRUE,
                             type = "file")
+
   submissions_filenames <- basename(submissions)
   print(submissions)
 
@@ -95,7 +96,10 @@ if(nrow(submit_files) > 0){
     for(i in 1:length(submissions)){
 
       curr_submission <- basename(submissions[i])
-      theme <-  stringr::str_split(curr_submission, "-")[[1]][1]
+      curr_project_id <-  stringr::str_split(curr_submission, "-")[[1]][1]
+      if(curr_project_id != config$project_id){ # if the file doesn't have appropriate project_id, then move on to next file
+        next
+      }
       file_name_model_id <-  stringr::str_split(tools::file_path_sans_ext(tools::file_path_sans_ext(curr_submission)), "-")[[1]][5]
       file_name_reference_datetime <- lubridate::as_datetime(paste0(stringr::str_split(curr_submission, "-")[[1]][2:4], collapse = "-"))
       submission_dir <- dirname(submissions[i])
