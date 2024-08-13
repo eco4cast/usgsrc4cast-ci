@@ -11,17 +11,17 @@
     {
       "rel": "item",
       "type": "application/json",
-      "href": "./models/persistenceRW.json"
-    },
-    {
-      "rel": "item",
-      "type": "application/json",
       "href": "./models/USGSHABs1.json"
     },
     {
       "rel": "item",
       "type": "application/json",
       "href": "./models/climatology.json"
+    },
+    {
+      "rel": "item",
+      "type": "application/json",
+      "href": "./models/persistenceRW.json"
     },
     {
       "rel": "parent",
@@ -65,8 +65,8 @@
     "temporal": {
       "interval": [
         [
-          "2024-02-07T00:00:00Z",
-          "2024-08-12T00:00:00Z"
+          "2024-06-13T00:00:00Z",
+          "2024-08-13T00:00:00Z"
         ]
       ]
     }
