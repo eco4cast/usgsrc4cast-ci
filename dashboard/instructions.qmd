@@ -129,7 +129,7 @@ Ensemble (or sample) forecasts are transformed to a probability distribution fun
 Here is an example of a forecast that uses a normal distribution:
 
 ```{r}
-df <- readr::read_csv("https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/forecasts/raw/project_id=usgsrc4cast/T20240506050515_usgsrc4cast-2024-05-05-climatology.csv.gz", show_col_types = FALSE)
+df <- readr::read_csv("https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/forecasts/raw/project_id=usgsrc4cast/T20240813050531_usgsrc4cast-2024-08-12-climatology.csv.gz", show_col_types = FALSE)
 ```
 ```{r}
 df |> 
@@ -140,7 +140,7 @@ df |>
 For an ensemble (or sample) forecast, the `family` column uses the word `ensemble` to designate that it is a ensemble forecast and the parameter column is the ensemble member number (`1`, `2`, `3` ...)
 
 ```{r}
-df <- readr::read_csv("https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/forecasts/raw/project_id=usgsrc4cast/T20240506050515_usgsrc4cast-2024-05-05-persistenceRW.csv.gz", show_col_types = FALSE)
+df <- readr::read_csv("https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/forecasts/raw/project_id=usgsrc4cast/T20240813050531_usgsrc4cast-2024-08-12-persistenceRW.csv.gz", show_col_types = FALSE)
 ```
 ```{r}
 df |> 
