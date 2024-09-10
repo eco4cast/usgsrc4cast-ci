@@ -317,6 +317,17 @@ for (i in 1:length(config$variable_groups)){ ## organize variable groups
         model_keywords <- c(list('Forecasts',config$project_id, names(config$variable_groups)[i], m, var_name_full[j], var_name, duration_value, duration_name),
                             as.list(model_sites$site_id))
 
+        ## build radiantearth stac and raw json link
+        stac_link <- paste0('https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/forecasts/',
+                            names(config$variable_groups)[i],'/',
+                            var_formal_name, '/models/',
+                            m,'.json')
+
+        json_link <- paste0('https://raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/forecasts/',
+                            names(config$variable_groups)[i],'/',
+                            var_formal_name, '/models/',
+                            m,'.json')
+
         stac4cast::build_model(model_id = m,
                                stac_id = stac_id,
                                team_name = registered_model_id$`Long name of the model (can include spaces)`[idx],
@@ -338,7 +349,9 @@ for (i in 1:length(config$variable_groups)){ ## organize variable groups
                                table_description = forecast_description_create,
                                full_var_df = model_vars,
                                code_web_link = model_code_link,
-                               model_keywords = model_keywords)
+                               model_keywords = model_keywords,
+                               stac_web_link = stac_link,
+                               raw_json_link = json_link)
 
       } ## end model loop
     } ## end duration loop
