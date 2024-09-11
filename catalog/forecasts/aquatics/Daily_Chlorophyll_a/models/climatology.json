@@ -5,32 +5,31 @@
   ],
   "type": "Feature",
   "id": "climatology_chla_P1D_forecast",
-  "bbox": [
-    [-122.6692, 39.6328, -74.7781, 45.5175]
-  ],
+  "bbox": [-122.6692, 39.6328, -74.7781, 45.5175],
   "geometry": {
     "type": "MultiPoint",
     "coordinates": [
+      [-75.0574, 41.7567],
+      [-74.7781, 40.2217],
+      [-88.6142, 41.2999],
       [-88.2515, 42.31],
       [-88.984, 41.3248],
       [-89.3562, 41.1073],
       [-90.6077, 39.6328],
       [-122.2974, 44.7538],
       [-122.5773, 45.3793],
-      [-122.6692, 45.5175],
-      [-75.0574, 41.7567],
-      [-74.7781, 40.2217],
-      [-88.6142, 41.2999]
+      [-122.6692, 45.5175]
     ]
   },
   "properties": {
     "title": "climatology",
-    "description": "All forecasts for the Daily_Chlorophyll_a variable for the climatology model. Information for the model is provided as follows: Forecasts stream chlorophyll-a based on the historic average and standard deviation for that given site and day-of-year..\n                                    The model predicts this variable at the following sites: USGS-05549500, USGS-05553700, USGS-05558300, USGS-05586300, USGS-14181500, USGS-14211010, USGS-14211720, USGS-01427510, USGS-01463500, USGS-05543010.\n                                    Forecasts are the raw forecasts that includes all ensemble members or distribution parameters. Due to the size of the raw forecasts, we recommend accessing the forecast summaries or scores to analyze forecasts (unless you need the individual ensemble members)",
-    "start_datetime": "2024-02-07",
-    "end_datetime": "2024-08-11",
+    "description": "All forecasts for the Daily_Chlorophyll_a variable for the climatology model. Information for the model is provided as follows: Forecasts stream chlorophyll-a based on the historic average and standard deviation for that given site and day-of-year..\n                                    The model predicts this variable at the following sites: USGS-01427510, USGS-01463500, USGS-05543010, USGS-05549500, USGS-05553700, USGS-05558300, USGS-05586300, USGS-14181500, USGS-14211010, USGS-14211720.\n                                    Forecasts are the raw forecasts that includes all ensemble members or distribution parameters. Due to the size of the raw forecasts, we recommend accessing the forecast summaries or scores to analyze forecasts (unless you need the individual ensemble members)",
+    "datetime": "2024-09-10T00:00:00Z",
+    "start_datetime": "2024-02-07T00:00:00Z",
+    "end_datetime": "2024-10-14T00:00:00Z",
     "providers": [
       {
-        "url": "jzwart@usgs.gov",
+        "url": "https://github.com/eco4cast/usgsrc4cast-ci/blob/main/baseline_models/models/aquatics_climatology.R",
         "name": "Jacob Zwart",
         "roles": [
           "producer",
@@ -56,16 +55,16 @@
       "chla",
       "Daily",
       "P1D",
+      "USGS-01427510",
+      "USGS-01463500",
+      "USGS-05543010",
       "USGS-05549500",
       "USGS-05553700",
       "USGS-05558300",
       "USGS-05586300",
       "USGS-14181500",
       "USGS-14211010",
-      "USGS-14211720",
-      "USGS-01427510",
-      "USGS-01463500",
-      "USGS-05543010"
+      "USGS-14211720"
     ],
     "table:columns": [
       {
@@ -104,9 +103,14 @@
         "description": "datetime that forecast was submitted"
       },
       {
-        "name": "date",
-        "type": "date32[day]",
-        "description": {}
+        "name": "duration",
+        "type": "string",
+        "description": "temporal duration of forecast (hourly, daily, etc.); follows ISO 8601 duration convention"
+      },
+      {
+        "name": "model_id",
+        "type": "string",
+        "description": "unique model identifier"
       },
       {
         "name": "project_id",
@@ -114,19 +118,9 @@
         "description": "unique identifier for the forecast project"
       },
       {
-        "name": "duration",
-        "type": "string",
-        "description": "temporal duration of forecast (hourly, daily, etc.); follows ISO 8601 duration convention"
-      },
-      {
         "name": "variable",
         "type": "string",
         "description": "name of forecasted variable"
-      },
-      {
-        "name": "model_id",
-        "type": "string",
-        "description": "unique model identifier"
       }
     ]
   },
@@ -161,6 +155,18 @@
       "href": "https://github.com/eco4cast/usgsrc4cast-ci/blob/main/baseline_models/models/aquatics_climatology.R",
       "type": "text/html",
       "title": "Link for Model Code"
+    },
+    {
+      "rel": "item",
+      "href": "https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/forecasts/aquatics/Daily_Chlorophyll_a/models/climatology.json",
+      "type": "text/html",
+      "title": "Link for rendered STAC item"
+    },
+    {
+      "rel": "item",
+      "href": "https://raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/forecasts/aquatics/Daily_Chlorophyll_a/models/climatology.json",
+      "type": "text/html",
+      "title": "Link for raw JSON file"
     }
   ],
   "assets": {
