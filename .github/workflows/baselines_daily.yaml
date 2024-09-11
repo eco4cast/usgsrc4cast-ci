@@ -19,7 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          ref: prod
+          ref: main
 
       - name: Generate forecasts
         shell: Rscript {0}
