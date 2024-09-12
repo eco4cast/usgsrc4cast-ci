@@ -24,7 +24,7 @@ targets <- readr::read_csv(config$target_groups$aquatics$targets_file,
                            show_col_types = F)
 
 sites <- readr::read_csv(paste0("https://github.com/eco4cast/usgsrc4cast-ci/",
-                                "raw/prod/USGS_site_metadata.csv"),
+                                "raw/main/USGS_site_metadata.csv"),
                          show_col_types = F)
 
 # calculates a doy average for each target variable in each site

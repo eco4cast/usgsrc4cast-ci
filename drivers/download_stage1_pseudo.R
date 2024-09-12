@@ -10,7 +10,7 @@ driver_bucket <- stringr::word(config$driver_bucket, 1, sep = "/")
 driver_path <- stringr::word(config$driver_bucket, 2, -1, sep = "/")
 
 sites <- readr::read_csv(paste0("https://github.com/eco4cast/usgsrc4cast-ci/",
-                                "raw/prod/USGS_site_metadata.csv"),
+                                "raw/main/USGS_site_metadata.csv"),
                          col_select = c("site_id", "latitude", "longitude"))
 
 Sys.setenv("GEFS_VERSION"="v12")

@@ -175,8 +175,8 @@ The csv file can only contain one unique `model_id` and one unique `project_id`.
 The submit function is available using the following code in R 
 
 ```{r eval = FALSE}
-source("https://raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/prod/R/eco4cast-helpers/submit.R") 
-source("https://raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/prod/R/eco4cast-helpers/forecast_output_validator.R")
+source("https://raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/R/eco4cast-helpers/submit.R") 
+source("https://raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/R/eco4cast-helpers/forecast_output_validator.R")
 
 submit(forecast_file = "project_id-year-month-day-model_id.csv", project_id = "usgsrc4cast")
 ```
@@ -191,8 +191,8 @@ def download_and_exec_script(url):
     response.raise_for_status() 
     exec(response.text, globals())
     
-download_and_exec_script("https://raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/prod/python/submit.py")
-download_and_exec_script("https://raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/prod/python/forecast_output_validator.py")
+download_and_exec_script("https://raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/python/submit.py")
+download_and_exec_script("https://raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/python/forecast_output_validator.py")
 
 submit(forecast_file = "project_id-year-month-day-model_id.csv", project_id = "usgsrc4cast")
 ```

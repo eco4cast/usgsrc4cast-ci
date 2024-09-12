@@ -11,7 +11,7 @@ aquatics_focal_sites <- c("USGS-05553700", "USGS-14211720")
 ```
 
 ```{r message=FALSE, echo = FALSE}
-target_metadata <- readr::read_csv("https://raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/prod/targets/in/controlled_vocab_targets.csv")
+target_metadata <- readr::read_csv("https://raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/targets/in/controlled_vocab_targets.csv")
 ```
 
 ```{r echo = FALSE}

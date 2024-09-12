@@ -20,7 +20,7 @@ df <- arrow::open_dataset("pseudo") |>
 
 
 site_list <- readr::read_csv(paste0("https://github.com/eco4cast/usgsrc4cast-ci/",
-                                    "raw/prod/USGS_site_metadata.csv"),
+                                    "raw/main/USGS_site_metadata.csv"),
                              show_col_types = FALSE)
 
 
