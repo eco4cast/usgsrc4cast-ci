@@ -7,7 +7,7 @@ editor:
 
 ```{r  message=FALSE, echo = FALSE}
 library(tidyverse)
-aquatics_focal_sites <- c("USGS-05553700", "USGS-14211720")
+aquatics_focal_sites <- c("USGS-05553700", "USGS-01463500")
 ```
 
 ```{r message=FALSE, echo = FALSE}
@@ -38,7 +38,7 @@ This challenge focuses on forecasting river chlorophyll-a at select USGS monitor
 As you develop your forecasting skills and want to expand to more sites, the targets are available at all 10 USGS sites.
 You may also consider submitting forecasts to sites that match your interests or locality. 
 
-More information about USGS sites can be found in the [site metadata](https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgs4cast-ci/main/catalog/sites/collection.json) and on USGS's [website](https://dashboard.waterdata.usgs.gov/app/nwd/en/)
+More information about USGS sites can be found in the [site metadata](https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/sites/collection.json) and on USGS's [website](https://dashboard.waterdata.usgs.gov/app/nwd/en/)
 
 ## Explore the targets and themes {#sec-targets}
 

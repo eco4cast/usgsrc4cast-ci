@@ -15,7 +15,7 @@ source("R/plot-utils.R")
 #source("../R/ignore_sigpipes.R")
 #ignore_sigpipe()
 
-aquatics_focal_sites <- c("USGS-05553700", "USGS-14211720")
+aquatics_focal_sites <- c("USGS-05553700", "USGS-01463500")
 ```
 
 This page visualizes the forecasts and forecast performance for the focal target variables.
