@@ -9,24 +9,24 @@
   "geometry": {
     "type": "MultiPoint",
     "coordinates": [
-      [-122.2974, 44.7538],
-      [-122.5773, 45.3793],
-      [-122.6692, 45.5175],
       [-75.0574, 41.7567],
       [-74.7781, 40.2217],
       [-88.6142, 41.2999],
       [-88.2515, 42.31],
       [-88.984, 41.3248],
       [-89.3562, 41.1073],
-      [-90.6077, 39.6328]
+      [-90.6077, 39.6328],
+      [-122.2974, 44.7538],
+      [-122.5773, 45.3793],
+      [-122.6692, 45.5175]
     ]
   },
   "properties": {
     "title": "persistenceRW",
-    "description": "All summaries for the Daily_Chlorophyll_a variable for the persistenceRW model. Information for the model is provided as follows: Random walk model based on most recent stream chl-a observations using the fable::RW() model..\n                                    The model predicts this variable at the following sites: USGS-14181500, USGS-14211010, USGS-14211720, USGS-01427510, USGS-01463500, USGS-05543010, USGS-05549500, USGS-05553700, USGS-05558300, USGS-05586300.\n                                    Summaries are the forecasts statistics of the raw forecasts (i.e., mean, median, confidence intervals)",
-    "datetime": "2024-09-25T00:00:00Z",
+    "description": "All summaries for the Daily_Chlorophyll_a variable for the persistenceRW model. Information for the model is provided as follows: Random walk model based on most recent stream chl-a observations using the fable::RW() model..\n                                    The model predicts this variable at the following sites: USGS-01427510, USGS-01463500, USGS-05543010, USGS-05549500, USGS-05553700, USGS-05558300, USGS-05586300, USGS-14181500, USGS-14211010, USGS-14211720.\n                                    Summaries are the forecasts statistics of the raw forecasts (i.e., mean, median, confidence intervals)",
+    "datetime": "2024-09-26T00:00:00Z",
     "start_datetime": "2024-02-07T00:00:00Z",
-    "end_datetime": "2024-10-28T00:00:00Z",
+    "end_datetime": "2024-10-29T00:00:00Z",
     "providers": [
       {
         "url": "https://github.com/eco4cast/usgsrc4cast-ci/blob/main/baseline_models/models/aquatics_persistenceRW.R",
@@ -55,16 +55,16 @@
       "chla",
       "Daily",
       "P1D",
-      "USGS-14181500",
-      "USGS-14211010",
-      "USGS-14211720",
       "USGS-01427510",
       "USGS-01463500",
       "USGS-05543010",
       "USGS-05549500",
       "USGS-05553700",
       "USGS-05558300",
-      "USGS-05586300"
+      "USGS-05586300",
+      "USGS-14181500",
+      "USGS-14211010",
+      "USGS-14211720"
     ],
     "table:columns": [
       {
