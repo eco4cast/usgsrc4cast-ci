@@ -81,7 +81,7 @@
       "interval": [
         [
           "2020-01-01T00:00:00Z",
-          "2024-09-27T00:00:00Z"
+          "2024-09-28T00:00:00Z"
         ]
       ]
     }
@@ -110,13 +110,13 @@
   ],
   "assets": {
     "data": {
-      "href": "s3://anonymous@bio230014-bucket01/challenges/drivers/usgsrc4cast/noaa/gefs-v12?endpoint_override=sdsc.osn.xsede.org",
+      "href": "s3://anonymous@bio230014-bucket01/challenges/drivers/usgsrc4cast/noaa/gefs-v12/project_id=usgsrc4cast?endpoint_override=sdsc.osn.xsede.org",
       "type": "application/x-parquet",
       "title": "Database Access",
       "roles": [
         "data"
       ],
-      "description": "Use `arrow` for remote access to the database. This R code will return results for the Forecasting Challenge.\n\n### R\n\n```{r}\n# Use code below\n\nall_results <- arrow::open_dataset(\"s3://anonymous@bio230014-bucket01/challenges/drivers/usgsrc4cast/noaa/gefs-v12?endpoint_override=sdsc.osn.xsede.org\")\ndf <- all_results |> dplyr::collect()\n\n```\n       \n\nYou can use dplyr operations before calling `dplyr::collect()` to `summarise`, `select` columns, and/or `filter` rows prior to pulling the data into a local `data.frame`. Reducing the data that is pulled locally will speed up the data download speed and reduce your memory usage.\n\n\n"
+      "description": "Use `arrow` for remote access to the database. This R code will return results for the Forecasting Challenge.\n\n### R\n\n```{r}\n# Use code below\n\nall_results <- arrow::open_dataset(\"s3://anonymous@bio230014-bucket01/challenges/drivers/usgsrc4cast/noaa/gefs-v12/project_id=usgsrc4cast?endpoint_override=sdsc.osn.xsede.org\")\ndf <- all_results |> dplyr::collect()\n\n```\n       \n\nYou can use dplyr operations before calling `dplyr::collect()` to `summarise`, `select` columns, and/or `filter` rows prior to pulling the data into a local `data.frame`. Reducing the data that is pulled locally will speed up the data download speed and reduce your memory usage.\n\n\n"
     },
     "thumbnail": {
       "href": "https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/DSC_0001.jpg",
