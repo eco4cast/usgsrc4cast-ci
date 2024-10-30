@@ -252,10 +252,13 @@ for (i in 1:length(config$variable_groups)){ ## organize variable groups
           filter(model_id == m,
                  variable == var_name,
                  duration == duration_name) |>
-          dplyr::summarise(min(date),max(date))
+          dplyr::summarise(min(date),max(date),max(reference_date),max(pub_date))
 
         model_min_date <- model_date_range$`min(date)`
         model_max_date <- model_date_range$`max(date)`
+
+        model_reference_date <- model_date_range$`max(reference_date)`
+        model_pub_date <- model_date_range$`max(pub_date)`
 
         model_var_duration_df <- forecast_data_df |>
           filter(model_id == m,
@@ -335,6 +338,8 @@ for (i in 1:length(config$variable_groups)){ ## organize variable groups
                                model_description = model_description,
                                start_date = model_min_date,
                                end_date = model_max_date,
+                               pub_date = model_pub_date,
+                               forecast_date = model_reference_date,
                                var_values = model_vars$var_duration_name,
                                duration_names = model_var_duration_df$duration,
                                duration_value = duration_name,
