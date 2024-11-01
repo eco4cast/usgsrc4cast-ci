@@ -34,7 +34,7 @@ jobs:
 
       - name: Install validator
         run: |
-          source venv/bin/activate
+          . venv/bin/activate
           pip install stac-validator
 
       - name: Render metadata
