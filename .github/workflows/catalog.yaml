@@ -71,9 +71,21 @@ jobs:
            fetch-depth: 0
            set-safe-directory: '*'
 
-      - name: install validator
+      - name: Set up Python
         run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-venv python3-pip
+
+      - name: Create and activate virtual environment
+        run: |
+          python3 -m venv venv
+          echo "PATH=$(pwd)/venv/bin:$PATH" >> $GITHUB_ENV
+
+      - name: Install validator
+        run: |
+          . venv/bin/activate
           pip install stac-validator
+
       - name: Render
         shell: Rscript {0}
         run: source('catalog/forecasts/forecast_models.R')
@@ -104,9 +116,21 @@ jobs:
            fetch-depth: 0
            set-safe-directory: '*'
 
-      - name: install validator
+      - name: Set up Python
         run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-venv python3-pip
+
+      - name: Create and activate virtual environment
+        run: |
+          python3 -m venv venv
+          echo "PATH=$(pwd)/venv/bin:$PATH" >> $GITHUB_ENV
+
+      - name: Install validator
+        run: |
+          . venv/bin/activate
           pip install stac-validator
+
       - name: Render
         shell: Rscript {0}
         run: source('catalog/scores/scores_models.R')
@@ -137,9 +161,21 @@ jobs:
            fetch-depth: 0
            set-safe-directory: '*'
 
-      - name: install validator
+      - name: Set up Python
         run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-venv python3-pip
+
+      - name: Create and activate virtual environment
+        run: |
+          python3 -m venv venv
+          echo "PATH=$(pwd)/venv/bin:$PATH" >> $GITHUB_ENV
+
+      - name: Install validator
+        run: |
+          . venv/bin/activate
           pip install stac-validator
+
       - name: Render
         shell: Rscript {0}
         run: source('catalog/inventory/create_inventory_page.R')
@@ -170,9 +206,21 @@ jobs:
            fetch-depth: 0
            set-safe-directory: '*'
 
-      - name: install validator
+      - name: Set up Python
         run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-venv python3-pip
+
+      - name: Create and activate virtual environment
+        run: |
+          python3 -m venv venv
+          echo "PATH=$(pwd)/venv/bin:$PATH" >> $GITHUB_ENV
+
+      - name: Install validator
+        run: |
+          . venv/bin/activate
           pip install stac-validator
+
       - name: Render
         shell: Rscript {0}
         run: source('catalog/summaries/summaries_models.R')
@@ -203,9 +251,21 @@ jobs:
            fetch-depth: 0
            set-safe-directory: '*'
 
-      - name: install validator
+      - name: Set up Python
         run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-venv python3-pip
+
+      - name: Create and activate virtual environment
+        run: |
+          python3 -m venv venv
+          echo "PATH=$(pwd)/venv/bin:$PATH" >> $GITHUB_ENV
+
+      - name: Install validator
+        run: |
+          . venv/bin/activate
           pip install stac-validator
+
       - name: Render
         shell: Rscript {0}
         run: source('catalog/noaa_forecasts/noaa_forecasts.R')
@@ -236,9 +296,21 @@ jobs:
            fetch-depth: 0
            set-safe-directory: '*'
 
-      - name: install validator
+      - name: Set up Python
         run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-venv python3-pip
+
+      - name: Create and activate virtual environment
+        run: |
+          python3 -m venv venv
+          echo "PATH=$(pwd)/venv/bin:$PATH" >> $GITHUB_ENV
+
+      - name: Install validator
+        run: |
+          . venv/bin/activate
           pip install stac-validator
+
       - name: Render targets
         shell: Rscript {0}
         run: source('catalog/targets/create_targets_page.R')
