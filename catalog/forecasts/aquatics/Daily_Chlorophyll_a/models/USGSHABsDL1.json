@@ -4,7 +4,7 @@
     "https://stac-extensions.github.io/table/v1.2.0/schema.json"
   ],
   "type": "Feature",
-  "id": "climatology_chla_P1D_forecast",
+  "id": "USGSHABsDL1_chla_P1D_forecast",
   "bbox": [-122.6692, 39.6328, -74.7781, 45.5175],
   "geometry": {
     "type": "MultiPoint",
@@ -12,26 +12,26 @@
       [-75.0574, 41.7567],
       [-74.7781, 40.2217],
       [-88.6142, 41.2999],
+      [-88.2515, 42.31],
       [-88.984, 41.3248],
       [-89.3562, 41.1073],
       [-90.6077, 39.6328],
       [-122.2974, 44.7538],
       [-122.5773, 45.3793],
-      [-122.6692, 45.5175],
-      [-88.2515, 42.31]
+      [-122.6692, 45.5175]
     ]
   },
   "properties": {
-    "title": "climatology",
-    "description": "All forecasts for the Daily_Chlorophyll_a variable for the climatology model. Information for the model is provided as follows: Forecasts stream chlorophyll-a based on the historic average and standard deviation for that given site and day-of-year..\n                                    The model predicts this variable at the following sites: USGS-01427510, USGS-01463500, USGS-05543010, USGS-05553700, USGS-05558300, USGS-05586300, USGS-14181500, USGS-14211010, USGS-14211720, USGS-05549500.\n                                    Forecasts are the raw forecasts that includes all ensemble members or distribution parameters. Due to the size of the raw forecasts, we recommend accessing the forecast summaries or scores to analyze forecasts (unless you need the individual ensemble members)",
-    "datetime": "2024-10-29",
-    "updated": "2024-10-30",
-    "start_datetime": "2024-02-07T00:00:00Z",
-    "end_datetime": "2024-12-03T00:00:00Z",
+    "title": "USGSHABsDL1",
+    "description": "All forecasts for the Daily_Chlorophyll_a variable for the USGSHABsDL1 model. Information for the model is provided as follows: We train a long-short term memory neural network to predict the Gaussian distribution of river chl-a and update the model states with ensemble Kalman filter. Written in PyTorch.\n                                    The model predicts this variable at the following sites: USGS-01427510, USGS-01463500, USGS-05543010, USGS-05549500, USGS-05553700, USGS-05558300, USGS-05586300, USGS-14181500, USGS-14211010, USGS-14211720.\n                                    Forecasts are the raw forecasts that includes all ensemble members or distribution parameters. Due to the size of the raw forecasts, we recommend accessing the forecast summaries or scores to analyze forecasts (unless you need the individual ensemble members)",
+    "datetime": "2024-10-30",
+    "updated": "2024-10-31",
+    "start_datetime": "2024-09-26T00:00:00Z",
+    "end_datetime": "2024-11-28T00:00:00Z",
     "providers": [
       {
-        "url": "https://github.com/eco4cast/usgsrc4cast-ci/blob/main/baseline_models/models/aquatics_climatology.R",
-        "name": "Jacob Zwart",
+        "url": "https://projects.ecoforecast.org/neon4cast-ci/",
+        "name": "NEON Ecological Forecasting Project",
         "roles": [
           "producer",
           "processor",
@@ -51,7 +51,7 @@
       "Forecasts",
       "usgsrc4cast",
       "aquatics",
-      "climatology",
+      "USGSHABsDL1",
       "Chlorophyll_a",
       "chla",
       "Daily",
@@ -59,13 +59,13 @@
       "USGS-01427510",
       "USGS-01463500",
       "USGS-05543010",
+      "USGS-05549500",
       "USGS-05553700",
       "USGS-05558300",
       "USGS-05586300",
       "USGS-14181500",
       "USGS-14211010",
-      "USGS-14211720",
-      "USGS-05549500"
+      "USGS-14211720"
     ],
     "table:columns": [
       {
@@ -131,7 +131,7 @@
       "rel": "collection",
       "href": "../collection.json",
       "type": "application/json",
-      "title": "climatology"
+      "title": "USGSHABsDL1"
     },
     {
       "rel": "root",
@@ -143,29 +143,29 @@
       "rel": "parent",
       "href": "../collection.json",
       "type": "application/json",
-      "title": "climatology"
+      "title": "USGSHABsDL1"
     },
     {
       "rel": "self",
-      "href": "climatology.json",
+      "href": "USGSHABsDL1.json",
       "type": "application/json",
       "title": "Model Forecast"
     },
     {
       "rel": "item",
-      "href": "https://github.com/eco4cast/usgsrc4cast-ci/blob/main/baseline_models/models/aquatics_climatology.R",
+      "href": "https://code.usgs.gov/wma/proxies/habs/habs-forecast-chl-usgsrc4cast-dl",
       "type": "text/html",
       "title": "Link for Model Code"
     },
     {
       "rel": "item",
-      "href": "https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/forecasts/aquatics/Daily_Chlorophyll_a/models/climatology.json",
+      "href": "https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/forecasts/aquatics/Daily_Chlorophyll_a/models/USGSHABsDL1.json",
       "type": "text/html",
       "title": "Link for rendered STAC item"
     },
     {
       "rel": "item",
-      "href": "https://raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/forecasts/aquatics/Daily_Chlorophyll_a/models/climatology.json",
+      "href": "https://raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/forecasts/aquatics/Daily_Chlorophyll_a/models/USGSHABsDL1.json",
       "type": "text/html",
       "title": "Link for raw JSON file"
     }
@@ -174,20 +174,20 @@
     "1": {
       "type": "application/json",
       "title": "Model Metadata",
-      "href": "https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/metadata/model_id/climatology.json",
-      "description": "Use `jsonlite::fromJSON()` to download the model metadata JSON file. This R code will return metadata provided during the model registration.\n      \n\n### R\n\n```{r}\n# Use code below\n\nmodel_metadata <- jsonlite::fromJSON(\"https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/metadata/model_id/climatology.json\")\n\n"
+      "href": "https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/metadata/model_id/USGSHABsDL1.json",
+      "description": "Use `jsonlite::fromJSON()` to download the model metadata JSON file. This R code will return metadata provided during the model registration.\n      \n\n### R\n\n```{r}\n# Use code below\n\nmodel_metadata <- jsonlite::fromJSON(\"https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/metadata/model_id/USGSHABsDL1.json\")\n\n"
     },
     "2": {
       "type": "text/html",
       "title": "Link for Model Code",
-      "href": "https://github.com/eco4cast/usgsrc4cast-ci/blob/main/baseline_models/models/aquatics_climatology.R",
+      "href": "https://code.usgs.gov/wma/proxies/habs/habs-forecast-chl-usgsrc4cast-dl",
       "description": "The link to the model code provided by the model submission team"
     },
     "3": {
       "type": "application/x-parquet",
       "title": "Database Access for Daily Chlorophyll_a",
-      "href": "s3://anonymous@bio230014-bucket01/challenges/forecasts/parquet//project_id=usgsrc4cast/duration=P1D/variable=chla/model_id=climatology?endpoint_override=sdsc.osn.xsede.org",
-      "description": "Use `R` or `Python` code for remote access to the database. This code will return results for this variable and model combination.\n\n### R\n\n```{r}\n# Use code below\n\nall_results <- arrow::open_dataset(\"s3://anonymous@bio230014-bucket01/challenges/forecasts/parquet//project_id=usgsrc4cast/duration=P1D/variable=chla/model_id=climatology?endpoint_override=sdsc.osn.xsede.org\")\ndf <- all_results |> dplyr::collect()\n\n```\n       \n\nYou can use dplyr operations before calling `dplyr::collect()` to `summarise`, `select` columns, and/or `filter` rows prior to pulling the data into a local `data.frame`. Reducing the data that is pulled locally will speed up the data download speed and reduce your memory usage.\n\n\n### Python\n\n```# Use code below\n\n\nimport ibis\n\n       con = ibis.duckdbf.connect()\n\n\n       con.raw_sql(f'''\n\n       CREATE OR REPLACE SECRET secret (\n\n       TYPE S3,\n\n       ENDPOINT 'sdsc.osn.xsede.org',\n\n       URL_STYLE 'path'\n\n\n       );/n\n       '''\n\n\n       path = \"s3://bio230014-bucket01/challenges/forecasts/parquet//project_id=usgsrc4cast/duration=P1D/variable=chla/model_id=climatology\"\ncon.read_parquet(path + \"/**\")"
+      "href": "s3://anonymous@bio230014-bucket01/challenges/forecasts/parquet//project_id=usgsrc4cast/duration=P1D/variable=chla/model_id=USGSHABsDL1?endpoint_override=sdsc.osn.xsede.org",
+      "description": "Use `R` or `Python` code for remote access to the database. This code will return results for this variable and model combination.\n\n### R\n\n```{r}\n# Use code below\n\nall_results <- arrow::open_dataset(\"s3://anonymous@bio230014-bucket01/challenges/forecasts/parquet//project_id=usgsrc4cast/duration=P1D/variable=chla/model_id=USGSHABsDL1?endpoint_override=sdsc.osn.xsede.org\")\ndf <- all_results |> dplyr::collect()\n\n```\n       \n\nYou can use dplyr operations before calling `dplyr::collect()` to `summarise`, `select` columns, and/or `filter` rows prior to pulling the data into a local `data.frame`. Reducing the data that is pulled locally will speed up the data download speed and reduce your memory usage.\n\n\n### Python\n\n```# Use code below\n\n\nimport ibis\n\n       con = ibis.duckdbf.connect()\n\n\n       con.raw_sql(f'''\n\n       CREATE OR REPLACE SECRET secret (\n\n       TYPE S3,\n\n       ENDPOINT 'sdsc.osn.xsede.org',\n\n       URL_STYLE 'path'\n\n\n       );/n\n       '''\n\n\n       path = \"s3://bio230014-bucket01/challenges/forecasts/parquet//project_id=usgsrc4cast/duration=P1D/variable=chla/model_id=USGSHABsDL1\"\ncon.read_parquet(path + \"/**\")"
     }
   }
 }
