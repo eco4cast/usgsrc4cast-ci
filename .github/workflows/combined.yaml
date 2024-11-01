@@ -66,9 +66,18 @@ jobs:
           fetch-depth: 0
           set-safe-directory: '*'
 
+      - name: Set up Python
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-venv python3-pip
+
+      - name: Create and activate virtual environment
+        run: |
+          python3 -m venv venv
+          echo "PATH=$(pwd)/venv/bin:$PATH" >> $GITHUB_ENV
+
       - name: Install Python packages
         run: |
-          apt-get update && apt-get install -y python3-pip
           pip3 install pandas
 
       - uses: quarto-dev/quarto-actions/setup@v2
