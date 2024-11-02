@@ -78,7 +78,8 @@ jobs:
 
       - name: Install Python packages
         run: |
-          pip3 install pandas
+          . venv/bin/activate  # Activate the virtual environment
+          pip install pandas
 
       - uses: quarto-dev/quarto-actions/setup@v2
         with:
@@ -94,6 +95,7 @@ jobs:
 
       - name: Render
         run: |
+          . venv/bin/activate
           quarto render dashboard
 
       - name: Build site map
