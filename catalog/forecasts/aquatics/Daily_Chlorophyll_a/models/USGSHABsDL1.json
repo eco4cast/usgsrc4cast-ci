@@ -9,25 +9,25 @@
   "geometry": {
     "type": "MultiPoint",
     "coordinates": [
-      [-90.6077, 39.6328],
-      [-122.2974, 44.7538],
-      [-122.5773, 45.3793],
-      [-122.6692, 45.5175],
       [-75.0574, 41.7567],
       [-74.7781, 40.2217],
       [-88.6142, 41.2999],
       [-88.2515, 42.31],
       [-88.984, 41.3248],
-      [-89.3562, 41.1073]
+      [-89.3562, 41.1073],
+      [-90.6077, 39.6328],
+      [-122.2974, 44.7538],
+      [-122.5773, 45.3793],
+      [-122.6692, 45.5175]
     ]
   },
   "properties": {
     "title": "USGSHABsDL1",
-    "description": "All forecasts for the Daily_Chlorophyll_a variable for the USGSHABsDL1 model. Information for the model is provided as follows: We train a long-short term memory neural network to predict the Gaussian distribution of river chl-a and update the model states with ensemble Kalman filter. Written in PyTorch.\n                                    The model predicts this variable at the following sites: USGS-05586300, USGS-14181500, USGS-14211010, USGS-14211720, USGS-01427510, USGS-01463500, USGS-05543010, USGS-05549500, USGS-05553700, USGS-05558300.\n                                    Forecasts are the raw forecasts that includes all ensemble members or distribution parameters. Due to the size of the raw forecasts, we recommend accessing the forecast summaries or scores to analyze forecasts (unless you need the individual ensemble members)",
-    "datetime": "2024-11-03",
-    "updated": "2024-11-04",
+    "description": "All forecasts for the Daily_Chlorophyll_a variable for the USGSHABsDL1 model. Information for the model is provided as follows: We train a long-short term memory neural network to predict the Gaussian distribution of river chl-a and update the model states with ensemble Kalman filter. Written in PyTorch.\n                                    The model predicts this variable at the following sites: USGS-01427510, USGS-01463500, USGS-05543010, USGS-05549500, USGS-05553700, USGS-05558300, USGS-05586300, USGS-14181500, USGS-14211010, USGS-14211720.\n                                    Forecasts are the raw forecasts that includes all ensemble members or distribution parameters. Due to the size of the raw forecasts, we recommend accessing the forecast summaries or scores to analyze forecasts (unless you need the individual ensemble members)",
+    "datetime": "2024-11-04",
+    "updated": "2024-11-05",
     "start_datetime": "2024-09-26T00:00:00Z",
-    "end_datetime": "2024-12-02T00:00:00Z",
+    "end_datetime": "2024-12-03T00:00:00Z",
     "providers": [
       {
         "url": "https://projects.ecoforecast.org/neon4cast-ci/",
@@ -56,16 +56,16 @@
       "chla",
       "Daily",
       "P1D",
-      "USGS-05586300",
-      "USGS-14181500",
-      "USGS-14211010",
-      "USGS-14211720",
       "USGS-01427510",
       "USGS-01463500",
       "USGS-05543010",
       "USGS-05549500",
       "USGS-05553700",
-      "USGS-05558300"
+      "USGS-05558300",
+      "USGS-05586300",
+      "USGS-14181500",
+      "USGS-14211010",
+      "USGS-14211720"
     ],
     "table:columns": [
       {
