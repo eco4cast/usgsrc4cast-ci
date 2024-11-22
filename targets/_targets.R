@@ -57,28 +57,13 @@ list(
 
   tar_target(
     start_date,
-    # Sys.Date() - 2
     as.Date("2000-01-01")
-    # {
-    #   max_date_per_site
-    # },
-    # pattern = map(historic_data)
   ),
 
   tar_target(
     end_date,
-    Sys.Date()
-  ),
-
-  tar_target(
-    char_names_yml,
-    "in/characteristic_names.yml",
-    format = "file"
-  ),
-
-  tar_target(
-    char_names,
-    yaml::read_yaml(char_names_yml)
+    Sys.Date(),
+    cue = tar_cue("always")
   ),
 
   tar_target(
@@ -88,7 +73,7 @@ list(
   ),
 
   tar_target(
-    pcodes,
+    pcodes_ugL,
     yaml::read_yaml(pcodes_yml)
   ),
 
@@ -97,7 +82,7 @@ list(
     download_historic_data(sites = site_list_id,
                            start_date = start_date,
                            end_date = end_date,
-                           pcodes = pcodes,
+                           pcodes = pcodes_ugL,
                            service = "dv", # dv is daily values
                            statCd = "00003", # 00003 is mean
                            out_file = "out/historic_data.rds"),
@@ -117,19 +102,48 @@ list(
     download_historic_uv_data(sites = sites_without_dv,
                               start_date = start_date,
                               end_date = end_date,
-                              pcodes = pcodes,
+                              pcodes = pcodes_ugL,
                               service = "uv",
                               out_file = "out/historic_uv_data.rds"),
+    format = "file"
+  ),
+
+  # there are several sites in the WRB that stopped collecting sensor chl. in ug/L
+  #  and switched to RFUs in 2024. See "targets/in/wrb_rfu_notes.txt" for more details
+  # Downloading the RFU UV data, converting to ug/L, and adding to the existing ug/L timeseries
+  tar_target(
+    pcodes_rfu,
+    c("32315")
+  ),
+
+  tar_target(
+    rfu_sites,
+    c("14211720", "14211010", "14181500")
+  ),
+
+  tar_target(
+    uv_rfu_historic_data_rds,
+    download_historic_uv_rfu_data(sites = rfu_sites,
+                                  start_date = start_date,
+                                  end_date = end_date,
+                                  pcodes = pcodes_rfu,
+                                  service = "uv",
+                                  out_file = "out/historic_uv_rfu_data.rds"),
     format = "file"
   ),
 
   tar_target(
     all_historic_data_csv,
     {
-      dv <- read_rds(historic_data_rds)
-      uv <- read_rds(uv_historic_data_rds)
+      dv <- read_rds(historic_data_rds) %>% mutate(source = 'dv')
+      uv <- read_rds(uv_historic_data_rds) %>% mutate(source = 'uv')
+      uv_rfu <- read_rds(uv_rfu_historic_data_rds) %>% mutate(source = 'uv_rfu') %>%
+        filter(site_no != "14181500")
+      site_14181500_rfu = read_rds(uv_rfu_historic_data_rds) %>% mutate(source = 'uv_rfu') %>%
+        filter(site_no == "14181500" & dateTime > as.Date('2024-04-24'))
+      uv_rfu <- bind_rows(uv_rfu, site_14181500_rfu)
       out_file <- "out/USGS_chl_data.csv"
-      out <- bind_rows(dv, uv) %>%
+      out <- bind_rows(dv, uv, uv_rfu) %>%
         rename(datetime = dateTime,
                site_id = site_no,
                observation = chl_ug_L) %>%
@@ -137,8 +151,10 @@ list(
                site_id = paste0("USGS-", site_id),
                project_id = "usgsrc4cast",
                duration = "P1D") %>%
+        distinct(site_id, datetime, .keep_all = TRUE) %>%
         select(project_id, site_id, datetime,
-               duration, variable, observation)
+               duration, variable, observation) %>%
+        arrange(site_id, datetime)
       write_csv(out, file = out_file)
       return(out_file)
     },
