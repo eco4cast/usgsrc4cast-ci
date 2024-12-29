@@ -10,7 +10,11 @@ name: gefs_osn
 jobs:
   docker:
     timeout-minutes: 2880
-    runs-on: [self-hosted]
+    runs-on: efi-cirrus
+    container:
+      image: eco4cast/rocker-neon4cast:latest
+      # limit memory to <= 45GB
+      options: --memory 15g
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       OSN_KEY: ${{ secrets.OSN_KEY }}
