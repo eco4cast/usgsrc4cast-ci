@@ -27,7 +27,7 @@
     "datetime": "2024-12-18",
     "updated": "2024-12-19",
     "start_datetime": "2024-02-13T00:00:00Z",
-    "end_datetime": "2024-12-30T00:00:00Z",
+    "end_datetime": "2024-12-31T00:00:00Z",
     "providers": [
       {
         "url": "https://code.usgs.gov/wma/proxies/habs/habs-forecast-chl-usgsrc4cast/-/blob/main/2_model/src/chla_models.R?ref_type=heads",
