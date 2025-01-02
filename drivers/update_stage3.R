@@ -4,7 +4,8 @@ source("R/eco4cast-helpers/to_hourly.R")
 
 site_list <- readr::read_csv(paste0("https://github.com/eco4cast/usgsrc4cast-ci/",
                                     "raw/main/USGS_site_metadata.csv"),
-                             show_col_types = FALSE)
+                             show_col_types = FALSE) |>
+  dplyr::pull(site_id)
 
 Sys.setenv("GEFS_VERSION"="v12")
 
@@ -12,9 +13,8 @@ config <- yaml::read_yaml("challenge_configuration.yaml")
 driver_bucket <- stringr::word(config$driver_bucket, 1, sep = "/")
 driver_path <- stringr::word(config$driver_bucket, 2, -1, sep = "/")
 
-future::plan("future::multisession", workers = 10)
 
-furrr::future_walk(dplyr::pull(site_list, site_id), function(curr_site_id){
+purrr::map(site_list, function(curr_site_id){
 
   print(curr_site_id)
 
