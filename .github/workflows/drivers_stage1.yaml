@@ -14,7 +14,7 @@ jobs:
     container:
       image: eco4cast/rocker-neon4cast:latest
       # limit memory to <= 45GB
-      options: --memory 15g
+      options: --memory 40g
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       OSN_KEY: ${{ secrets.OSN_KEY }}
