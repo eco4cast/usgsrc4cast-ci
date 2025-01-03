@@ -2,9 +2,10 @@ library(gdalcubes)
 library(gefs4cast)
 source("R/eco4cast-helpers/to_hourly.R")
 
-site_list <- readr::read_csv(paste0("https://github.com/eco4cast/usgsrc4cast-ci/",
-                                    "raw/main/USGS_site_metadata.csv"),
-                             show_col_types = FALSE) |>
+site_df <- readr::read_csv(paste0("https://github.com/eco4cast/usgsrc4cast-ci/",
+                                  "raw/main/USGS_site_metadata.csv"),
+                           show_col_types = FALSE)
+site_list <- site_df |>
   dplyr::pull(site_id)
 
 Sys.setenv("GEFS_VERSION"="v12")
@@ -67,7 +68,7 @@ purrr::map(site_list, function(curr_site_id){
   if(nrow(pseudo_df) > 0){
 
     df2 <- pseudo_df |>
-      to_hourly(site_list = dplyr::select(site_list, site_id, latitude, longitude),
+      to_hourly(site_list = dplyr::select(site_df, site_id, latitude, longitude),
                 use_solar_geom = TRUE,
                 pseudo = TRUE) |>
       dplyr::mutate(ensemble = as.numeric(stringr::str_sub(ensemble, start = 4, end = 5))) |>
