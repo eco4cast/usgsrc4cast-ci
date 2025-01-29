@@ -27,7 +27,7 @@
     "datetime": "2025-01-27",
     "updated": "2025-01-28",
     "start_datetime": "2024-02-07T00:00:00Z",
-    "end_datetime": "2025-01-28T00:00:00Z",
+    "end_datetime": "2025-01-29T00:00:00Z",
     "providers": [
       {
         "url": "https://github.com/eco4cast/usgsrc4cast-ci/blob/main/baseline_models/models/aquatics_persistenceRW.R",
