@@ -24,10 +24,10 @@
   "properties": {
     "title": "USGSHABsDL1",
     "description": "All summaries for the Daily_Chlorophyll_a variable for the USGSHABsDL1 model. Information for the model is provided as follows: We train a long-short term memory neural network to predict the Gaussian distribution of river chl-a and update the model states with ensemble Kalman filter. Written in PyTorch.\n                                    The model predicts this variable at the following sites: USGS-01427510, USGS-01463500, USGS-05543010, USGS-05549500, USGS-05553700, USGS-05558300, USGS-05586300, USGS-14181500, USGS-14211010, USGS-14211720.\n                                    Summaries are the forecasts statistics of the raw forecasts (i.e., mean, median, confidence intervals)",
-    "datetime": "2025-02-27",
-    "updated": "2025-02-28",
+    "datetime": "2025-02-28",
+    "updated": "2025-03-01",
     "start_datetime": "2024-09-26T00:00:00Z",
-    "end_datetime": "2025-03-28T00:00:00Z",
+    "end_datetime": "2025-03-29T00:00:00Z",
     "providers": [
       {
         "url": "https://projects.ecoforecast.org/neon4cast-ci/",
@@ -212,7 +212,7 @@
       "type": "application/x-parquet",
       "title": "Database Access for Daily Chlorophyll_a",
       "href": "s3://anonymous@bio230014-bucket01/challenges/forecasts/summaries//project_id=usgsrc4cast/duration=P1D/variable=chla/model_id=USGSHABsDL1?endpoint_override=sdsc.osn.xsede.org",
-      "description": "Use `R` or `Python` code for remote access to the database. This code will return results for this variable and model combination.\n\n### R\n\n```{r}\n# Use code below\n\nall_results <- arrow::open_dataset(\"s3://anonymous@bio230014-bucket01/challenges/forecasts/summaries//project_id=usgsrc4cast/duration=P1D/variable=chla/model_id=USGSHABsDL1?endpoint_override=sdsc.osn.xsede.org\")\ndf <- all_results |> dplyr::collect()\n\n```\n       \n\nYou can use dplyr operations before calling `dplyr::collect()` to `summarise`, `select` columns, and/or `filter` rows prior to pulling the data into a local `data.frame`. Reducing the data that is pulled locally will speed up the data download speed and reduce your memory usage.\n\n\n### Python\n\n```# Use code below\n\n\nimport ibis\n\n       con = ibis.duckdbf.connect()\n\n\n       con.raw_sql(f'''\n\n       CREATE OR REPLACE SECRET secret (\n\n       TYPE S3,\n\n       ENDPOINT 'sdsc.osn.xsede.org',\n\n       URL_STYLE 'path'\n\n\n       ''');\n       \n\n\n       path = \"s3://bio230014-bucket01/challenges/forecasts/summaries//project_id=usgsrc4cast/duration=P1D/variable=chla/model_id=USGSHABsDL1\"\ncon.read_parquet(path + \"/**\")"
+      "description": "Use `R` or `Python` code for remote access to the database. This code will return results for this variable and model combination.\n\n### R\n\n```{r}\n# Use code below\n\nall_results <- arrow::open_dataset(\"s3://anonymous@bio230014-bucket01/challenges/forecasts/summaries//project_id=usgsrc4cast/duration=P1D/variable=chla/model_id=USGSHABsDL1?endpoint_override=sdsc.osn.xsede.org\")\ndf <- all_results |> dplyr::collect()\n\n```\n       \n\nYou can use dplyr operations before calling `dplyr::collect()` to `summarise`, `select` columns, and/or `filter` rows prior to pulling the data into a local `data.frame`. Reducing the data that is pulled locally will speed up the data download speed and reduce your memory usage.\n\n\n### Python\n\n```{python}# Use code below\nimport ibis\n\n       con = ibis.duckdbf.connect()\ncon.raw_sql(f'''\nCREATE OR REPLACE SECRET secret (\nTYPE S3,\nENDPOINT 'sdsc.osn.xsede.org',\nURL_STYLE 'path'\n\n''');\npath = \"s3://bio230014-bucket01/challenges/forecasts/summaries//project_id=usgsrc4cast/duration=P1D/variable=chla/model_id=USGSHABsDL1\"\ncon.read_parquet(path + \"/**\")"
     }
   }
 }
