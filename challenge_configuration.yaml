@@ -75,9 +75,9 @@ catalog_config:
   noaa_path: 'catalog/noaa_forecasts/'
   noaa_thumbnail: 'https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/DSC_0001.jpg'
   noaa_thumbnail_title: "USGS Image"
-  aws_download_path_forecasts: 'bio230014-bucket01/challenges/forecasts/parquet/'
-  aws_download_path_scores: 'bio230014-bucket01/challenges/scores/parquet/'
-  summaries_download_path: 'bio230014-bucket01/challenges/forecasts/summaries/'
+  aws_download_path_forecasts: 'bio230014-bucket01/challenges/forecasts/parquet'
+  aws_download_path_scores: 'bio230014-bucket01/challenges/scores/parquet'
+  summaries_download_path: 'bio230014-bucket01/challenges/forecasts/summaries'
   host_url: "https://www.ecoforecastprojectvt.org"
   host_name: "Ecoforecast Challenge"
   bbox:
