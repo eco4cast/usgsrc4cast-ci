@@ -27,7 +27,7 @@
     "datetime": "2025-03-04",
     "updated": "2025-03-05",
     "start_datetime": "2024-09-26T00:00:00Z",
-    "end_datetime": "2025-03-05T00:00:00Z",
+    "end_datetime": "2025-03-06T00:00:00Z",
     "providers": [
       {
         "url": "https://projects.ecoforecast.org/neon4cast-ci/",
