@@ -21,4 +21,4 @@ Although this software program has been used by the U.S. Geological Survey (USGS
 This software is provided “AS IS.”
 
 ## License Disclaimer 
-As a government employee, the contributions from Jacob Zwart to this repository are in the public domain. 
+As a government employee, the contributions from Jacob Zwart to this repository are in the public domain. Refer to the mixed [LICENSE](https://github.com/eco4cast/usgsrc4cast-ci/blob/main/LICENSE) for further details. 
