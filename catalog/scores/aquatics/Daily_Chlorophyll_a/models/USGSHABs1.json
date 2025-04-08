@@ -27,7 +27,7 @@
     "datetime": "2025-03-18",
     "updated": "2025-03-19",
     "start_datetime": "2024-02-13T00:00:00Z",
-    "end_datetime": "2025-04-07T00:00:00Z",
+    "end_datetime": "2025-04-08T00:00:00Z",
     "providers": [
       {
         "url": "https://code.usgs.gov/wma/proxies/habs/habs-forecast-chl-usgsrc4cast/-/blob/main/2_model/src/chla_models.R?ref_type=heads",
@@ -224,6 +224,12 @@
       "description": "The link to the model code provided by the model submission team"
     },
     "3": {
+      "type": "text/plain",
+      "title": "Model Sites",
+      "href": "USGS-01427510, USGS-05543010, USGS-05549500, USGS-05553700, USGS-05558300, USGS-05586300, USGS-14181500, USGS-14211720, USGS-01463500, USGS-14211010",
+      "description": "Sites where the model predicts this variable"
+    },
+    "4": {
       "type": "application/x-parquet",
       "title": "Database Access for Daily Chlorophyll_a",
       "href": "s3://anonymous@bio230014-bucket01/challenges/scores/parquet/project_id=usgsrc4cast/duration=P1D/variable=chla/model_id=USGSHABs1?endpoint_override=sdsc.osn.xsede.org",
