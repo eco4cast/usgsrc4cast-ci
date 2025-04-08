@@ -12,22 +12,22 @@
       [-75.0574, 41.7567],
       [-74.7781, 40.2217],
       [-88.6142, 41.2999],
-      [-88.2515, 42.31],
       [-88.984, 41.3248],
       [-89.3562, 41.1073],
       [-90.6077, 39.6328],
       [-122.2974, 44.7538],
       [-122.5773, 45.3793],
-      [-122.6692, 45.5175]
+      [-122.6692, 45.5175],
+      [-88.2515, 42.31]
     ]
   },
   "properties": {
     "title": "climatology",
-    "description": "All forecasts for the Daily_Chlorophyll_a variable for the climatology model. Information for the model is provided as follows: Forecasts stream chlorophyll-a based on the historic average and standard deviation for that given site and day-of-year..\n                                    The model predicts this variable at the following sites: USGS-01427510, USGS-01463500, USGS-05543010, USGS-05549500, USGS-05553700, USGS-05558300, USGS-05586300, USGS-14181500, USGS-14211010, USGS-14211720.\n                                    Forecasts are the raw forecasts that includes all ensemble members or distribution parameters. Due to the size of the raw forecasts, we recommend accessing the forecast summaries or scores to analyze forecasts (unless you need the individual ensemble members)",
-    "datetime": "2025-04-06",
-    "updated": "2025-04-07",
+    "description": "All forecasts for the Daily_Chlorophyll_a variable for the climatology model. Information for the model is provided as follows: Forecasts stream chlorophyll-a based on the historic average and standard deviation for that given site and day-of-year..\n                                    The model predicts this variable at the following sites: USGS-01427510, USGS-01463500, USGS-05543010, USGS-05553700, USGS-05558300, USGS-05586300, USGS-14181500, USGS-14211010, USGS-14211720, USGS-05549500.\n                                    Forecasts are the raw forecasts that includes all ensemble members or distribution parameters. Due to the size of the raw forecasts, we recommend accessing the forecast summaries or scores to analyze forecasts (unless you need the individual ensemble members)",
+    "datetime": "2025-04-07",
+    "updated": "2025-04-08",
     "start_datetime": "2024-02-07T00:00:00Z",
-    "end_datetime": "2025-05-11T00:00:00Z",
+    "end_datetime": "2025-05-12T00:00:00Z",
     "providers": [
       {
         "url": "https://github.com/eco4cast/usgsrc4cast-ci/blob/main/baseline_models/models/aquatics_climatology.R",
@@ -59,13 +59,13 @@
       "USGS-01427510",
       "USGS-01463500",
       "USGS-05543010",
-      "USGS-05549500",
       "USGS-05553700",
       "USGS-05558300",
       "USGS-05586300",
       "USGS-14181500",
       "USGS-14211010",
-      "USGS-14211720"
+      "USGS-14211720",
+      "USGS-05549500"
     ],
     "table:columns": [
       {
@@ -184,6 +184,12 @@
       "description": "The link to the model code provided by the model submission team"
     },
     "3": {
+      "type": "text/plain",
+      "title": "Model Sites",
+      "href": "USGS-01427510, USGS-01463500, USGS-05543010, USGS-05553700, USGS-05558300, USGS-05586300, USGS-14181500, USGS-14211010, USGS-14211720, USGS-05549500",
+      "description": "Sites where the model predicts this variable"
+    },
+    "4": {
       "type": "application/x-parquet",
       "title": "Database Access for Daily Chlorophyll_a",
       "href": "s3://anonymous@bio230014-bucket01/challenges/forecasts/parquet/project_id=usgsrc4cast/duration=P1D/variable=chla/model_id=climatology?endpoint_override=sdsc.osn.xsede.org",
