@@ -211,8 +211,8 @@
     "3": {
       "type": "text/plain",
       "title": "Model Sites",
-      "href": "USGS-14211720, USGS-14181500, USGS-05586300, USGS-05558300, USGS-05553700, USGS-05543010, USGS-05549500, USGS-01427510, USGS-14211010, USGS-01463500",
-      "description": "Sites where the model predicts this variable"
+      "href": {},
+      "description": "USGS-14211720, USGS-14181500, USGS-05586300, USGS-05558300, USGS-05553700, USGS-05543010, USGS-05549500, USGS-01427510, USGS-14211010, USGS-01463500"
     },
     "4": {
       "type": "application/x-parquet",
