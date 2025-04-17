@@ -27,7 +27,7 @@
     "datetime": "2025-03-18",
     "updated": "2025-03-19",
     "start_datetime": "2024-02-13T00:00:00Z",
-    "end_datetime": "2025-04-16T00:00:00Z",
+    "end_datetime": "2025-04-17T00:00:00Z",
     "providers": [
       {
         "url": "https://code.usgs.gov/wma/proxies/habs/habs-forecast-chl-usgsrc4cast/-/blob/main/2_model/src/chla_models.R?ref_type=heads",
@@ -226,7 +226,7 @@
     "3": {
       "type": "text/plain",
       "title": "Model Sites",
-      "href": {},
+      "href": "https://raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/USGS_site_metadata.csv",
       "description": "USGS-01427510, USGS-05543010, USGS-05549500, USGS-05553700, USGS-05558300, USGS-05586300, USGS-14181500, USGS-14211720, USGS-01463500, USGS-14211010"
     },
     "4": {
