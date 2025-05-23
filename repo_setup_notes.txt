@@ -1,0 +1,20 @@
+
+Project Setup
+•	Forked the neon4cast-ci repository from https://github.com/eco4cast/neon4cast-ci to the eco4cast GitHub organization, creating https://github.com/eco4cast/usgsrc4cast-ci.
+•	As the repository administrator, I have admin privileges and can manage the repository.
+•	Branches are used to test and utilize secrets without affecting the main repository.
+GitHub Actions and Workflows
+•	GitHub Actions and existing workflows are automatically disabled when forking a new repository and need to be updated and re-authorized.
+•	Made changes to challenge details in the pull request https://github.com/eco4cast/usgsrc4cast-ci/pull/1.
+Configuration File
+•	It would be helpful to have separate sections for configuration settings that do not need to be changed and those that require updates based on the forecast challenge.
+Challenge Drivers and Storage
+•	Use a separate bucket or path for challenge drivers, rather than storing them in the neon4cast-drivers repository.
+•	Example: https://github.com/eco4cast/neon4cast-ci/blob/6b15a88fbbf13e13f0ffe3abc0c9ffce17ef4bb9/drivers/generate_stage2.R#L7
+Self-Hosted Runners
+•	Self-hosted runners can be used, but require Quinn or Carl to add them to the repository in GitHub.
+•	Refer to https://github.com/eco4cast/usgsrc4cast-ci/pull/17#discussion_r1445345447 for more information.
+Registration and Models
+•	Registration for the challenge is already set up at https://forms.gle/kg2Vkpho9BoMXSy57.
+•	Climatology and random walk models need to be registered.
+•	If already registered for a different challenge, the same model needs to be registered for the new challenge.
