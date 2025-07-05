@@ -24,10 +24,10 @@
   "properties": {
     "title": "persistenceRW",
     "description": "All summaries for the Daily_Chlorophyll_a variable for the persistenceRW model. Information for the model is provided as follows: Random walk model based on most recent stream chl-a observations using the fable::RW() model..\n                                    The model predicts this variable at the following sites: USGS-01427510, USGS-01463500, USGS-05543010, USGS-05549500, USGS-05553700, USGS-05558300, USGS-05586300, USGS-14181500, USGS-14211010, USGS-14211720.\n                                    Summaries are the forecasts statistics of the raw forecasts (i.e., mean, median, confidence intervals)",
-    "datetime": "2025-07-03",
-    "updated": "2025-07-04",
+    "datetime": "2025-07-04",
+    "updated": "2025-07-05",
     "start_datetime": "2024-02-07T00:00:00Z",
-    "end_datetime": "2025-08-06T00:00:00Z",
+    "end_datetime": "2025-08-07T00:00:00Z",
     "providers": [
       {
         "url": "https://github.com/eco4cast/usgsrc4cast-ci/blob/main/baseline_models/models/aquatics_persistenceRW.R",
