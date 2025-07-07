@@ -16,17 +16,17 @@
     {
       "rel": "item",
       "type": "application/json",
-      "href": "./models/USGSHABsDL1.json"
-    },
-    {
-      "rel": "item",
-      "type": "application/json",
       "href": "./models/persistenceRW.json"
     },
     {
       "rel": "item",
       "type": "application/json",
       "href": "./models/climatology.json"
+    },
+    {
+      "rel": "item",
+      "type": "application/json",
+      "href": "./models/USGSHABsDL1.json"
     },
     {
       "rel": "parent",
@@ -71,7 +71,7 @@
       "interval": [
         [
           "2024-02-07T00:00:00Z",
-          "2025-07-06T00:00:00Z"
+          "2025-07-07T00:00:00Z"
         ]
       ]
     }
