@@ -9,6 +9,7 @@
   "geometry": {
     "type": "MultiPoint",
     "coordinates": [
+      [-122.6692, 45.5175],
       [-75.0574, 41.7567],
       [-88.6142, 41.2999],
       [-88.2515, 42.31],
@@ -16,18 +17,17 @@
       [-89.3562, 41.1073],
       [-90.6077, 39.6328],
       [-122.2974, 44.7538],
-      [-122.6692, 45.5175],
       [-74.7781, 40.2217],
       [-122.5773, 45.3793]
     ]
   },
   "properties": {
     "title": "USGSHABs1",
-    "description": "All scores for the Daily_Chlorophyll_a variable for the USGSHABs1 model. Information for the model is provided as follows: Uses the randomForest::randomForest() R package model to train site-specific models for predicting river chl-a. Uses ensemble Kalman filter to adjust predicted chl-a states..\n                                    The model predicts this variable at the following sites: USGS-01427510, USGS-05543010, USGS-05549500, USGS-05553700, USGS-05558300, USGS-05586300, USGS-14181500, USGS-14211720, USGS-01463500, USGS-14211010.\n                                    Scores are metrics that describe how well forecasts compare to observations. The scores catalog includes are summaries of the forecasts (i.e., mean, median, confidence intervals), matched observations (if available), and scores (metrics of how well the model distribution compares to observations)",
+    "description": "All scores for the Daily_Chlorophyll_a variable for the USGSHABs1 model. Information for the model is provided as follows: Uses the randomForest::randomForest() R package model to train site-specific models for predicting river chl-a. Uses ensemble Kalman filter to adjust predicted chl-a states..\n                                    The model predicts this variable at the following sites: USGS-14211720, USGS-01427510, USGS-05543010, USGS-05549500, USGS-05553700, USGS-05558300, USGS-05586300, USGS-14181500, USGS-01463500, USGS-14211010.\n                                    Scores are metrics that describe how well forecasts compare to observations. The scores catalog includes are summaries of the forecasts (i.e., mean, median, confidence intervals), matched observations (if available), and scores (metrics of how well the model distribution compares to observations)",
     "datetime": "2025-07-08",
     "updated": "2025-07-09",
     "start_datetime": "2024-02-13T00:00:00Z",
-    "end_datetime": "2025-07-13T00:00:00Z",
+    "end_datetime": "2025-07-14T00:00:00Z",
     "providers": [
       {
         "url": "https://code.usgs.gov/wma/proxies/habs/habs-forecast-chl-usgsrc4cast/-/blob/main/2_model/src/chla_models.R?ref_type=heads",
@@ -56,6 +56,7 @@
       "chla",
       "Daily",
       "P1D",
+      "USGS-14211720",
       "USGS-01427510",
       "USGS-05543010",
       "USGS-05549500",
@@ -63,7 +64,6 @@
       "USGS-05558300",
       "USGS-05586300",
       "USGS-14181500",
-      "USGS-14211720",
       "USGS-01463500",
       "USGS-14211010"
     ],
@@ -227,7 +227,7 @@
       "type": "text/plain",
       "title": "Model Sites",
       "href": "https://raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/USGS_site_metadata.csv",
-      "description": "USGS-01427510, USGS-05543010, USGS-05549500, USGS-05553700, USGS-05558300, USGS-05586300, USGS-14181500, USGS-14211720, USGS-01463500, USGS-14211010"
+      "description": "USGS-14211720, USGS-01427510, USGS-05543010, USGS-05549500, USGS-05553700, USGS-05558300, USGS-05586300, USGS-14181500, USGS-01463500, USGS-14211010"
     },
     "4": {
       "type": "application/x-parquet",
