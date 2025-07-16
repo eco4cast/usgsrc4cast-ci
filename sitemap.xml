@@ -2,146 +2,146 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
    <url>
       <loc>https://projects.ecoforecast.org/usgsrc4cast-ci/catalog.html</loc>
-      <lastmod>2025-07-14</lastmod>
+      <lastmod>2025-07-15</lastmod>
    </url>
    <url>
       <loc>https://projects.ecoforecast.org/usgsrc4cast-ci/targets.html</loc>
-      <lastmod>2025-07-14</lastmod>
+      <lastmod>2025-07-15</lastmod>
    </url>
    <url>
       <loc>https://projects.ecoforecast.org/usgsrc4cast-ci/instructions.html</loc>
-      <lastmod>2025-07-14</lastmod>
+      <lastmod>2025-07-15</lastmod>
    </url>
    <url>
       <loc>https://projects.ecoforecast.org/usgsrc4cast-ci/performance.html</loc>
-      <lastmod>2025-07-14</lastmod>
+      <lastmod>2025-07-15</lastmod>
    </url>
    <url>
       <loc>https://projects.ecoforecast.org/usgsrc4cast-ci/index.html</loc>
-      <lastmod>2025-07-14</lastmod>
+      <lastmod>2025-07-15</lastmod>
    </url>
    <url>
       <loc>https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/catalog.json</loc>
-      <lastmod>2025-07-12</lastmod>
+      <lastmod>2025-07-15</lastmod>
    </url>
    <url>
       <loc>https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/forecasts/aquatics/Daily_Chlorophyll_a/collection.json</loc>
-      <lastmod>2025-07-12</lastmod>
+      <lastmod>2025-07-15</lastmod>
    </url>
    <url>
       <loc>https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/forecasts/aquatics/Daily_Chlorophyll_a/models/USGSHABs1.json</loc>
-      <lastmod>2025-07-12</lastmod>
+      <lastmod>2025-07-15</lastmod>
    </url>
    <url>
       <loc>https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/forecasts/aquatics/Daily_Chlorophyll_a/models/USGSHABsDL1.json</loc>
-      <lastmod>2025-07-12</lastmod>
+      <lastmod>2025-07-15</lastmod>
    </url>
    <url>
       <loc>https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/forecasts/aquatics/Daily_Chlorophyll_a/models/climatology.json</loc>
-      <lastmod>2025-07-12</lastmod>
+      <lastmod>2025-07-15</lastmod>
    </url>
    <url>
       <loc>https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/forecasts/aquatics/Daily_Chlorophyll_a/models/persistenceRW.json</loc>
-      <lastmod>2025-07-12</lastmod>
+      <lastmod>2025-07-15</lastmod>
    </url>
    <url>
       <loc>https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/forecasts/aquatics/collection.json</loc>
-      <lastmod>2025-07-12</lastmod>
+      <lastmod>2025-07-15</lastmod>
    </url>
    <url>
       <loc>https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/forecasts/collection.json</loc>
-      <lastmod>2025-07-12</lastmod>
+      <lastmod>2025-07-15</lastmod>
    </url>
    <url>
       <loc>https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/inventory/collection.json</loc>
-      <lastmod>2025-07-12</lastmod>
+      <lastmod>2025-07-15</lastmod>
    </url>
    <url>
       <loc>https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/noaa_forecasts/Pseudo/collection.json</loc>
-      <lastmod>2025-07-12</lastmod>
+      <lastmod>2025-07-15</lastmod>
    </url>
    <url>
       <loc>https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/noaa_forecasts/Stage1/collection.json</loc>
-      <lastmod>2025-07-12</lastmod>
+      <lastmod>2025-07-15</lastmod>
    </url>
    <url>
       <loc>https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/noaa_forecasts/Stage1-stats/collection.json</loc>
-      <lastmod>2025-07-12</lastmod>
+      <lastmod>2025-07-15</lastmod>
    </url>
    <url>
       <loc>https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/noaa_forecasts/Stage2/collection.json</loc>
-      <lastmod>2025-07-12</lastmod>
+      <lastmod>2025-07-15</lastmod>
    </url>
    <url>
       <loc>https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/noaa_forecasts/Stage3/collection.json</loc>
-      <lastmod>2025-07-12</lastmod>
+      <lastmod>2025-07-15</lastmod>
    </url>
    <url>
       <loc>https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/noaa_forecasts/collection.json</loc>
-      <lastmod>2025-07-12</lastmod>
+      <lastmod>2025-07-15</lastmod>
    </url>
    <url>
       <loc>https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/scores/aquatics/Daily_Chlorophyll_a/collection.json</loc>
-      <lastmod>2025-07-12</lastmod>
+      <lastmod>2025-07-15</lastmod>
    </url>
    <url>
       <loc>https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/scores/aquatics/Daily_Chlorophyll_a/models/USGSHABs1.json</loc>
-      <lastmod>2025-07-12</lastmod>
+      <lastmod>2025-07-15</lastmod>
    </url>
    <url>
       <loc>https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/scores/aquatics/Daily_Chlorophyll_a/models/USGSHABsDL1.json</loc>
-      <lastmod>2025-07-12</lastmod>
+      <lastmod>2025-07-15</lastmod>
    </url>
    <url>
       <loc>https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/scores/aquatics/Daily_Chlorophyll_a/models/climatology.json</loc>
-      <lastmod>2025-07-12</lastmod>
+      <lastmod>2025-07-15</lastmod>
    </url>
    <url>
       <loc>https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/scores/aquatics/Daily_Chlorophyll_a/models/persistenceRW.json</loc>
-      <lastmod>2025-07-12</lastmod>
+      <lastmod>2025-07-15</lastmod>
    </url>
    <url>
       <loc>https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/scores/aquatics/collection.json</loc>
-      <lastmod>2025-07-12</lastmod>
+      <lastmod>2025-07-15</lastmod>
    </url>
    <url>
       <loc>https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/scores/collection.json</loc>
-      <lastmod>2025-07-12</lastmod>
+      <lastmod>2025-07-15</lastmod>
    </url>
    <url>
       <loc>https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/sites/collection.json</loc>
-      <lastmod>2025-07-12</lastmod>
+      <lastmod>2025-07-15</lastmod>
    </url>
    <url>
       <loc>https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/summaries/aquatics/Daily_Chlorophyll_a/collection.json</loc>
-      <lastmod>2025-07-12</lastmod>
+      <lastmod>2025-07-15</lastmod>
    </url>
    <url>
       <loc>https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/summaries/aquatics/Daily_Chlorophyll_a/models/USGSHABs1.json</loc>
-      <lastmod>2025-07-12</lastmod>
+      <lastmod>2025-07-15</lastmod>
    </url>
    <url>
       <loc>https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/summaries/aquatics/Daily_Chlorophyll_a/models/USGSHABsDL1.json</loc>
-      <lastmod>2025-07-12</lastmod>
+      <lastmod>2025-07-15</lastmod>
    </url>
    <url>
       <loc>https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/summaries/aquatics/Daily_Chlorophyll_a/models/climatology.json</loc>
-      <lastmod>2025-07-12</lastmod>
+      <lastmod>2025-07-15</lastmod>
    </url>
    <url>
       <loc>https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/summaries/aquatics/Daily_Chlorophyll_a/models/persistenceRW.json</loc>
-      <lastmod>2025-07-12</lastmod>
+      <lastmod>2025-07-15</lastmod>
    </url>
    <url>
       <loc>https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/summaries/aquatics/collection.json</loc>
-      <lastmod>2025-07-12</lastmod>
+      <lastmod>2025-07-15</lastmod>
    </url>
    <url>
       <loc>https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/summaries/collection.json</loc>
-      <lastmod>2025-07-12</lastmod>
+      <lastmod>2025-07-15</lastmod>
    </url>
    <url>
       <loc>https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/targets/collection.json</loc>
-      <lastmod>2025-07-12</lastmod>
+      <lastmod>2025-07-15</lastmod>
    </url>
 </urlset>
