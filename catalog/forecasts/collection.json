@@ -57,7 +57,7 @@
       "interval": [
         [
           "2024-02-07T00:00:00Z",
-          "2025-08-18T00:00:00Z"
+          "2025-08-19T00:00:00Z"
         ]
       ]
     }
@@ -69,19 +69,14 @@
       "description": "datetime of the forecasted value (ISO 8601)"
     },
     {
+      "name": "reference_datetime",
+      "type": "timestamp[us, tz=UTC]",
+      "description": "datetime that the forecast was initiated (horizon = 0)"
+    },
+    {
       "name": "site_id",
       "type": "string",
       "description": "For forecasts that are not on a spatial grid, use of a site dimension that maps to a more detailed geometry (points, polygons, etc.) is allowable. In general this would be documented in the external metadata (e.g., alook-up table that provides lon and lat)"
-    },
-    {
-      "name": "prediction",
-      "type": "double",
-      "description": "predicted value for variable"
-    },
-    {
-      "name": "parameter",
-      "type": "string",
-      "description": "ensemble member or distribution parameter"
     },
     {
       "name": "family",
@@ -89,9 +84,14 @@
       "description": "For ensembles: “ensemble.” Default value if unspecified for probability distributions: Name of the statistical distribution associated with the reported statistics. The “sample” distribution is synonymous with “ensemble.”For summary statistics: “summary.”"
     },
     {
-      "name": "reference_datetime",
-      "type": "timestamp[us, tz=UTC]",
-      "description": "datetime that the forecast was initiated (horizon = 0)"
+      "name": "parameter",
+      "type": "string",
+      "description": "ensemble member or distribution parameter"
+    },
+    {
+      "name": "prediction",
+      "type": "double",
+      "description": "predicted value for variable"
     },
     {
       "name": "pub_datetime",
@@ -99,24 +99,24 @@
       "description": "datetime that forecast was submitted"
     },
     {
-      "name": "duration",
-      "type": "string",
-      "description": "temporal duration of forecast (hourly, daily, etc.); follows ISO 8601 duration convention"
-    },
-    {
-      "name": "model_id",
-      "type": "string",
-      "description": "unique model identifier"
-    },
-    {
       "name": "project_id",
       "type": "string",
       "description": "unique identifier for the forecast project"
     },
     {
+      "name": "duration",
+      "type": "string",
+      "description": "temporal duration of forecast (hourly, daily, etc.); follows ISO 8601 duration convention"
+    },
+    {
       "name": "variable",
       "type": "string",
       "description": "name of forecasted variable"
+    },
+    {
+      "name": "model_id",
+      "type": "string",
+      "description": "unique model identifier"
     }
   ],
   "assets": {

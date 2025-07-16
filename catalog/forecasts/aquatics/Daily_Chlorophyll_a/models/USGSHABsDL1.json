@@ -9,21 +9,21 @@
   "geometry": {
     "type": "MultiPoint",
     "coordinates": [
-      [-90.6077, 39.6328],
-      [-122.2974, 44.7538],
-      [-122.5773, 45.3793],
-      [-122.6692, 45.5175],
       [-75.0574, 41.7567],
       [-74.7781, 40.2217],
       [-88.6142, 41.2999],
       [-88.2515, 42.31],
       [-88.984, 41.3248],
-      [-89.3562, 41.1073]
+      [-89.3562, 41.1073],
+      [-90.6077, 39.6328],
+      [-122.2974, 44.7538],
+      [-122.5773, 45.3793],
+      [-122.6692, 45.5175]
     ]
   },
   "properties": {
     "title": "USGSHABsDL1",
-    "description": "All forecasts for the Daily_Chlorophyll_a variable for the USGSHABsDL1 model. Information for the model is provided as follows: We train a long-short term memory neural network to predict the Gaussian distribution of river chl-a and update the model states with ensemble Kalman filter. Written in PyTorch.\n                                    The model predicts this variable at the following sites: USGS-05586300, USGS-14181500, USGS-14211010, USGS-14211720, USGS-01427510, USGS-01463500, USGS-05543010, USGS-05549500, USGS-05553700, USGS-05558300.\n                                    Forecasts are the raw forecasts that includes all ensemble members or distribution parameters. Due to the size of the raw forecasts, we recommend accessing the forecast summaries or scores to analyze forecasts (unless you need the individual ensemble members)",
+    "description": "All forecasts for the Daily_Chlorophyll_a variable for the USGSHABsDL1 model. Information for the model is provided as follows: We train a long-short term memory neural network to predict the Gaussian distribution of river chl-a and update the model states with ensemble Kalman filter. Written in PyTorch.\n                                    The model predicts this variable at the following sites: USGS-01427510, USGS-01463500, USGS-05543010, USGS-05549500, USGS-05553700, USGS-05558300, USGS-05586300, USGS-14181500, USGS-14211010, USGS-14211720.\n                                    Forecasts are the raw forecasts that includes all ensemble members or distribution parameters. Due to the size of the raw forecasts, we recommend accessing the forecast summaries or scores to analyze forecasts (unless you need the individual ensemble members)",
     "datetime": "2025-07-08",
     "updated": "2025-07-09",
     "start_datetime": "2024-09-26T00:00:00Z",
@@ -56,16 +56,16 @@
       "chla",
       "Daily",
       "P1D",
-      "USGS-05586300",
-      "USGS-14181500",
-      "USGS-14211010",
-      "USGS-14211720",
       "USGS-01427510",
       "USGS-01463500",
       "USGS-05543010",
       "USGS-05549500",
       "USGS-05553700",
-      "USGS-05558300"
+      "USGS-05558300",
+      "USGS-05586300",
+      "USGS-14181500",
+      "USGS-14211010",
+      "USGS-14211720"
     ],
     "table:columns": [
       {
@@ -74,19 +74,14 @@
         "description": "datetime of the forecasted value (ISO 8601)"
       },
       {
+        "name": "reference_datetime",
+        "type": "timestamp[us, tz=UTC]",
+        "description": "datetime that the forecast was initiated (horizon = 0)"
+      },
+      {
         "name": "site_id",
         "type": "string",
         "description": "For forecasts that are not on a spatial grid, use of a site dimension that maps to a more detailed geometry (points, polygons, etc.) is allowable. In general this would be documented in the external metadata (e.g., alook-up table that provides lon and lat)"
-      },
-      {
-        "name": "prediction",
-        "type": "double",
-        "description": "predicted value for variable"
-      },
-      {
-        "name": "parameter",
-        "type": "string",
-        "description": "ensemble member or distribution parameter"
       },
       {
         "name": "family",
@@ -94,9 +89,14 @@
         "description": "For ensembles: “ensemble.” Default value if unspecified for probability distributions: Name of the statistical distribution associated with the reported statistics. The “sample” distribution is synonymous with “ensemble.”For summary statistics: “summary.”"
       },
       {
-        "name": "reference_datetime",
-        "type": "timestamp[us, tz=UTC]",
-        "description": "datetime that the forecast was initiated (horizon = 0)"
+        "name": "parameter",
+        "type": "string",
+        "description": "ensemble member or distribution parameter"
+      },
+      {
+        "name": "prediction",
+        "type": "double",
+        "description": "predicted value for variable"
       },
       {
         "name": "pub_datetime",
@@ -104,24 +104,24 @@
         "description": "datetime that forecast was submitted"
       },
       {
-        "name": "duration",
-        "type": "string",
-        "description": "temporal duration of forecast (hourly, daily, etc.); follows ISO 8601 duration convention"
-      },
-      {
-        "name": "model_id",
-        "type": "string",
-        "description": "unique model identifier"
-      },
-      {
         "name": "project_id",
         "type": "string",
         "description": "unique identifier for the forecast project"
       },
       {
+        "name": "duration",
+        "type": "string",
+        "description": "temporal duration of forecast (hourly, daily, etc.); follows ISO 8601 duration convention"
+      },
+      {
         "name": "variable",
         "type": "string",
         "description": "name of forecasted variable"
+      },
+      {
+        "name": "model_id",
+        "type": "string",
+        "description": "unique model identifier"
       }
     ]
   },
@@ -187,7 +187,7 @@
       "type": "text/plain",
       "title": "Model Sites",
       "href": "https://raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/USGS_site_metadata.csv",
-      "description": "USGS-05586300, USGS-14181500, USGS-14211010, USGS-14211720, USGS-01427510, USGS-01463500, USGS-05543010, USGS-05549500, USGS-05553700, USGS-05558300"
+      "description": "USGS-01427510, USGS-01463500, USGS-05543010, USGS-05549500, USGS-05553700, USGS-05558300, USGS-05586300, USGS-14181500, USGS-14211010, USGS-14211720"
     },
     "4": {
       "type": "application/x-parquet",
