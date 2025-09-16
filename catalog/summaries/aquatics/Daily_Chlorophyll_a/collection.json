@@ -11,17 +11,17 @@
     {
       "rel": "item",
       "type": "application/json",
-      "href": "./models/climatology.json"
-    },
-    {
-      "rel": "item",
-      "type": "application/json",
       "href": "./models/persistenceRW.json"
     },
     {
       "rel": "item",
       "type": "application/json",
       "href": "./models/USGSHABs1.json"
+    },
+    {
+      "rel": "item",
+      "type": "application/json",
+      "href": "./models/climatology.json"
     },
     {
       "rel": "item",
@@ -71,7 +71,7 @@
       "interval": [
         [
           "2024-02-07T00:00:00Z",
-          "2025-10-19T00:00:00Z"
+          "2025-10-20T00:00:00Z"
         ]
       ]
     }
@@ -79,7 +79,7 @@
   "table:columns": [
     {
       "name": "reference_datetime",
-      "type": "timestamp[us]",
+      "type": "timestamp[us, tz=UTC]",
       "description": "datetime that the forecast was initiated (horizon = 0)"
     },
     {
@@ -89,7 +89,7 @@
     },
     {
       "name": "datetime",
-      "type": "timestamp[us]",
+      "type": "timestamp[us, tz=UTC]",
       "description": "datetime of the forecasted value (ISO 8601)"
     },
     {
@@ -99,7 +99,7 @@
     },
     {
       "name": "pub_datetime",
-      "type": "timestamp[us]",
+      "type": "timestamp[us, tz=UTC]",
       "description": "datetime that forecast was submitted"
     },
     {
