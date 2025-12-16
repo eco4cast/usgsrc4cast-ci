@@ -65,8 +65,8 @@
     },
     {
       "rel": "describedby",
-      "href": "https://projects.ecoforecast.org/usgsrc4cast-ci/",
-      "title": "EFI-USGS River Chlorophyll Forecast Challenge Dashboard",
+      "href": {},
+      "title": {},
       "type": "text/html"
     }
   ],
@@ -81,7 +81,7 @@
       "interval": [
         [
           "2020-01-01T00:00:00Z",
-          "2025-09-22T00:00:00Z"
+          "2025-12-16T00:00:00Z"
         ]
       ]
     }
