@@ -28,8 +28,8 @@ model_metadata_gsheet: https://docs.google.com/spreadsheets/d/1f177dpaxLzc4UuQ4_
 targets_file_name: 'river-chl-targets.csv.gz'
 
 # Forecast sites
-site_path: 'catalog/sites'
-site_table: USGS_site_metadata.csv
+site_path: 'sites'
+site_table: ../USGS_site_metadata.csv
 site_thumbnail: 'https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/thumbnails/image/screencapture-waterdata-usgs-gov-nwis-rt-2018-08-02-13_00_05-01.jpg'
 site_thumbnail_title: "USGS Sites Map"
 site_table_link: 'https://raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/USGS_site_metadata.csv'
@@ -70,7 +70,7 @@ catalog_config:
   summaries_path: 'catalog/summaries/'
   summaries_thumbnail: 'https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/thumbnails/image/Manual%20measurement%20streamgage.jpg'
   summaries_thumbnail_title: "USGS Image"
-  inventory_path: 'catalog/inventory'
+  inventory_path: 'inventory'
   inventory_thumbnail: 'https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/thumbnails/image/Streamgaging%20Basics%20photo%20showing%20Acoustic%20Doppler%20Current%20Profiler2.jpg'
   inventory_thumbnail_title: "USGS Image"
   noaa_path: 'catalog/noaa_forecasts/'
