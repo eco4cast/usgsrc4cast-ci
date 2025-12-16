@@ -23,7 +23,8 @@ site_description_create <- data.frame(site_id = 'site identifier',
 #inventory_theme_df <- arrow::open_dataset(glue::glue("s3://{config$inventory_bucket}/catalog/forecasts/project_id={config$project_id}"), endpoint_override = config$endpoint, anonymous = TRUE) #|>
 
 target_url <- config$target_groups$aquatics$targets_file
-site_df <- read_csv(config$site_table, show_col_types = FALSE)
+# Prepend ../ because this script runs from catalog/ directory
+site_df <- read_csv(file.path("..", config$site_table), show_col_types = FALSE)
 
 # inventory_theme_df <- arrow::open_dataset(arrow::s3_bucket(config$inventory_bucket, endpoint_override = config$endpoint, anonymous = TRUE))
 #

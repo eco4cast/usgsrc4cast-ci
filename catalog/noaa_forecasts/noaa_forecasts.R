@@ -37,7 +37,8 @@ noaa_min_date <- as.Date('2020-01-01')
 noaa_max_date <- Sys.Date()
 
 ## find group sites
-find_noaa_sites <- read_csv(config$site_table) |>
+# Prepend ../ because this script runs from catalog/ directory
+find_noaa_sites <- read_csv(file.path("..", config$site_table)) |>
   distinct(site_id)
 
 #filter(model_id == model_id, site_id = site_id, reference_datetime = reference_datetime)
