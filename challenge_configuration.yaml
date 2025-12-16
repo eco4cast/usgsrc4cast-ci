@@ -58,6 +58,7 @@ variable_groups:
 
 # Forecast catalog configuration
 catalog_config:
+  catalog_path: 'catalog'
   about_string: 'https://projects.ecoforecast.org/usgsrc4cast-docs/'
   about_title: 'EFI-USGS River Chlorophyll Forecasting Challenge Documentation'
   scores_thumbnail: "https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/thumbnails/image/Back-b.jpg"

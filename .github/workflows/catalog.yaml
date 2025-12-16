@@ -38,12 +38,16 @@ jobs:
           pip install stac-validator
 
       - name: Render metadata
-        shell: Rscript {0}
-        run: source("catalog/model_metadata.R")
+        shell: bash
+        run: |
+          cd catalog
+          Rscript -e "source('model_metadata.R')"
 
       - name: Render catalog
-        shell: Rscript {0}
-        run: source("catalog/catalog.R")
+        shell: bash
+        run: |
+          cd catalog
+          Rscript -e "source('catalog.R')"
 
       - name: Commit and Push
         run: |
@@ -87,8 +91,10 @@ jobs:
           pip install stac-validator
 
       - name: Render
-        shell: Rscript {0}
-        run: source('catalog/forecasts/forecast_models.R')
+        shell: bash
+        run: |
+          cd catalog
+          Rscript -e "source('forecasts/forecast_models.R')"
 
       - name: Commit and Push
         run: |
@@ -132,8 +138,10 @@ jobs:
           pip install stac-validator
 
       - name: Render
-        shell: Rscript {0}
-        run: source('catalog/scores/scores_models.R')
+        shell: bash
+        run: |
+          cd catalog
+          Rscript -e "source('scores/scores_models.R')"
 
       - name: Commit and Push
         run: |
@@ -177,8 +185,10 @@ jobs:
           pip install stac-validator
 
       - name: Render
-        shell: Rscript {0}
-        run: source('catalog/inventory/create_inventory_page.R')
+        shell: bash
+        run: |
+          cd catalog
+          Rscript -e "source('inventory/create_inventory_page.R')"
 
       - name: Commit and Push
         run: |
@@ -222,8 +232,10 @@ jobs:
           pip install stac-validator
 
       - name: Render
-        shell: Rscript {0}
-        run: source('catalog/summaries/summaries_models.R')
+        shell: bash
+        run: |
+          cd catalog
+          Rscript -e "source('summaries/summaries_models.R')"
 
       - name: Commit and Push
         run: |
@@ -267,8 +279,10 @@ jobs:
           pip install stac-validator
 
       - name: Render
-        shell: Rscript {0}
-        run: source('catalog/noaa_forecasts/noaa_forecasts.R')
+        shell: bash
+        run: |
+          cd catalog
+          Rscript -e "source('noaa_forecasts/noaa_forecasts.R')"
 
       - name: Commit and Push
         run: |
@@ -312,12 +326,16 @@ jobs:
           pip install stac-validator
 
       - name: Render targets
-        shell: Rscript {0}
-        run: source('catalog/targets/create_targets_page.R')
+        shell: bash
+        run: |
+          cd catalog
+          Rscript -e "source('targets/create_targets_page.R')"
 
       - name: Render sites
-        shell: Rscript {0}
-        run: source('catalog/sites/build_sites_page.R')
+        shell: bash
+        run: |
+          cd catalog
+          Rscript -e "source('sites/build_sites_page.R')"
 
       - name: Commit and Push
         run: |

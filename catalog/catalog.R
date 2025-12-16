@@ -1,7 +1,7 @@
-source("catalog/R/catalog-common.R")
-source('catalog/R/stac_functions.R')
+source("R/catalog-common.R")
+source('R/stac_functions.R')
 
-config <- yaml::read_yaml('challenge_configuration.yaml')
+config <- yaml::read_yaml('../challenge_configuration.yaml')
 
 build_catalog <- function(){
   catalog <- list(

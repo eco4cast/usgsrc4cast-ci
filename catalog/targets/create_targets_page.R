@@ -4,7 +4,7 @@ library(gsheet)
 library(readr)
 
 #source('catalog/R/stac_functions.R')
-config <- yaml::read_yaml('challenge_configuration.yaml')
+config <- yaml::read_yaml('../challenge_configuration.yaml')
 catalog_config <- config$catalog_config
 
 # file.sources = list.files(c("../stac4cast/R"), full.names=TRUE,

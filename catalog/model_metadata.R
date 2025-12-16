@@ -1,7 +1,7 @@
 Sys.setenv(AWS_ACCESS_KEY_ID=Sys.getenv("OSN_KEY"),
            AWS_SECRET_ACCESS_KEY=Sys.getenv("OSN_SECRET"))
 
-config <- yaml::read_yaml("challenge_configuration.yaml")
+config <- yaml::read_yaml("../challenge_configuration.yaml")
 
 endpoint <- config$endpoint
 
