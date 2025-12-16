@@ -28,7 +28,7 @@ model_metadata_gsheet: https://docs.google.com/spreadsheets/d/1f177dpaxLzc4UuQ4_
 targets_file_name: 'river-chl-targets.csv.gz'
 
 # Forecast sites
-site_path: 'sites'
+site_path: 'catalog/sites'
 site_table: ../USGS_site_metadata.csv
 site_thumbnail: 'https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/thumbnails/image/screencapture-waterdata-usgs-gov-nwis-rt-2018-08-02-13_00_05-01.jpg'
 site_thumbnail_title: "USGS Sites Map"
