@@ -1,0 +1,14 @@
+[project]
+name = "usgsrc4cast-ci"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "numpy>=2.3.5",
+    "pandas>=2.3.3",
+    "pyarrow>=22.0.0",
+    "s3fs>=2025.12.0",
+    "xarray>=2025.12.0",
+    "zarr>=3.1.5",
+]
