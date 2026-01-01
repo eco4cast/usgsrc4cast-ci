@@ -21,12 +21,12 @@
     {
       "rel": "item",
       "type": "application/json",
-      "href": "./models/USGSHABs1.json"
+      "href": "./models/persistenceRW.json"
     },
     {
       "rel": "item",
       "type": "application/json",
-      "href": "./models/persistenceRW.json"
+      "href": "./models/USGSHABs1.json"
     },
     {
       "rel": "parent",
