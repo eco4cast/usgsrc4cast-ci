@@ -7,7 +7,7 @@ project_id: usgsrc4cast
 # Endpoints
 endpoint: sdsc.osn.xsede.org
 noaa_endpoint: sdsc.osn.xsede.org
-submissions_endpoint: submit.ecoforecast.org
+submissions_endpoint: s3-west.nrp-nautilus.io
 
 # Buckets
 archive_bucket: bio230014-bucket01/challenges/archive
@@ -79,8 +79,8 @@ catalog_config:
   aws_download_path_forecasts: 'bio230014-bucket01/challenges/forecasts/parquet'
   aws_download_path_scores: 'bio230014-bucket01/challenges/scores/parquet'
   summaries_download_path: 'bio230014-bucket01/challenges/forecasts/summaries'
-  host_url: "https://www.ecoforecastprojectvt.org"
-  host_name: "Ecoforecast Challenge"
+  host_url: "https://ecoforecast.org/"
+  host_name: "Ecological Forecasting Initiative"
   bbox:
     max_lat: 45.5175
     min_lat: 39.6327
