@@ -14,8 +14,8 @@ submit <- function(forecast_file,
                    project_id,
                    metadata = NULL,
                    ask = interactive(),
-                   s3_region = "submit",
-                   s3_endpoint = "ecoforecast.org"
+                   s3_region = "s3-west",
+                   s3_endpoint = "nrp-nautilus.org"
 ){
   if(file.exists("~/.aws")){
     warning(paste("Detected existing AWS credentials file in ~/.aws,",
