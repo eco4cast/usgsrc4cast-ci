@@ -15,7 +15,7 @@ submit <- function(forecast_file,
                    metadata = NULL,
                    ask = interactive(),
                    s3_region = "s3-west",
-                   s3_endpoint = "nrp-nautilus.org"
+                   s3_endpoint = "nrp-nautilus.io"
 ){
   if(file.exists("~/.aws")){
     warning(paste("Detected existing AWS credentials file in ~/.aws,",
