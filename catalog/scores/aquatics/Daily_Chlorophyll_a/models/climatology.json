@@ -27,7 +27,7 @@
     "datetime": "2026-02-01T00:00:00Z",
     "updated": "2026-02-02T00:00:00Z",
     "start_datetime": "2024-02-07T00:00:00Z",
-    "end_datetime": "2026-02-02T00:00:00Z",
+    "end_datetime": "2026-02-03T00:00:00Z",
     "providers": [
       {
         "url": "https://github.com/eco4cast/usgsrc4cast-ci/blob/main/baseline_models/models/aquatics_climatology.R",
