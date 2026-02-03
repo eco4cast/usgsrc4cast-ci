@@ -35,7 +35,7 @@ submit <- function(forecast_file,
     # Restore environment variables
     for (v in names(saved_env)) {
       if (!is.na(saved_env[[v]])) {
-        Sys.setenv(saved_env[v])
+        do.call(Sys.setenv, as.list(saved_env[v]))
       }
     }
     # Restore ~/.aws directory
