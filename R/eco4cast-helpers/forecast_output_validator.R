@@ -32,6 +32,16 @@ forecast_output_validator <- function(forecast_file){
       valid <- FALSE
     }
 
+    if("prediction" %in% names(out) && all(is.na(out$prediction))){
+      usethis::ui_warn("prediction column is all NA values")
+      valid <- FALSE
+    }
+
+    if(lexists(out, "model_id") && length(unique(out$model_id)) > 1){
+      usethis::ui_warn("file contains more than one model_id")
+      valid <- FALSE
+    }
+
     if(lexists(out, "ensemble")){
       usethis::ui_warn("ensemble dimension should be named parameter")
       valid <- FALSE
@@ -60,13 +70,13 @@ forecast_output_validator <- function(forecast_file){
     if(lexists(out, c("datetime"))){
       usethis::ui_done("file has datetime column")
       if(!grepl("-", out$datetime[1])){
-        usethis::ui_done("datetime column format is not in the correct YYYY-MM-DD format")
+        usethis::ui_warn("datetime column format is not in the correct YYYY-MM-DD format")
         valid <- FALSE
       }else{
         if(sum(class(out$datetime) %in% c("Date","POSIXct")) > 0){
           usethis::ui_done("file has correct datetime column")
         }else{
-          usethis::ui_done("datetime column format is not in the correct YYYY-MM-DD format")
+          usethis::ui_warn("datetime column format is not in the correct YYYY-MM-DD format")
           valid <- FALSE
         }
       }
@@ -105,7 +115,7 @@ forecast_output_validator <- function(forecast_file){
   }
   if(!valid){
     ## TODO: could update this warning message
-    message("Forecast file is not valid. The following link provides information about the format:\nhttps://projects.ecoforecast.org/neon4cast-ci/instructions.html#forecast-file-format")
+    message("Forecast file is not valid. The following link provides information about the format:\nhttps://projects.ecoforecast.org/usgsrc4cast-ci/instructions.html#forecast-file-format")
   }else{
     message("Forecast format is valid")
   }

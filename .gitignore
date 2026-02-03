@@ -42,6 +42,7 @@ vignettes/*.pdf
 .Renviron
 
 venv/
+__pycache__/
 
 # pkgdown site
 docs/
