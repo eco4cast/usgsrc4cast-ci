@@ -4,33 +4,33 @@
     "https://stac-extensions.github.io/table/v1.2.0/schema.json"
   ],
   "type": "Feature",
-  "id": "USGSHABs1_chla_P1D_summaries",
+  "id": "usgs_habs_tirex_chla_P1D_summaries",
   "bbox": [-122.6692, 39.6328, -74.7781, 45.5175],
   "geometry": {
     "type": "MultiPoint",
     "coordinates": [
-      [-122.6692, 45.5175],
-      [-122.2974, 44.7538],
-      [-90.6077, 39.6328],
-      [-89.3562, 41.1073],
-      [-88.984, 41.3248],
+      [-74.7781, 40.2217],
       [-88.6142, 41.2999],
       [-88.2515, 42.31],
-      [-75.0574, 41.7567],
+      [-88.984, 41.3248],
+      [-89.3562, 41.1073],
+      [-90.6077, 39.6328],
+      [-122.2974, 44.7538],
       [-122.5773, 45.3793],
-      [-74.7781, 40.2217]
+      [-122.6692, 45.5175],
+      [-75.0574, 41.7567]
     ]
   },
   "properties": {
-    "title": "USGSHABs1",
-    "description": "All summaries for the Daily_Chlorophyll_a variable for the USGSHABs1 model. Information for the model is provided as follows: Uses the randomForest::randomForest() R package model to train site-specific models for predicting river chl-a. Uses ensemble Kalman filter to adjust predicted chl-a states..\n                                    The model predicts this variable at the following sites: USGS-14211720, USGS-14181500, USGS-05586300, USGS-05558300, USGS-05553700, USGS-05543010, USGS-05549500, USGS-01427510, USGS-14211010, USGS-01463500.\n                                    Summaries are the forecasts statistics of the raw forecasts (i.e., mean, median, confidence intervals)",
+    "title": "usgs_habs_tirex",
+    "description": "All summaries for the Daily_Chlorophyll_a variable for the usgs_habs_tirex model. Information for the model is provided as follows: This is a zero-shot forecasting model using a pre-trained xLSTM model (TiRex)..\n                                    The model predicts this variable at the following sites: USGS-01463500, USGS-05543010, USGS-05549500, USGS-05553700, USGS-05558300, USGS-05586300, USGS-14181500, USGS-14211010, USGS-14211720, USGS-01427510.\n                                    Summaries are the forecasts statistics of the raw forecasts (i.e., mean, median, confidence intervals)",
     "datetime": "2026-02-09T00:00:00Z",
     "updated": "2026-02-10T00:00:00Z",
-    "start_datetime": "2024-02-13T00:00:00Z",
-    "end_datetime": "2026-03-14T00:00:00Z",
+    "start_datetime": "2026-02-09T00:00:00Z",
+    "end_datetime": "2026-03-15T00:00:00Z",
     "providers": [
       {
-        "url": "https://code.usgs.gov/wma/proxies/habs/habs-forecast-chl-usgsrc4cast/-/blob/main/2_model/src/chla_models.R?ref_type=heads",
+        "url": "https://github.com/NX-AI/tirex",
         "name": "Jacob Zwart",
         "roles": [
           "producer",
@@ -51,21 +51,21 @@
       "Summaries",
       "usgsrc4cast",
       "aquatics",
-      "USGSHABs1",
+      "usgs_habs_tirex",
       "Chlorophyll_a",
       "chla",
       "Daily",
       "P1D",
-      "USGS-14211720",
-      "USGS-14181500",
-      "USGS-05586300",
-      "USGS-05558300",
-      "USGS-05553700",
+      "USGS-01463500",
       "USGS-05543010",
       "USGS-05549500",
-      "USGS-01427510",
+      "USGS-05553700",
+      "USGS-05558300",
+      "USGS-05586300",
+      "USGS-14181500",
       "USGS-14211010",
-      "USGS-01463500"
+      "USGS-14211720",
+      "USGS-01427510"
     ],
     "table:columns": [
       {
@@ -156,7 +156,7 @@
       "rel": "collection",
       "href": "../collection.json",
       "type": "application/json",
-      "title": "USGSHABs1"
+      "title": "usgs_habs_tirex"
     },
     {
       "rel": "root",
@@ -168,29 +168,29 @@
       "rel": "parent",
       "href": "../collection.json",
       "type": "application/json",
-      "title": "USGSHABs1"
+      "title": "usgs_habs_tirex"
     },
     {
       "rel": "self",
-      "href": "USGSHABs1.json",
+      "href": "usgs_habs_tirex.json",
       "type": "application/json",
       "title": "Model Forecast"
     },
     {
       "rel": "item",
-      "href": "https://code.usgs.gov/wma/proxies/habs/habs-forecast-chl-usgsrc4cast/-/blob/main/2_model/src/chla_models.R?ref_type=heads",
+      "href": "https://github.com/NX-AI/tirex",
       "type": "text/html",
       "title": "Link for Model Code"
     },
     {
       "rel": "item",
-      "href": "https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/summaries/aquatics/Daily_Chlorophyll_a/models/USGSHABs1.json",
+      "href": "https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/summaries/aquatics/Daily_Chlorophyll_a/models/usgs_habs_tirex.json",
       "type": "text/html",
       "title": "Link for rendered STAC item"
     },
     {
       "rel": "item",
-      "href": "https://raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/summaries/aquatics/Daily_Chlorophyll_a/models/USGSHABs1.json",
+      "href": "https://raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/summaries/aquatics/Daily_Chlorophyll_a/models/usgs_habs_tirex.json",
       "type": "text/html",
       "title": "Link for raw JSON file"
     }
@@ -199,26 +199,26 @@
     "1": {
       "type": "application/json",
       "title": "Model Metadata",
-      "href": "https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/metadata/model_id/USGSHABs1.json",
-      "description": "Use `jsonlite::fromJSON()` to download the model metadata JSON file. This R code will return metadata provided during the model registration.\n      \n\n### R\n\n```{r}\n# Use code below\n\nmodel_metadata <- jsonlite::fromJSON(\"https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/metadata/model_id/USGSHABs1.json\")\n\n"
+      "href": "https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/metadata/model_id/usgs_habs_tirex.json",
+      "description": "Use `jsonlite::fromJSON()` to download the model metadata JSON file. This R code will return metadata provided during the model registration.\n      \n\n### R\n\n```{r}\n# Use code below\n\nmodel_metadata <- jsonlite::fromJSON(\"https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/metadata/model_id/usgs_habs_tirex.json\")\n\n"
     },
     "2": {
       "type": "text/html",
       "title": "Link for Model Code",
-      "href": "https://code.usgs.gov/wma/proxies/habs/habs-forecast-chl-usgsrc4cast/-/blob/main/2_model/src/chla_models.R?ref_type=heads",
+      "href": "https://github.com/NX-AI/tirex",
       "description": "The link to the model code provided by the model submission team"
     },
     "3": {
       "type": "text/plain",
       "title": "Model Sites",
       "href": "https://raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/USGS_site_metadata.csv",
-      "description": "USGS-14211720, USGS-14181500, USGS-05586300, USGS-05558300, USGS-05553700, USGS-05543010, USGS-05549500, USGS-01427510, USGS-14211010, USGS-01463500"
+      "description": "USGS-01463500, USGS-05543010, USGS-05549500, USGS-05553700, USGS-05558300, USGS-05586300, USGS-14181500, USGS-14211010, USGS-14211720, USGS-01427510"
     },
     "4": {
       "type": "application/x-parquet",
       "title": "Database Access for Daily Chlorophyll_a",
-      "href": "s3://anonymous@bio230014-bucket01/challenges/forecasts/summaries/project_id=usgsrc4cast/duration=P1D/variable=chla/model_id=USGSHABs1?endpoint_override=sdsc.osn.xsede.org",
-      "description": "Use `R` or `Python` code for remote access to the database. This code will return results for this variable and model combination.\n\n### R\n\n```{r}\n# Use code below\n\nall_results <- arrow::open_dataset(\"s3://anonymous@bio230014-bucket01/challenges/forecasts/summaries/project_id=usgsrc4cast/duration=P1D/variable=chla/model_id=USGSHABs1?endpoint_override=sdsc.osn.xsede.org\")\ndf <- all_results |> dplyr::collect()\n\n```\n       \n\nYou can use dplyr operations before calling `dplyr::collect()` to `summarise`, `select` columns, and/or `filter` rows prior to pulling the data into a local `data.frame`. Reducing the data that is pulled locally will speed up the data download speed and reduce your memory usage.\n\n\n### Python\n\n```{python}# Use code below\nimport ibis\ncon = ibis.duckdbf.connect()\ncon.raw_sql(f'''\nCREATE OR REPLACE SECRET secret (\nTYPE S3,\nENDPOINT 'sdsc.osn.xsede.org',\nURL_STYLE 'path'\n\n''');\npath = \"s3://bio230014-bucket01/challenges/forecasts/summaries/project_id=usgsrc4cast/duration=P1D/variable=chla/model_id=USGSHABs1\"\ncon.read_parquet(path + \"/**\")"
+      "href": "s3://anonymous@bio230014-bucket01/challenges/forecasts/summaries/project_id=usgsrc4cast/duration=P1D/variable=chla/model_id=usgs_habs_tirex?endpoint_override=sdsc.osn.xsede.org",
+      "description": "Use `R` or `Python` code for remote access to the database. This code will return results for this variable and model combination.\n\n### R\n\n```{r}\n# Use code below\n\nall_results <- arrow::open_dataset(\"s3://anonymous@bio230014-bucket01/challenges/forecasts/summaries/project_id=usgsrc4cast/duration=P1D/variable=chla/model_id=usgs_habs_tirex?endpoint_override=sdsc.osn.xsede.org\")\ndf <- all_results |> dplyr::collect()\n\n```\n       \n\nYou can use dplyr operations before calling `dplyr::collect()` to `summarise`, `select` columns, and/or `filter` rows prior to pulling the data into a local `data.frame`. Reducing the data that is pulled locally will speed up the data download speed and reduce your memory usage.\n\n\n### Python\n\n```{python}# Use code below\nimport ibis\ncon = ibis.duckdbf.connect()\ncon.raw_sql(f'''\nCREATE OR REPLACE SECRET secret (\nTYPE S3,\nENDPOINT 'sdsc.osn.xsede.org',\nURL_STYLE 'path'\n\n''');\npath = \"s3://bio230014-bucket01/challenges/forecasts/summaries/project_id=usgsrc4cast/duration=P1D/variable=chla/model_id=usgs_habs_tirex\"\ncon.read_parquet(path + \"/**\")"
     }
   }
 }
