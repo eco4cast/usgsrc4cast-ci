@@ -2,23 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
    <url>
       <loc>https://projects.ecoforecast.org/usgsrc4cast-ci/catalog.html</loc>
-      <lastmod>2026-02-12</lastmod>
+      <lastmod>2026-02-13</lastmod>
    </url>
    <url>
       <loc>https://projects.ecoforecast.org/usgsrc4cast-ci/targets.html</loc>
-      <lastmod>2026-02-12</lastmod>
+      <lastmod>2026-02-13</lastmod>
    </url>
    <url>
       <loc>https://projects.ecoforecast.org/usgsrc4cast-ci/instructions.html</loc>
-      <lastmod>2026-02-12</lastmod>
+      <lastmod>2026-02-13</lastmod>
    </url>
    <url>
       <loc>https://projects.ecoforecast.org/usgsrc4cast-ci/performance.html</loc>
-      <lastmod>2026-02-12</lastmod>
+      <lastmod>2026-02-13</lastmod>
    </url>
    <url>
       <loc>https://projects.ecoforecast.org/usgsrc4cast-ci/index.html</loc>
-      <lastmod>2026-02-12</lastmod>
+      <lastmod>2026-02-13</lastmod>
    </url>
    <url>
       <loc>https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/catalog.json</loc>
@@ -38,6 +38,10 @@
    </url>
    <url>
       <loc>https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/forecasts/aquatics/Daily_Chlorophyll_a/models/climatology.json</loc>
+      <lastmod>2026-02-12</lastmod>
+   </url>
+   <url>
+      <loc>https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/forecasts/aquatics/Daily_Chlorophyll_a/models/persistence.json</loc>
       <lastmod>2026-02-12</lastmod>
    </url>
    <url>
@@ -101,6 +105,10 @@
       <lastmod>2026-02-12</lastmod>
    </url>
    <url>
+      <loc>https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/scores/aquatics/Daily_Chlorophyll_a/models/persistence.json</loc>
+      <lastmod>2026-02-12</lastmod>
+   </url>
+   <url>
       <loc>https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/scores/aquatics/Daily_Chlorophyll_a/models/persistenceRW.json</loc>
       <lastmod>2026-02-12</lastmod>
    </url>
@@ -134,6 +142,10 @@
    </url>
    <url>
       <loc>https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/summaries/aquatics/Daily_Chlorophyll_a/models/climatology.json</loc>
+      <lastmod>2026-02-12</lastmod>
+   </url>
+   <url>
+      <loc>https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/summaries/aquatics/Daily_Chlorophyll_a/models/persistence.json</loc>
       <lastmod>2026-02-12</lastmod>
    </url>
    <url>
