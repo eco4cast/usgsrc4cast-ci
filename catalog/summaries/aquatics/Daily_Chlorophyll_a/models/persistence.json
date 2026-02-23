@@ -24,10 +24,10 @@
   "properties": {
     "title": "persistence",
     "description": "All summaries for the Daily_Chlorophyll_a variable for the persistence model. Information for the model is provided as follows: The persistence model uses the most recent chlorophyll observation prior to the forecast initialization date as the basis for all predictions. Forecast uncertainty is represented using a log-normal distribution centered on the log-transformed last observation, with standard deviation growing as sigma(site) times the square root of lead time, where sigma(site) is the per-site innovation standard deviation..\n                                    The model predicts this variable at the following sites: USGS-01427510, USGS-01463500, USGS-05543010, USGS-05549500, USGS-05553700, USGS-05558300, USGS-05586300, USGS-14181500, USGS-14211010, USGS-14211720.\n                                    Summaries are the forecasts statistics of the raw forecasts (i.e., mean, median, confidence intervals)",
-    "datetime": "2026-02-21T00:00:00Z",
-    "updated": "2026-02-22T00:00:00Z",
+    "datetime": "2026-02-22T00:00:00Z",
+    "updated": "2026-02-23T00:00:00Z",
     "start_datetime": "2026-02-13T00:00:00Z",
-    "end_datetime": "2026-03-27T00:00:00Z",
+    "end_datetime": "2026-03-28T00:00:00Z",
     "providers": [
       {
         "url": "https://github.com/eco4cast/usgsrc4cast-ci/tree/main/baseline_models",
