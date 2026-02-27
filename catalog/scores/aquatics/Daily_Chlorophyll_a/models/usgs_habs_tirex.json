@@ -27,7 +27,7 @@
     "datetime": "2026-02-09T00:00:00Z",
     "updated": "2026-02-10T00:00:00Z",
     "start_datetime": "2026-02-09T00:00:00Z",
-    "end_datetime": "2026-02-26T00:00:00Z",
+    "end_datetime": "2026-02-27T00:00:00Z",
     "providers": [
       {
         "url": "https://github.com/NX-AI/tirex",
