@@ -82,8 +82,6 @@ jobs:
           pip install pandas
 
       - uses: quarto-dev/quarto-actions/setup@v2
-        with:
-          version: 1.4.146
 
       - name: install deps
         shell: Rscript {0}
