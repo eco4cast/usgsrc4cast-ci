@@ -350,7 +350,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-    container: eco4cast/rocker-neon4cast:latest
     steps:
       - name: Call Healthcheck
         run: |
