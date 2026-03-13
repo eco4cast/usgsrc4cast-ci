@@ -31,12 +31,12 @@
     {
       "rel": "item",
       "type": "application/json",
-      "href": "./models/persistence.json"
+      "href": "./models/usgs_habs_tirex.json"
     },
     {
       "rel": "item",
       "type": "application/json",
-      "href": "./models/usgs_habs_tirex.json"
+      "href": "./models/persistence.json"
     },
     {
       "rel": "parent",
