@@ -69,7 +69,7 @@ jobs:
       - name: Set up Python
         run: |
           sudo apt-get update
-          sudo apt-get install -y python3-venv python3-pip
+          sudo apt-get install -y python3-venv python3-pip curl jq
 
       - name: Create and activate virtual environment
         run: |
