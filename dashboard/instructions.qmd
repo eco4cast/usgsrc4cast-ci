@@ -37,7 +37,7 @@ You may want to use the updated target data to re-train a model or for use in da
 As a genuine forecasting challenge, you will need forecasted drivers if your model uses drivers as inputs.
 If you are interested in using forecasted meteorology, we are downloading and processing NOAA Global Ensemble Forecasting System (GEFS) weather forecasts for each USGS site.
 The NOAA GEFS forecasts extend 35-days ahead.
-More information about accessing the weather forecasts can be found [here]( https://projects.ecoforecast.org/neon4cast-docs/Shared-Forecast-Drivers.html)
+More information about accessing the weather forecasts can be found in the [custom NOAA GEFS helper functions](https://github.com/eco4cast/usgsrc4cast-ci/blob/main/R/eco4cast-helpers/noaa_gefs.R)
 
 ### Forecasts extend out to 30 days in the future
 
