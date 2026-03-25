@@ -24,19 +24,20 @@ s3_stage2 <- gefs4cast::gefs_s3_dir(product = "stage2",
 
 # if there aren't any data (i.e., this is the first time we're creating this dataset),
 #  then skip the distinct(reference_datetime) filter
-df <- arrow::open_dataset(s3_stage2)
-if(length(df$files) > 0){
-  df <- arrow::open_dataset(s3_stage2) |>
+df <- tryCatch({
+  arrow::open_dataset(s3_stage2) |>
     dplyr::distinct(reference_datetime) |>
     dplyr::collect()
-}
+}, error = function(e) {
+  dplyr::tibble(reference_datetime = character(0))
+})
 
 curr_date <- Sys.Date()
 last_week <- dplyr::tibble(reference_datetime = as.character(seq(curr_date - lubridate::days(7),
                                                                  curr_date - lubridate::days(1),
                                                                  by = "1 day")))
 
-if(length(df$files) > 0){
+if(nrow(df) > 0){
   missing_dates <- dplyr::anti_join(last_week, df,
                                     by = "reference_datetime") |>
     dplyr::pull(reference_datetime)
@@ -58,23 +59,27 @@ if(length(missing_dates) > 0){
                                   endpoint_override = config$endpoint,
                                   anonymous = TRUE)
 
-    site_df <- arrow::open_dataset(s3_stage1) |>
-      dplyr::filter(variable %in% c("PRES","TMP","RH","UGRD","VGRD","APCP","DSWRF","DLWRF")) |>
-      dplyr::filter(site_id %in% site_list$site_id) |>
-      dplyr::collect() |>
-      dplyr::mutate(reference_datetime = missing_dates[i])
+    tryCatch({
+      site_df <- arrow::open_dataset(s3_stage1) |>
+        dplyr::filter(variable %in% c("PRES","TMP","RH","UGRD","VGRD","APCP","DSWRF","DLWRF")) |>
+        dplyr::filter(site_id %in% site_list$site_id) |>
+        dplyr::collect() |>
+        dplyr::mutate(reference_datetime = missing_dates[i])
 
-    hourly_df <- to_hourly(site_df,
-                           site_list = dplyr::select(site_list, site_id, latitude, longitude),
-                           use_solar_geom = TRUE,
-                           pseudo = FALSE) |>
-      dplyr::mutate(ensemble = as.numeric(stringr::str_sub(ensemble, start = 4, end = 5)),
-                    reference_datetime = lubridate::as_date(reference_datetime)) |>
-      dplyr::rename(parameter = ensemble)
+      hourly_df <- to_hourly(site_df,
+                             site_list = dplyr::select(site_list, site_id, latitude, longitude),
+                             use_solar_geom = TRUE,
+                             pseudo = FALSE) |>
+        dplyr::mutate(ensemble = as.numeric(stringr::str_sub(ensemble, start = 4, end = 5)),
+                      reference_datetime = lubridate::as_date(reference_datetime)) |>
+        dplyr::rename(parameter = ensemble)
 
-    arrow::write_dataset(dataset = hourly_df,
-                         path = s3_stage2,
-                         partitioning = c("reference_datetime", "site_id"))
+      arrow::write_dataset(dataset = hourly_df,
+                           path = s3_stage2,
+                           partitioning = c("reference_datetime", "site_id"))
+    }, error = function(e) {
+      warning(paste("Skipping", missing_dates[i], "- stage1 data not available:", conditionMessage(e)))
+    })
   }
 }
 
