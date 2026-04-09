@@ -59,7 +59,7 @@
       "interval": [
         [
           "2024-02-07T00:00:00Z",
-          "2026-05-12T00:00:00Z"
+          "2026-05-13T00:00:00Z"
         ]
       ]
     }
@@ -72,7 +72,7 @@
     },
     {
       "name": "site_id",
-      "type": "string",
+      "type": "double",
       "description": "For forecasts that are not on a spatial grid, use of a site dimension that maps to a more detailed geometry (points, polygons, etc.) is allowable. In general this would be documented in the external metadata (e.g., alook-up table that provides lon and lat)"
     },
     {
