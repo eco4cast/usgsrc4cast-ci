@@ -26,12 +26,12 @@
     {
       "rel": "item",
       "type": "application/json",
-      "href": "./models/persistenceRW.json"
+      "href": "./models/persistence.json"
     },
     {
       "rel": "item",
       "type": "application/json",
-      "href": "./models/persistence.json"
+      "href": "./models/persistenceRW.json"
     },
     {
       "rel": "item",
