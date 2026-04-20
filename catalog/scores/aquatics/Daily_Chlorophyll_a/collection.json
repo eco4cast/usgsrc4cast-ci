@@ -26,17 +26,17 @@
     {
       "rel": "item",
       "type": "application/json",
+      "href": "./models/persistence.json"
+    },
+    {
+      "rel": "item",
+      "type": "application/json",
       "href": "./models/persistenceRW.json"
     },
     {
       "rel": "item",
       "type": "application/json",
       "href": "./models/usgs_habs_tirex.json"
-    },
-    {
-      "rel": "item",
-      "type": "application/json",
-      "href": "./models/persistence.json"
     },
     {
       "rel": "parent",
