@@ -11,12 +11,12 @@
     {
       "rel": "item",
       "type": "application/json",
-      "href": "./models/climatology.json"
+      "href": "./models/USGSHABs1.json"
     },
     {
       "rel": "item",
       "type": "application/json",
-      "href": "./models/USGSHABs1.json"
+      "href": "./models/climatology.json"
     },
     {
       "rel": "item",
