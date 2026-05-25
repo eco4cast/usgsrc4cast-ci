@@ -11,17 +11,17 @@
     {
       "rel": "item",
       "type": "application/json",
-      "href": "./models/climatology.json"
-    },
-    {
-      "rel": "item",
-      "type": "application/json",
       "href": "./models/persistenceRW.json"
     },
     {
       "rel": "item",
       "type": "application/json",
       "href": "./models/USGSHABs1.json"
+    },
+    {
+      "rel": "item",
+      "type": "application/json",
+      "href": "./models/climatology.json"
     },
     {
       "rel": "item",
@@ -81,7 +81,7 @@
       "interval": [
         [
           "2024-02-07T00:00:00Z",
-          "2026-06-27T00:00:00Z"
+          "2026-06-28T00:00:00Z"
         ]
       ]
     }
@@ -94,7 +94,7 @@
     },
     {
       "name": "site_id",
-      "type": "double",
+      "type": "string",
       "description": "For forecasts that are not on a spatial grid, use of a site dimension that maps to a more detailed geometry (points, polygons, etc.) is allowable. In general this would be documented in the external metadata (e.g., alook-up table that provides lon and lat)"
     },
     {
