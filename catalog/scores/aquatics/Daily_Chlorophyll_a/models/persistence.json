@@ -27,7 +27,7 @@
     "datetime": "2026-05-24T00:00:00Z",
     "updated": "2026-05-25T00:00:00Z",
     "start_datetime": "2026-02-13T00:00:00Z",
-    "end_datetime": "2026-05-25T00:00:00Z",
+    "end_datetime": "2026-05-26T00:00:00Z",
     "providers": [
       {
         "url": "https://github.com/eco4cast/usgsrc4cast-ci/tree/main/baseline_models",
