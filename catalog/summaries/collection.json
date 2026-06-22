@@ -57,7 +57,7 @@
       "interval": [
         [
           "2024-02-07T00:00:00Z",
-          "2026-07-25T00:00:00Z"
+          "2026-07-26T00:00:00Z"
         ]
       ]
     }
@@ -65,17 +65,17 @@
   "table:columns": [
     {
       "name": "reference_datetime",
-      "type": "timestamp[us, tz=UTC]",
+      "type": "timestamp[us]",
       "description": "datetime that the forecast was initiated (horizon = 0)"
     },
     {
       "name": "site_id",
-      "type": "string",
+      "type": "double",
       "description": "For forecasts that are not on a spatial grid, use of a site dimension that maps to a more detailed geometry (points, polygons, etc.) is allowable. In general this would be documented in the external metadata (e.g., alook-up table that provides lon and lat)"
     },
     {
       "name": "datetime",
-      "type": "timestamp[us, tz=UTC]",
+      "type": "timestamp[us]",
       "description": "datetime of the forecasted value (ISO 8601)"
     },
     {
@@ -85,7 +85,7 @@
     },
     {
       "name": "pub_datetime",
-      "type": "timestamp[us, tz=UTC]",
+      "type": "timestamp[us]",
       "description": "datetime that forecast was submitted"
     },
     {
