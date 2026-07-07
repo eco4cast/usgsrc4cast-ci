@@ -16,6 +16,7 @@ RUN apt-get update && apt-get install -y libglpk-dev && rm -rf /var/lib/apt/list
 RUN install2.r --error \
   clustermq \
   dataRetrieval \
+  sf \
   tarchetypes \
   targets \
   && rm -rf /tmp/downloaded_packages /tmp/*.rds /tmp/Rtmp*
