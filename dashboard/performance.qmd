@@ -48,16 +48,11 @@ df_P1D <- arrow::open_dataset("../cache/summaries/duration=P1D") |>
 ```
 
 ```{r}
-cutoff <- Sys.Date() - lubridate::days(30)
 df_P1D_scores <- arrow::open_dataset("../cache/scores/duration=P1D") |>
   left_join(sites, by = "site_id") |>
   mutate(reference_datetime = lubridate::as_datetime(reference_datetime),
          datetime = lubridate::as_datetime(datetime)) |>
-  filter(reference_datetime > cutoff) |>
   collect()
-
-
-cutoff <- Sys.Date() - lubridate::days(365)
 
 
 ref <- Sys.Date() - lubridate::days(30)
@@ -76,9 +71,11 @@ ex_P1D <- df_P1D_scores |>
 ```
 
 ```{r}
-#Best models
+#Best models (based on last 30 days)
+best_cutoff <- Sys.Date() - lubridate::days(30)
 
 best_P1D_scores <- df_P1D_scores |>
+  filter(reference_datetime > best_cutoff) |>
   summarise(score = mean(crps, na.rm = TRUE), .by = c("model_id","variable")) |>
   arrange(variable, score) |>
   group_by(variable) |>
@@ -134,7 +131,7 @@ Average skill scores of each model across all sites.\
 
 Scores are shown by reference date and forecast horizon (in days).\
 
-Scores are averaged across all submissions of the model with a given horizon or a given `reference_datetime` using submissions made since `r cutoff`.\
+Scores are averaged across all submissions of the model with a given horizon or a given `reference_datetime` using all available scored submissions.\
 
 Learn about the continous ranked probablity score [here](https://projects.ecoforecast.org/neon4cast-docs/Evaluation.html)
 
