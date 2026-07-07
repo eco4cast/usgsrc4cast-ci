@@ -66,8 +66,22 @@ list(
   ),
 
   tar_target(
+    s3_historic_csv,
+    {
+      out_file <- "out/s3_historic_data.csv"
+      s3_url <- config$target_groups$aquatics$targets_file
+      dat <- read_csv(s3_url, show_col_types = FALSE)
+      write_csv(dat, out_file)
+      return(out_file)
+    },
+    format = "file",
+    cue = tar_cue("always")
+  ),
+
+  tar_target(
     start_date,
-    as.Date("2000-01-01")
+    Sys.Date() - 365,
+    cue = tar_cue("always")
   ),
 
   tar_target(
@@ -140,8 +154,8 @@ list(
         mutate(source = "uv_rfu") |>
         filter(site_no == "14181500" & dateTime > as.Date("2024-04-24"))
       uv_rfu <- bind_rows(uv_rfu, site_14181500_rfu)
-      out_file <- "out/USGS_chl_data.csv"
-      out <- bind_rows(dv, uv, uv_rfu) |>
+
+      recent <- bind_rows(dv, uv, uv_rfu) |>
         rename(datetime = dateTime,
                site_id = site_no,
                observation = chl_ug_L) |>
@@ -150,8 +164,22 @@ list(
                project_id = "usgsrc4cast",
                duration = "P1D") |>
         distinct(site_id, datetime, .keep_all = TRUE) |>
-        select(project_id, site_id, datetime,
-               duration, variable, observation) |>
+        select(project_id, site_id, datetime, duration, variable, observation)
+
+      s3_all <- read_csv(s3_historic_csv, show_col_types = FALSE)
+      s3_overlap <- s3_all |> filter(datetime >= min(recent$datetime))
+
+      # Abort if recent pull has < 90% of the rows S3 had for the same period
+      if (nrow(s3_overlap) > 0 && nrow(recent) < nrow(s3_overlap) * 0.9) {
+        stop("Recent data pull looks incomplete (",
+             nrow(recent), " rows vs ", nrow(s3_overlap),
+             " in S3 for the same period). Keeping S3 data as-is.")
+      }
+
+      s3_data <- s3_all |> filter(datetime < min(recent$datetime))
+
+      out_file <- "out/USGS_chl_data.csv"
+      out <- bind_rows(s3_data, recent) |>
         arrange(site_id, datetime)
       write_csv(out, file = out_file)
       return(out_file)
