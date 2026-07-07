@@ -52,9 +52,14 @@ list(
                longitude = coords[, "X"],
                site_id = monitoring_location_id,
                project_id = "usgsrc4cast",
+               site_no = monitoring_location_number,
+               station_nm = monitoring_location_name,
+               site_tp_cd = site_type_code,
                site_url = paste0("https://waterdata.usgs.gov/monitoring-location/",
                                  gsub("USGS-", "", monitoring_location_id))) |>
-        select(site_id, project_id, latitude, longitude, site_url) |>
+        rename(agency_cd = agency_code) |>
+        select(site_id, project_id, agency_cd, site_no, station_nm,
+               site_tp_cd, latitude, longitude, site_url) |>
         write_csv(file = out_file)
       return(out_file)
     }
