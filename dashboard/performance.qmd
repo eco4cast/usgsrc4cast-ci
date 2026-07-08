@@ -43,7 +43,9 @@ df_P1D <- arrow::open_dataset("../cache/summaries/duration=P1D") |>
   mutate(reference_datetime = lubridate::as_datetime(reference_datetime),
          datetime = lubridate::as_datetime(datetime)) |>
   filter(lubridate::as_date(datetime) > lubridate::as_date(reference_datetime)) |>
-  collect()
+  collect() |>
+  # exclude persistenceRW: its performance is so poor it obscures trends in other models
+  filter(model_id != "persistenceRW")
 
 ```
 
@@ -52,7 +54,9 @@ df_P1D_scores <- arrow::open_dataset("../cache/scores/duration=P1D") |>
   left_join(sites, by = "site_id") |>
   mutate(reference_datetime = lubridate::as_datetime(reference_datetime),
          datetime = lubridate::as_datetime(datetime)) |>
-  collect()
+  collect() |>
+  # exclude persistenceRW: its performance is so poor it obscures trends in other models
+  filter(model_id != "persistenceRW")
 
 
 ref <- Sys.Date() - lubridate::days(30)
