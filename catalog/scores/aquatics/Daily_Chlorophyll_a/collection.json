@@ -11,6 +11,11 @@
     {
       "rel": "item",
       "type": "application/json",
+      "href": "./models/USGSHABs1.json"
+    },
+    {
+      "rel": "item",
+      "type": "application/json",
       "href": "./models/USGSHABsDL1.json"
     },
     {
@@ -21,17 +26,12 @@
     {
       "rel": "item",
       "type": "application/json",
-      "href": "./models/USGSHABs1.json"
+      "href": "./models/persistenceRW.json"
     },
     {
       "rel": "item",
       "type": "application/json",
       "href": "./models/persistence.json"
-    },
-    {
-      "rel": "item",
-      "type": "application/json",
-      "href": "./models/persistenceRW.json"
     },
     {
       "rel": "item",
