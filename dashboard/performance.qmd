@@ -65,12 +65,10 @@ ref_P1D <- min(c(Sys.Date() - lubridate::days(30),
              lubridate::as_date(df_P1D$reference_datetime)))
 
 
-#n_data <- 10
-#who <- combined |> filter(!is.na(observation)) |> summarise(has_data = max(reference_datetime)) |> collect()
-#ref <- as.character ( as.Date(who$has_data[[1]]) - n_data )
+target_reference_datetime_P1D <- Sys.Date() - lubridate::days(30)
+
 ex_P1D <- df_P1D_scores |>
-  mutate(min_reference_datetime = min(reference_datetime)) |>
-  filter(reference_datetime == min_reference_datetime)
+  filter(lubridate::as_date(reference_datetime) == target_reference_datetime_P1D)
 
 ```
 
