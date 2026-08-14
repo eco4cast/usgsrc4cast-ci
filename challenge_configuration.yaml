@@ -93,4 +93,6 @@ catalog_config:
   citation_text: "Thomas, R.Q., C. Boettiger, C.C. Carey, M.C. Dietze, L.R. Johnson, M.A. Kenney, J.S. Mclachlan, J.A. Peters, E.R. Sokol, J.F. Weltzin, A. Willson, W.M. Woelmer, and Challenge Contributors. 2023. The NEON Ecological Forecasting Challenge. Frontiers in Ecology and Environment 21: 112-113."
   dashboard_url: "https://projects.ecoforecast.org/usgsrc4cast-ci/"
   dashboard_title: "EFI-USGS River Chlorophyll Forecast Challenge Dashboard"
+  documentation_url: "https://projects.ecoforecast.org/usgsrc4cast-docs/"
+  catalog_title: "EFI-USGS River Chlorophyll Forecasting Challenge"
   site_metadata_url: 'https://raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/USGS_site_metadata.csv'
