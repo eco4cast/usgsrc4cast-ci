@@ -19,6 +19,7 @@ jobs:
         shell: Rscript {0}
         run: |
           setwd("targets")
+          suppressMessages(library(tidyverse))
           source("src/s3_utils.R")
           config <- yaml::read_yaml("../challenge_configuration.yaml")
 
