@@ -9,6 +9,7 @@ tar_option_set(packages = c("dataRetrieval",
                             "lubridate"))
 
 source("src/download_nwis_data.R")
+source("src/download_cdec_data.R")
 source("src/s3_utils.R")
 
 list(
@@ -143,6 +144,31 @@ list(
     format = "file"
   ),
 
+  # CA DWR CDEC stations (chlorophyll sensor 28, ug/L). See
+  # docs/add_cadwr_cdec_sites.md. Written to S3 as DWR-{station} site_ids.
+  # NOTE: this pulls the same trailing 365-day window as the USGS targets so it
+  # respects the S3-backfill merge invariant in all_historic_data_csv. The full
+  # historical record (needed for climatology baselines) must be seeded into the
+  # S3 targets file by a separate one-time backfill job.
+  tar_target(
+    cdec_stations,
+    c("SJR", "MLS", "GLE", "MHO", "OH1")
+  ),
+
+  tar_target(
+    cdec_historic_data_rds,
+    # dur_code = "E" (15-min event): only SJR publishes an hourly chlorophyll
+    # series; all 5 stations publish event data, which is aggregated to daily.
+    download_cdec_chla_data(stations = cdec_stations,
+                            start_date = start_date,
+                            end_date = end_date,
+                            sensor_num = 28,
+                            dur_code = "E",
+                            out_file = "out/historic_cdec_data.rds"),
+    format = "file",
+    cue = tar_cue("always")
+  ),
+
   tar_target(
     all_historic_data_csv,
     {
@@ -155,12 +181,20 @@ list(
         filter(site_no == "14181500" & dateTime > as.Date("2024-04-24"))
       uv_rfu <- bind_rows(uv_rfu, site_14181500_rfu)
 
-      recent <- bind_rows(dv, uv, uv_rfu) |>
+      usgs_recent <- bind_rows(dv, uv, uv_rfu) |>
         rename(datetime = dateTime,
                site_id = site_no,
                observation = chl_ug_L) |>
+        mutate(site_id = paste0("USGS-", site_id))
+
+      dwr_recent <- read_rds(cdec_historic_data_rds) |>
+        rename(datetime = dateTime,
+               site_id = site_no,
+               observation = chl_ug_L) |>
+        mutate(site_id = paste0("DWR-", site_id))
+
+      recent <- bind_rows(usgs_recent, dwr_recent) |>
         mutate(variable = "chla",
-               site_id = paste0("USGS-", site_id),
                project_id = "usgsrc4cast",
                duration = "P1D") |>
         distinct(site_id, datetime, .keep_all = TRUE) |>
