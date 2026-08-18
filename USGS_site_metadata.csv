@@ -9,3 +9,8 @@ USGS-05543010,usgsrc4cast,USGS,05543010,"ILLINOIS RIVER AT SENECA, IL",ST,41.299
 USGS-05549500,usgsrc4cast,USGS,05549500,"FOX RIVER NEAR MCHENRY, IL",ST,42.3100222,-88.2514745,https://waterdata.usgs.gov/monitoring-location/05549500,FALSE,2023-12-20T22:59:24Z
 USGS-01427510,usgsrc4cast,USGS,01427510,DELAWARE RIVER AT CALLICOON NY,ST,41.75675,-75.0574167,https://waterdata.usgs.gov/monitoring-location/01427510,FALSE,2023-12-20T22:59:24Z
 USGS-01463500,usgsrc4cast,USGS,01463500,Delaware River at Trenton NJ,ST,40.22166667,-74.7780556,https://waterdata.usgs.gov/monitoring-location/01463500,FALSE,2023-12-20T22:59:24Z
+DWR-SJR,usgsrc4cast,CA-DWR,SJR,San Joaquin River Near Vernalis,ST,37.67929,-121.26511,https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=SJR,FALSE,2026-08-13T00:00:00Z
+DWR-MLS,usgsrc4cast,CA-DWR,MLS,"McLeod Lake, Stockton",ST,37.95,-121.32,https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=MLS,FALSE,2026-08-13T00:00:00Z
+DWR-GLE,usgsrc4cast,CA-DWR,GLE,Grant Line Canal East,ST,37.8203,-121.4349,https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=GLE,FALSE,2026-08-13T00:00:00Z
+DWR-MHO,usgsrc4cast,CA-DWR,MHO,Middle River At Howard Road,ST,37.8762,-121.3833,https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=MHO,FALSE,2026-08-13T00:00:00Z
+DWR-OH1,usgsrc4cast,CA-DWR,OH1,Old River Near Head,ST,37.8076,-121.3312,https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=OH1,FALSE,2026-08-13T00:00:00Z
