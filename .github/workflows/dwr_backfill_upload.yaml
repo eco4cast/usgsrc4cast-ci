@@ -1,0 +1,30 @@
+on:
+  workflow_dispatch:        # manual-only, one-time run — no schedule
+
+name: dwr-backfill-upload
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      OSN_KEY: ${{ secrets.OSN_KEY }}
+      OSN_SECRET: ${{ secrets.OSN_SECRET }}
+    container: eco4cast/usgsrc4cast-targets:latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ca-dwr
+      - name: Push pre-built DWR-backfilled historic targets to S3
+        shell: Rscript {0}
+        run: |
+          setwd("targets")
+          source("src/s3_utils.R")
+          config <- yaml::read_yaml("../challenge_configuration.yaml")
+
+          # Push the committed, pre-inspected merge file via the same mechanism
+          # as the push_to_targets_s3 target.
+          push_to_s3(
+            config = config,
+            local_file_name = "out/historic_data_dwr_backfilled.csv",
+            s3_file_name = config$targets_file_name)
