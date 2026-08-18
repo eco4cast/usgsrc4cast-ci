@@ -1,23 +1,47 @@
 ---
 title: "EFI-USGS River Chlorophyll Forecasting Challenge"
-editor: 
-  markdown: 
+editor:
+  markdown:
     wrap: 72
 ---
 
 We invite you to submit forecasts!
 
-The EFI-USGS River Chlorophyll Forecasting Challenge is an open platform for the ecological and data science communities to forecast data from [the U.S. Geological Survey (USGS)](https://www.usgs.gov/) before they are collected.
+The EFI-USGS River Chlorophyll Forecasting Challenge is an open platform
+for the ecological and data science communities to forecast data from
+[the U.S. Geological Survey (USGS)](https://www.usgs.gov/) before they
+are collected.
 
-The Challenge is hosted by the [Ecological Forecasting Initiative Research Coordination Network](https://ecoforecast.org) and sponsored by the U.S. National Science Foundation. This challenge is co-hosted by the [USGS Proxies Project](https://www.usgs.gov/mission-areas/water-resources/science/proxies-project), an effort supported by the Water Mission Area Water Quality Processes program to develop estimation methods for per- and polyfluoroalkyl substances (PFAS), harmful algal blooms (HABs), and 12 elements of concern, at multiple spatial and temporal scales.
+The Challenge is hosted by the [Ecological Forecasting Initiative
+Research Coordination Network](https://ecoforecast.org) and sponsored by
+the U.S. National Science Foundation. This challenge is co-hosted by the
+[USGS Proxies
+Project](https://www.usgs.gov/mission-areas/water-resources/science/proxies-project),
+an effort supported by the Water Mission Area Water Quality Processes
+program to develop estimation methods for per- and polyfluoroalkyl
+substances (PFAS), harmful algal blooms (HABs), and 12 elements of
+concern, at multiple spatial and temporal scales.
 
 ## Why a forecasting challenge?
 
-Our vision is to use forecasts to advance theory and to support natural resource management. We can begin to realize this vision by creating and analyzing a catalog of forecasts from a range of ecological systems, spatiotemporal scales, and environmental gradients. 
+Our vision is to use forecasts to advance theory and to support natural
+resource management. We can begin to realize this vision by creating and
+analyzing a catalog of forecasts from a range of ecological systems,
+spatiotemporal scales, and environmental gradients.
 
-Our forecasting challenge is a platform for the ecological and data science communities to advance skills in forecasting ecological systems and for generating forecasts that contribute to a synthetic understanding of patterns of environmental predictability.  Rewards for contributing are skill advancement, joy, and potential involvement in manuscripts. We do not currently crown winner nor offer financial awards.
+Our forecasting challenge is a platform for the ecological and data
+science communities to advance skills in forecasting ecological systems
+and for generating forecasts that contribute to a synthetic
+understanding of patterns of environmental predictability. Rewards for
+contributing are skill advancement, joy, and potential involvement in
+manuscripts. We do not currently crown winner nor offer financial
+awards.
 
-The original [NEON forecasting challenge](https://projects.ecoforecast.org/neon4cast-ci/) has been [an excellent focal project in university courses](https://www.neonscience.org/impact/observatory-blog/efi-neon-forecasting-challenge-classroom) and this EFI-USGS challenge could be used as classroom projects as well. 
+The original [NEON forecasting
+challenge](https://projects.ecoforecast.org/neon4cast-ci/) has been [an
+excellent focal project in university
+courses](https://www.neonscience.org/impact/observatory-blog/efi-neon-forecasting-challenge-classroom)
+and this EFI-USGS challenge could be used as classroom projects as well.
 
 <br /> <br />
 
@@ -47,17 +71,17 @@ most_recent_targets <- arrow::open_csv_dataset(s3_targets,
                                       variable = arrow::string(),
                                       observation = arrow::float()),
                                     skip = 1) |>
-  filter(project_id == config$project_id) |> 
+  filter(project_id == config$project_id) |>
     summarize(max = max(datetime),
               min = min(datetime),
-              n = n_distinct(variable)) |> 
+              n = n_distinct(variable)) |>
     mutate(max = lubridate::as_date(max),
-           min = lubridate::as_date(min)) |> 
+           min = lubridate::as_date(min)) |>
     dplyr::collect()
 
-#unique_forecasted_targets <- arrow::open_dataset("../cache/duration=P1D") |> 
-#  dplyr::distinct(variable) |> count() |> 
-#    dplyr::collect() |> 
+#unique_forecasted_targets <- arrow::open_dataset("../cache/duration=P1D") |>
+#  dplyr::distinct(variable) |> count() |>
+#    dplyr::collect() |>
 #    pull(n)
 
 last_updated <- Sys.Date()
@@ -68,28 +92,28 @@ last_updated <- Sys.Date()
 layout_column_wrap(
   width = "250px",
   value_box(
-    title = "Total forecasts submitted to the EFI-USGS Challenge", 
+    title = "Total forecasts submitted to the EFI-USGS Challenge",
     value = n_forecasts,
     showcase = bs_icon("graph-up"),
-    theme_color = "success" 
+    theme_color = "success"
   ),
   value_box(
-    title = "Most recent data for model training", 
+    title = "Most recent data for model training",
     value = most_recent_targets$max,
     showcase = bs_icon("bullseye"),
-    theme_color = "info" 
+    theme_color = "info"
   ),
     value_box(
-    title = "Number of years of data for model training", 
+    title = "Number of years of data for model training",
     value = round(as.numeric(most_recent_targets$max - most_recent_targets$min) /365, 2),
     showcase = bs_icon("bullseye"),
-    theme_color = "info" 
+    theme_color = "info"
   ),
     value_box(
-    title = "Number of variables being forecasted", 
+    title = "Number of variables being forecasted",
     value = most_recent_targets$n,
     showcase = bs_icon("clipboard-data"),
-    theme_color = "success" 
+    theme_color = "success"
   )
 )
 
@@ -99,29 +123,39 @@ layout_column_wrap(
 
 ## The Challenge is a platform
 
-Our platform is designed to empower you to contribute by providing target data, numerical weather forecasts, and tutorials.  We automatically score your forecasts using the latest USGS data.  All forecasts and scores are publicly available through cloud storage and discoverable through our catalog.
+Our platform is designed to empower you to contribute by providing
+target data, numerical weather forecasts, and tutorials. We
+automatically score your forecasts using the latest USGS data. All
+forecasts and scores are publicly available through cloud storage and
+discoverable through our catalog.
 
-![The NEON Ecological Forecasting Challenge platform from Thomas et al. 2023](img/workflow.png){fig-align="center"}
-<br /> <br />
+![The NEON Ecological Forecasting Challenge platform from Thomas et al.
+2023](img/workflow.png){fig-align="center"} <br /> <br />
 
 Figure from [Thomas et al. 2023](https://doi.org/10.1002/fee.2616)
 
 ## Contact
 
-eco4cast.initiative@gmail.com and jzwart@usgs.gov
+eco4cast.initiative\@gmail.com and jzwart\@usgs.gov
 
 ## Acknowledgements
 
-Thomas, R. Q., Boettiger, C., Carey, C. C., Dietze, M. C., Johnson, L. R., Kenney, M. A., et al. (2023). The NEON Ecological Forecasting Challenge. Frontiers in Ecology and the Environment, 21(3), 112–113. [https://doi.org/10.1002/fee.2616](https://doi.org/10.1002/fee.2616)
-<br /> <br /> 
-We thank the EFI community for feedback on the design of the Challenge. This material is based upon work supported by the National
-Science Foundation under Grant DEB-1926388.
-<br /> <br />
-<!--
+Thomas, R. Q., Boettiger, C., Carey, C. C., Dietze, M. C., Johnson, L.
+R., Kenney, M. A., et al. (2023). The NEON Ecological Forecasting
+Challenge. Frontiers in Ecology and the Environment, 21(3), 112–113.
+<https://doi.org/10.1002/fee.2616> <br /> <br /> We thank the EFI
+community for feedback on the design of the Challenge. This material is
+based upon work supported by the National Science Foundation under Grant
+DEB-1926388. <br /> <br /> <!--
 DRAFT — CA DWR acknowledgment pending review/sign-off by CA DWR collaborators.
 Framing: data provider + collaborator (not co-host). Do not publish to `main`
 until wording is approved.
--->
-We gratefully acknowledge the California Department of Water Resources (CA DWR) as a collaborator and data provider for the five Sacramento–San Joaquin Delta chlorophyll-a sites. These data are made available through CA DWR's [Environmental Data Initiative (EDI) data releases](https://portal.edirepository.org/nis/mapbrowse?scope=edi&identifier=1177), the [Water Data Library](https://data.cnra.ca.gov/), and the [California Data Exchange Center (CDEC)](https://cdec.water.ca.gov/). See [Data sources and quality](targets.qmd#sec-data-sources) for details.
-<br /> <br />
-Page last updated on `r Sys.Date()`
+--> We gratefully acknowledge the California Department of Water
+Resources (CA DWR) as a collaborator and data provider for the five
+Sacramento–San Joaquin Delta chlorophyll-a sites. These data are made
+available through CA DWR's [Environmental Data Initiative (EDI) data
+releases](https://portal.edirepository.org/nis/mapbrowse?scope=edi&identifier=1177),
+the [Water Data Library](https://data.cnra.ca.gov/), and the [California
+Data Exchange Center (CDEC)](https://cdec.water.ca.gov/). See [Data
+sources and quality](targets.qmd#sec-data-sources) for details. <br />
+<br /> Page last updated on `r Sys.Date()`
