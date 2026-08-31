@@ -45,7 +45,9 @@ df_P1D <- arrow::open_dataset("../cache/summaries/duration=P1D") |>
   filter(lubridate::as_date(datetime) > lubridate::as_date(reference_datetime)) |>
   collect() |>
   # exclude persistenceRW: its performance is so poor it obscures trends in other models
-  filter(model_id != "persistenceRW")
+  filter(model_id != "persistenceRW") |>
+  # exclude example models
+  filter(!grepl("example", model_id, ignore.case = TRUE))
 
 ```
 
@@ -56,7 +58,9 @@ df_P1D_scores <- arrow::open_dataset("../cache/scores/duration=P1D") |>
          datetime = lubridate::as_datetime(datetime)) |>
   collect() |>
   # exclude persistenceRW: its performance is so poor it obscures trends in other models
-  filter(model_id != "persistenceRW")
+  filter(model_id != "persistenceRW") |>
+  # exclude example models
+  filter(!grepl("example", model_id, ignore.case = TRUE))
 
 
 ref <- Sys.Date() - lubridate::days(30)
