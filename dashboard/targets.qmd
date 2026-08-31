@@ -154,11 +154,11 @@ publishes to GitHub Pages) until the wording is approved.
 ## Data sources and quality {#sec-data-sources}
 
 Target chlorophyll-a observations come from two agencies, and the data pass through different levels of quality assurance depending on the source.
-When more than one source reports a value for the same site and day, the challenge keeps the value from the **highest-quality source available**.
+When more than one source reports a value for the same site and day, the challenge keeps the value from the highest-quality source available.
 
 ### USGS sites (10 sites)
 
-Observations are pulled from the USGS National Water Information System ([NWIS](https://waterdata.usgs.gov/nwis)) — daily-value and unit-value chlorophyll records — and updated as new data are released.
+Observations are pulled from the USGS National Water Information System ([NWIS](https://waterdata.usgs.gov/nwis)) and updated as new data are released.
 See the USGS [Water Data dashboard](https://dashboard.waterdata.usgs.gov/app/nwd/en/) for the underlying station data.
 
 ### CA DWR Delta sites (5 sites)
@@ -167,12 +167,12 @@ The five Sacramento–San Joaquin Delta sites (`DWR-SJR`, `DWR-MLS`, `DWR-GLE`, 
 Their chlorophyll-a data are assembled from up to three sources, in decreasing order of data quality:
 
 | Source | Quality | Update cadence | Role in the target record |
-|---------------|---------------|----------------|----------------------------|
+|----------------|----------------|----------------|-------------------------|
 | [**EDI**](https://portal.edirepository.org/nis/mapbrowse?packageid=edi.2180.2) **data releases** | Reviewed / **QA-QC'd** | \~annual | Authoritative historical record; failed-QA values are set to `NA` by the data publisher. Feeds the long baseline used by climatology models. |
 | [**Water Data Library**](https://data.cnra.ca.gov/) **(WDL/CNRA)** | Reviewed / **QA-QC'd** | \~every 2 months | Extends the reviewed record past the latest EDI revision *(this layer is planned; not yet integrated).* |
 | [**CDEC**](https://cdec.water.ca.gov/) **real-time telemetry** | **Not QA-QC'd** (provisional) | daily | Keeps the most recent days current for scoring; may contain gaps or outliers until EDI/WDL catch up. |
 
-**What is and isn't quality-controlled:** the deep historical record for these sites (roughly 2005–2025, depending on station) comes from the QA-QC'd EDI data releases published by CA DWR. The most recent data in the record, or the days more recent than the latest EDI release, comes from CDEC real-time telemetry, which is provisional and not quality-controlled.
+**What is and isn't quality-controlled:** the historical record for these sites (roughly 2005–2025, depending on station) comes from the QA-QC'd EDI data releases published by CA DWR. The most recent data in the record, or the days more recent than the latest EDI release, comes from CDEC real-time telemetry, which is provisional and not quality-controlled.
 Those recent values are used so forecasts can be scored promptly, and are progressively replaced by reviewed values as CA DWR publishes them.
 
 EDI data releases used:
