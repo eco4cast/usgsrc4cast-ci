@@ -11,17 +11,7 @@
     {
       "rel": "item",
       "type": "application/json",
-      "href": "./models/persistenceRW.json"
-    },
-    {
-      "rel": "item",
-      "type": "application/json",
       "href": "./models/usgs_habs_tirex.json"
-    },
-    {
-      "rel": "item",
-      "type": "application/json",
-      "href": "./models/USGSHABs1.json"
     },
     {
       "rel": "item",
@@ -37,6 +27,21 @@
       "rel": "item",
       "type": "application/json",
       "href": "./models/persistence.json"
+    },
+    {
+      "rel": "item",
+      "type": "application/json",
+      "href": "./models/persistenceRW.json"
+    },
+    {
+      "rel": "item",
+      "type": "application/json",
+      "href": "./models/USGSHABs1.json"
+    },
+    {
+      "rel": "item",
+      "type": "application/json",
+      "href": "./models/usgs_habs_chronos2.json"
     },
     {
       "rel": "parent",
@@ -81,7 +86,7 @@
       "interval": [
         [
           "2024-02-07T00:00:00Z",
-          "2026-10-04T00:00:00Z"
+          "2026-10-05T00:00:00Z"
         ]
       ]
     }
