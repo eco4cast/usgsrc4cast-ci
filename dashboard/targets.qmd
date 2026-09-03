@@ -167,17 +167,18 @@ The five Sacramento–San Joaquin Delta sites (`DWR-SJR`, `DWR-MLS`, `DWR-GLE`, 
 Their chlorophyll-a data are assembled from up to three sources, in decreasing order of data quality:
 
 | Source | Quality | Update cadence | Role in the target record |
-|----------------|----------------|----------------|-------------------------|
+|-----------------|-----------------|-----------------|---------------------|
 | [**EDI**](https://portal.edirepository.org/nis/mapbrowse?packageid=edi.2180.2) **data releases** | Reviewed / **QA-QC'd** | \~annual | Authoritative historical record; failed-QA values are set to `NA` by the data publisher. Feeds the long baseline used by climatology models. |
-| [**Water Data Library**](https://data.cnra.ca.gov/) **(WDL/CNRA)** | Reviewed / **QA-QC'd** | \~every 2 months | Extends the reviewed record past the latest EDI revision *(this layer is planned; not yet integrated).* |
+| [**Water Data Library**](https://data.cnra.ca.gov/) **(WDL/CNRA)** | Reviewed / **QA-QC'd** | \~every 2 months | Extends the reviewed record past the latest EDI revision; pulled by a recurring quarterly backfill that replaces provisional CDEC values wherever WDL has coverage. |
 | [**CDEC**](https://cdec.water.ca.gov/) **real-time telemetry** | **Not QA-QC'd** (provisional) | daily | Keeps the most recent days current for scoring; may contain gaps or outliers until EDI/WDL catch up. |
 
-**What is and isn't quality-controlled:** the historical record for these sites (roughly 2005–2025, depending on station) comes from the QA-QC'd EDI data releases published by CA DWR. The most recent data in the record, or the days more recent than the latest EDI release, comes from CDEC real-time telemetry, which is provisional and not quality-controlled.
-Those recent values are used so forecasts can be scored promptly, and are progressively replaced by reviewed values as CA DWR publishes them.
+**What is and isn't quality-controlled:** the historical record for these sites (roughly 2005–2025, depending on station) comes from the QA-QC'd EDI data releases published by CA DWR, extended by reviewed WDL data where WDL has published past the latest EDI revision.
+Only the days more recent than the latest reviewed (EDI or WDL) values come from CDEC real-time telemetry, which is provisional and not quality-controlled.
+Those recent values are used so forecasts can be scored promptly, and are progressively replaced by reviewed values as CA DWR publishes them, first through the quarterly WDL backfill, then through subsequent EDI releases.
 
 EDI data releases used:
 
 - **NCRO continuous water quality** (`DWR-GLE`, `DWR-MHO`, `DWR-OH1`): [`edi.2180.2`](https://portal.edirepository.org/nis/mapbrowse?packageid=edi.2180.2)
 - **EMP** (`DWR-SJR`): [`edi.1177.8`](https://portal.edirepository.org/nis/mapbrowse?scope=edi&identifier=1177&revision=8)
 
-`DWR-MLS` (McLeod Lake, Stockton) was installed in 2024 and is not yet in an EDI release, so its record is currently CDEC-only (provisional) until a longer, reviewed record becomes available.
+`DWR-MLS` (McLeod Lake, Stockton) was installed in 2024 and is not yet in an EDI release, but reviewed WDL data are now available for it, so its record is a mix of reviewed WDL values and provisional CDEC values (rather than CDEC-only) until it appears in an EDI release.
