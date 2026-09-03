@@ -1,7 +1,7 @@
 ---
 title: "What to forecast"
-editor: 
-  markdown: 
+editor:
+  markdown:
     wrap: sentence
 ---
 
@@ -15,8 +15,8 @@ target_metadata <- readr::read_csv("https://raw.githubusercontent.com/eco4cast/u
 ```
 
 ```{r echo = FALSE}
-target_metadata <- target_metadata |> 
-  rename(variable = `"official" targets name`) |> 
+target_metadata <- target_metadata |>
+  rename(variable = `"official" targets name`) |>
   select(variable, duration, class, Description, horizon, Latency)
 ```
 
@@ -26,17 +26,21 @@ The "targets" are time-series of United States Geological Survey ([USGS](https:/
 
 The targets are updated as new USGS data are made available.
 
-This challenge focuses on forecasting river chlorophyll-a at select USGS monitoring locations. The links to targets files are included below.
+This challenge focuses on forecasting river chlorophyll-a at select monitoring locations.
+Most sites are United States Geological Survey ([USGS](https://www.usgs.gov/)) stations.
+In addition, five sites in the Sacramento–San Joaquin Delta are contributed by the California Department of Water Resources ([CA DWR](https://water.ca.gov/)) — see [Data sources and quality](#sec-data-sources) below for how those data are assembled and quality-controlled.
+The links to targets files are included below.
 
 ## Where to start {#sec-starting-sites}
 
 <!-- If are you are getting started, we recommend the following focal sites for each of the five "themes". -->
+
 <!-- The first site in the list is the recommended starting site. -->
 
 <!-- -   Aquatics: `r aquatics_focal_sites` -->
 
-As you develop your forecasting skills and want to expand to more sites, the targets are available at all 10 USGS sites.
-You may also consider submitting forecasts to sites that match your interests or locality. 
+As you develop your forecasting skills and want to expand to more sites, the targets are available at all 15 sites (10 USGS sites and 5 CA DWR Delta sites).
+You may also consider submitting forecasts to sites that match your interests or locality.
 
 More information about USGS sites can be found in the [site metadata](https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/sites/collection.json) and on USGS's [website](https://dashboard.waterdata.usgs.gov/app/nwd/en/)
 
@@ -45,26 +49,25 @@ More information about USGS sites can be found in the [site metadata](https://ra
 Information on the targets files for the river chlorophyll challenge is below.
 In the tables,
 
--   "duration" is the time-step of the variable where `P1D` is a daily mean.
+- "duration" is the time-step of the variable where `P1D` is a daily mean.
 
--   The "forecast horizon" is the number of days-ahead that we want you to forecast.
+- The "forecast horizon" is the number of days-ahead that we want you to forecast.
 
--   The "latency" is the time between data collection and data availability in the targets file
-
+- The "latency" is the time between data collection and data availability in the targets file
 
 ### River Chlorophyll
 
 ![](https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/media/images/Millstone-hab1.png)
 
-The river chlorophyll challenge invites you to forecast daily mean chlorophyll at up to 10 USGS river sites.
+The river chlorophyll challenge invites you to forecast daily mean chlorophyll at up to 15 river sites — 10 USGS sites and 5 CA DWR sites in the Sacramento–San Joaquin Delta.
 
 ```{r echo = FALSE}
 url <- "https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/targets/project_id=usgsrc4cast/duration=P1D/river-chl-targets.csv.gz"
-read_csv(url, show_col_types = FALSE) |> 
-  distinct(variable, duration) |> 
-  left_join(target_metadata, by = c("variable","duration")) |> 
-  filter(variable %in% c("chla")) |> 
-  select(-class) |> 
+read_csv(url, show_col_types = FALSE) |>
+  distinct(variable, duration) |>
+  left_join(target_metadata, by = c("variable","duration")) |>
+  filter(variable %in% c("chla")) |>
+  select(-class) |>
   knitr::kable()
 ```
 
@@ -92,24 +95,23 @@ aquatics_targets = pd.read_csv(url)
 The file contains the following columns
 
 ```{r echo = FALSE}
-aquatics_targets |> 
-  na.omit() |> 
-  head() |> 
+aquatics_targets |>
+  na.omit() |>
+  head() |>
   knitr::kable()
 ```
 
 and the time series for the focal sites
 
 ```{r}
-aquatics_targets |> 
-  filter(site_id %in% aquatics_focal_sites) |> 
+aquatics_targets |>
+  filter(site_id %in% aquatics_focal_sites) |>
   ggplot(aes(x = datetime, y = observation)) +
   geom_point() +
   facet_wrap(~site_id, scales = "free") +
-  theme_bw() + 
+  theme_bw() +
   ylab("Chlorophyll-a (ug/L)")
 ```
-
 
 ## Explore the sites
 
@@ -124,7 +126,7 @@ leaflet() %>%
   addTiles(group="OSM") %>%
   addProviderTiles(providers$Esri.WorldImagery, group="Imagery") %>%
   addProviderTiles(providers$Esri.WorldTopoMap, group="Topo Map") %>%
-  addLayersControl(baseGroups=c('Imagery','OSM', 'Topo Map')) |> 
+  addLayersControl(baseGroups=c('Imagery','OSM', 'Topo Map')) |>
   addMarkers(data  = sites, popup=~as.character(site_id), group = ~as.character(Partner), clusterOptions = markerClusterOptions())
 ```
 
@@ -132,10 +134,51 @@ leaflet() %>%
 The columns with "theme" names incidate whether that site is included in that theme's target file.
 
 ```{r echo = FALSE}
-site_list <- read_csv("../USGS_site_metadata.csv", show_col_types = FALSE) |> 
-  select(site_id, site_no, station_nm, site_url) 
+site_list <- read_csv("../USGS_site_metadata.csv", show_col_types = FALSE) |>
+  mutate(agency = ifelse(agency_cd == "CA-DWR", "CA DWR", "USGS")) |>
+  select(site_id, agency, site_no, station_nm, site_url)
 ```
 
 ```{r echo = FALSE}
 site_list |> knitr::kable()
 ```
+
+```{=html}
+<!--
+DRAFT — the CA DWR data-source description and acknowledgment below are pending
+review and sign-off by CA DWR collaborators. Do not merge to `main` (which
+publishes to GitHub Pages) until the wording is approved.
+-->
+```
+
+## Data sources and quality {#sec-data-sources}
+
+Target chlorophyll-a observations come from two agencies, and the data pass through different levels of quality assurance depending on the source.
+When more than one source reports a value for the same site and day, the challenge keeps the value from the highest-quality source available.
+
+### USGS sites (10 sites)
+
+Observations are pulled from the USGS National Water Information System ([NWIS](https://waterdata.usgs.gov/nwis)) and updated as new data are released.
+See the USGS [Water Data dashboard](https://dashboard.waterdata.usgs.gov/app/nwd/en/) for the underlying station data.
+
+### CA DWR Delta sites (5 sites)
+
+The five Sacramento–San Joaquin Delta sites (`DWR-SJR`, `DWR-MLS`, `DWR-GLE`, `DWR-MHO`, `DWR-OH1`) are monitored by the California Department of Water Resources.
+Their chlorophyll-a data are assembled from up to three sources, in decreasing order of data quality:
+
+| Source | Quality | Update cadence | Role in the target record |
+|-----------------|-----------------|-----------------|---------------------|
+| [**EDI**](https://portal.edirepository.org/nis/mapbrowse?packageid=edi.2180.2) **data releases** | Reviewed / **QA-QC'd** | \~annual | Authoritative historical record; failed-QA values are set to `NA` by the data publisher. Feeds the long baseline used by climatology models. |
+| [**Water Data Library**](https://data.cnra.ca.gov/) **(WDL/CNRA)** | Reviewed / **QA-QC'd** | \~every 2 months | Extends the reviewed record past the latest EDI revision; pulled by a recurring quarterly backfill that replaces provisional CDEC values wherever WDL has coverage. |
+| [**CDEC**](https://cdec.water.ca.gov/) **real-time telemetry** | **Not QA-QC'd** (provisional) | daily | Keeps the most recent days current for scoring; may contain gaps or outliers until EDI/WDL catch up. |
+
+**What is and isn't quality-controlled:** the historical record for these sites (roughly 2005–2025, depending on station) comes from the QA-QC'd EDI data releases published by CA DWR, extended by reviewed WDL data where WDL has published past the latest EDI revision.
+Only the days more recent than the latest reviewed (EDI or WDL) values come from CDEC real-time telemetry, which is provisional and not quality-controlled.
+Those recent values are used so forecasts can be scored promptly, and are progressively replaced by reviewed values as CA DWR publishes them, first through the quarterly WDL backfill, then through subsequent EDI releases.
+
+EDI data releases used:
+
+- **NCRO continuous water quality** (`DWR-GLE`, `DWR-MHO`, `DWR-OH1`): [`edi.2180.2`](https://portal.edirepository.org/nis/mapbrowse?packageid=edi.2180.2)
+- **EMP** (`DWR-SJR`): [`edi.1177.8`](https://portal.edirepository.org/nis/mapbrowse?scope=edi&identifier=1177&revision=8)
+
+`DWR-MLS` (McLeod Lake, Stockton) was installed in 2024 and is not yet in an EDI release, but reviewed WDL data are now available for it, so its record is a mix of reviewed WDL values and provisional CDEC values (rather than CDEC-only) until it appears in an EDI release.

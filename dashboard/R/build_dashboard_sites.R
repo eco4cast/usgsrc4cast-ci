@@ -7,12 +7,19 @@ project_sites$site_lat_lon <- lapply(1:nrow(project_sites), function(i) c(projec
 
 iterator_list <- 1:nrow(project_sites)
 
+# Label each site by its data-providing agency so the map can group USGS and
+# CA DWR (CDEC/EDI) sites separately. Falls back to "USGS" if agency_cd is absent.
+site_partner <- function(agency_cd) {
+  if (is.na(agency_cd)) return("USGS")
+  if (agency_cd == "CA-DWR") return("CA DWR") else return("USGS")
+}
+
 site_name_coords <- purrr::map(iterator_list, function(i)
   list(
    "type" = "Feature",
    "properties" = list(
      "site_id" = project_sites$site_id[i],
-     "Partner" = "USGS",
+     "Partner" = site_partner(project_sites$agency_cd[i]),
      "n" =  5 ),
    "geometry" = list(
      "type" = "Point",
