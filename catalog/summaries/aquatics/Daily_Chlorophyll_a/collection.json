@@ -36,12 +36,12 @@
     {
       "rel": "item",
       "type": "application/json",
-      "href": "./models/USGSHABs1.json"
+      "href": "./models/USGSHABsDL1.json"
     },
     {
       "rel": "item",
       "type": "application/json",
-      "href": "./models/USGSHABsDL1.json"
+      "href": "./models/USGSHABs1.json"
     },
     {
       "rel": "parent",
@@ -94,7 +94,7 @@
   "table:columns": [
     {
       "name": "reference_datetime",
-      "type": "timestamp[us]",
+      "type": "timestamp[us, tz=UTC]",
       "description": "datetime that the forecast was initiated (horizon = 0)"
     },
     {
@@ -104,7 +104,7 @@
     },
     {
       "name": "datetime",
-      "type": "timestamp[us]",
+      "type": "timestamp[us, tz=UTC]",
       "description": "datetime of the forecasted value (ISO 8601)"
     },
     {
@@ -114,7 +114,7 @@
     },
     {
       "name": "pub_datetime",
-      "type": "timestamp[us]",
+      "type": "timestamp[us, tz=UTC]",
       "description": "datetime that forecast was submitted"
     },
     {
