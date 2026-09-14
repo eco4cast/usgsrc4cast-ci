@@ -22,13 +22,14 @@ target_metadata <- target_metadata |>
 
 ## tl;dr: Forecast the targets!
 
-The "targets" are time-series of United States Geological Survey ([USGS](https://www.usgs.gov/)) data for use in model development and forecast evaluation.
+The "targets" are time-series of United States Geological Survey ([USGS](https://www.usgs.gov/)) and California Department of Water Resources ([CA DWR](https://water.ca.gov/)) data for use in model development and forecast evaluation.
 
-The targets are updated as new USGS data are made available.
+The targets are updated as new USGS and CA DWR data are made available.
 
 This challenge focuses on forecasting river chlorophyll-a at select monitoring locations.
 Most sites are United States Geological Survey ([USGS](https://www.usgs.gov/)) stations.
-In addition, five sites in the Sacramento–San Joaquin Delta are contributed by the California Department of Water Resources ([CA DWR](https://water.ca.gov/)) — see [Data sources and quality](#sec-data-sources) below for how those data are assembled and quality-controlled.
+In addition, five sites in the Sacramento–San Joaquin Delta are contributed by the California Department of Water Resources ([CA DWR](https://water.ca.gov/)).
+See [Data sources and quality](#sec-data-sources) below for how those data are assembled and quality-controlled.
 The links to targets files are included below.
 
 ## Where to start {#sec-starting-sites}
@@ -42,7 +43,7 @@ The links to targets files are included below.
 As you develop your forecasting skills and want to expand to more sites, the targets are available at all 15 sites (10 USGS sites and 5 CA DWR Delta sites).
 You may also consider submitting forecasts to sites that match your interests or locality.
 
-More information about USGS sites can be found in the [site metadata](https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/sites/collection.json) and on USGS's [website](https://dashboard.waterdata.usgs.gov/app/nwd/en/)
+More information about the sites can be found in the [site metadata](https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/sites/collection.json) and on USGS's [website](https://dashboard.waterdata.usgs.gov/app/nwd/en/)
 
 ## Explore the targets and themes {#sec-targets}
 
@@ -167,7 +168,7 @@ The five Sacramento–San Joaquin Delta sites (`DWR-SJR`, `DWR-MLS`, `DWR-GLE`, 
 Their chlorophyll-a data are assembled from up to three sources, in decreasing order of data quality:
 
 | Source | Quality | Update cadence | Role in the target record |
-|------------------|------------------|------------------|--------------------|
+|------------------|------------------|------------------|-------------------|
 | [**EDI**](https://portal.edirepository.org/nis/home.jsp) **data releases** | Reviewed / **QA-QC'd** | \~annual | Authoritative historical record; failed-QA values are set to `NA` by the data publisher. Feeds the long baseline used by climatology models. |
 | [**Water Data Library**](https://wdl.water.ca.gov/waterdatalibrary/) **(WDL/CNRA)** | Reviewed / **QA-QC'd** | \~every 2 months | Extends the reviewed record past the latest EDI revision; pulled by a recurring quarterly backfill that replaces provisional CDEC values wherever WDL has coverage. |
 | [**CDEC**](https://cdec.water.ca.gov/) **real-time telemetry** | **Not QA-QC'd** (provisional) | daily | Keeps the most recent days current for scoring; may contain gaps or outliers until EDI/WDL catch up. |
