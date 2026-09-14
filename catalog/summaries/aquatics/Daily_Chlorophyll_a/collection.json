@@ -94,7 +94,7 @@
   "table:columns": [
     {
       "name": "reference_datetime",
-      "type": "timestamp[us, tz=UTC]",
+      "type": "timestamp[us]",
       "description": "datetime that the forecast was initiated (horizon = 0)"
     },
     {
@@ -104,7 +104,7 @@
     },
     {
       "name": "datetime",
-      "type": "timestamp[us, tz=UTC]",
+      "type": "timestamp[us]",
       "description": "datetime of the forecasted value (ISO 8601)"
     },
     {
@@ -114,7 +114,7 @@
     },
     {
       "name": "pub_datetime",
-      "type": "timestamp[us, tz=UTC]",
+      "type": "timestamp[us]",
       "description": "datetime that forecast was submitted"
     },
     {
