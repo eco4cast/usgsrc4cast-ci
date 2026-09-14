@@ -1,11 +1,13 @@
-# One-time backfill for the CA DWR sites: EDI deep history + a CDEC fill from
+# One-time backfill for the CA DWR sites: EDI deep history + a WDL/CDEC fill from
 # where EDI ends through today. See docs/add_cadwr_cdec_sites.md.
 #
-# Source precedence is EDI > CDEC (WDL skipped for now). For each EDI-covered
-# site (GLE/MHO/OH1/SJR) the EDI record is authoritative and CDEC only fills the
-# days after EDI's coverage ends. MLS is not on EDI, so its entire record comes
-# from CDEC. The result replaces the DWR rows in the S3 historic targets file;
-# USGS rows are untouched.
+# Source precedence is EDI > WDL > CDEC. For each EDI-covered site
+# (GLE/MHO/OH1/SJR) the EDI record is authoritative; past EDI's coverage the
+# reviewed WDL trace is preferred, and provisional CDEC only fills days neither
+# EDI nor WDL cover. MLS is not on EDI, so its record is WDL (from 2026-03) with
+# CDEC filling the earlier days back to install. SJR has no continuous WDL trace,
+# so it stays EDI + CDEC. The result replaces the DWR rows in the S3 historic
+# targets file; USGS rows are untouched.
 #
 # This DELIBERATELY DOES NOT PUSH to S3 — it writes the merged file to out/ for
 # inspection before a separate, explicit upload step. Run from targets/:
@@ -15,6 +17,7 @@ suppressMessages(library(tidyverse))
 
 source("src/read_edi_data.R")
 source("src/download_cdec_data.R")
+source("src/download_wdl_data.R")
 
 config   <- yaml::read_yaml("../challenge_configuration.yaml")
 edi_dir  <- "in"
@@ -57,20 +60,42 @@ cdec_fmt <- cdec |>
             variable = "chla",
             observation = chl_ug_L)
 
-# EDI > CDEC: drop CDEC rows on any (site, day) EDI already covers.
-cdec_fill <- anti_join(cdec_fmt, edi, by = c("site_id", "datetime"))
-message("\nCDEC daily rows pulled: ", nrow(cdec_fmt),
-        " | kept after EDI precedence: ", nrow(cdec_fill))
+# --- WDL reviewed continuous (GLE/OH1/MHO/MLS) ------------------------------
+# Preferred over CDEC, below EDI. The blob holds the full period of record, so
+# pull the whole post-floor window in one shot; EDI still wins the overlap.
+wdl_raw <- download_wdl_chla_data(
+  stations = WDL_CHLA_STATIONS, start_date = mls_floor, end_date = today,
+  out_file = tempfile(fileext = ".rds")
+) |> read_rds()
+wdl_fmt <- wdl_raw |>
+  transmute(project_id = "usgsrc4cast",
+            site_id = paste0("DWR-", site_no),
+            datetime = dateTime,
+            duration = "P1D",
+            variable = "chla",
+            observation = chl_ug_L)
 
-dwr <- bind_rows(edi, cdec_fill) |> arrange(site_id, datetime)
+# EDI > WDL > CDEC: WDL drops days EDI covers; CDEC drops days EDI or WDL cover.
+wdl_fill  <- anti_join(wdl_fmt, edi, by = c("site_id", "datetime"))
+cdec_fill <- anti_join(cdec_fmt, bind_rows(edi, wdl_fill),
+                       by = c("site_id", "datetime"))
+message("\nWDL daily rows pulled: ", nrow(wdl_fmt),
+        " | kept after EDI precedence: ", nrow(wdl_fill))
+message("CDEC daily rows pulled: ", nrow(cdec_fmt),
+        " | kept after EDI+WDL precedence: ", nrow(cdec_fill))
 
-message("\nFull DWR record (EDI + CDEC fill):")
+dwr <- bind_rows(edi, wdl_fill, cdec_fill) |> arrange(site_id, datetime)
+
+message("\nFull DWR record (EDI + WDL + CDEC fill):")
+key <- function(df) paste(df$site_id, df$datetime)
 dwr |>
-  mutate(src = if_else(paste(site_id, datetime) %in%
-                         paste(edi$site_id, edi$datetime), "EDI", "CDEC")) |>
+  mutate(src = case_when(key(dwr) %in% key(edi) ~ "EDI",
+                         key(dwr) %in% key(wdl_fill) ~ "WDL",
+                         TRUE ~ "CDEC")) |>
   group_by(site_id) |>
   summarise(n = n(), first = min(datetime), last = max(datetime),
-            edi = sum(src == "EDI"), cdec = sum(src == "CDEC"), .groups = "drop") |>
+            edi = sum(src == "EDI"), wdl = sum(src == "WDL"),
+            cdec = sum(src == "CDEC"), .groups = "drop") |>
   as.data.frame() |> print()
 
 # --- Merge into S3 historic (DWR replaced, USGS untouched) ------------------

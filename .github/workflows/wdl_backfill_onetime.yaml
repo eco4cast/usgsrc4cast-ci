@@ -1,0 +1,29 @@
+on:
+  workflow_dispatch:        # manual-only, one-time run — no schedule
+
+name: wdl-backfill-onetime
+
+# One-time, run-it-now version of the quarterly wdl-backfill job. Same script
+# (targets/backfill_wdl_to_s3.R) and same guarantees: overlays reviewed CA DWR
+# WDL data onto the DWR-* rows of the S3 targets file, never overwrites EDI, and
+# ABORTS if any USGS row would change. Checks out this feature branch so it can
+# run before ca-dwr-page is merged; the scheduled wdl_backfill.yaml (ref: main)
+# takes over on the quarterly cron once merged.
+
+jobs:
+  wdl-backfill:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      OSN_KEY: ${{ secrets.OSN_KEY }}
+      OSN_SECRET: ${{ secrets.OSN_SECRET }}
+    container: eco4cast/usgsrc4cast-targets:latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ca-dwr-page
+      - name: Overlay reviewed CA DWR WDL data onto S3 targets (DWR sites only)
+        shell: Rscript {0}
+        run: |
+          setwd("targets")
+          source("backfill_wdl_to_s3.R")

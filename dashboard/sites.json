@@ -127,6 +127,66 @@
         "type": "Point",
         "coordinates": [-74.7781, 40.2217]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "site_id": "DWR-SJR",
+        "Partner": "CA DWR",
+        "n": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-121.2651, 37.6793]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "site_id": "DWR-MLS",
+        "Partner": "CA DWR",
+        "n": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-121.32, 37.95]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "site_id": "DWR-GLE",
+        "Partner": "CA DWR",
+        "n": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-121.4349, 37.8203]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "site_id": "DWR-MHO",
+        "Partner": "CA DWR",
+        "n": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-121.3833, 37.8762]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "site_id": "DWR-OH1",
+        "Partner": "CA DWR",
+        "n": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-121.3312, 37.8076]
+      }
     }
   ]
 }
