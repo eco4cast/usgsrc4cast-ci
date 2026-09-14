@@ -146,16 +146,14 @@ Challenge. Frontiers in Ecology and the Environment, 21(3), 112–113.
 <https://doi.org/10.1002/fee.2616> <br /> <br /> We thank the EFI
 community for feedback on the design of the Challenge. This material is
 based upon work supported by the National Science Foundation under Grant
-DEB-1926388. <br /> <br /> <!--
-DRAFT — CA DWR acknowledgment pending review/sign-off by CA DWR collaborators.
-Framing: data provider + collaborator (not co-host). Do not publish to `main`
-until wording is approved.
---> We gratefully acknowledge the California Department of Water
-Resources (CA DWR) as a collaborator and data provider for the five
-Sacramento–San Joaquin Delta chlorophyll-a sites. These data are made
-available through CA DWR's [Environmental Data Initiative (EDI) data
-releases](https://portal.edirepository.org/nis/mapbrowse?scope=edi&identifier=1177),
-the [Water Data Library](https://data.cnra.ca.gov/), and the [California
-Data Exchange Center (CDEC)](https://cdec.water.ca.gov/). See [Data
-sources and quality](targets.qmd#sec-data-sources) for details. <br />
-<br /> Page last updated on `r Sys.Date()`
+DEB-1926388. <br /> <br />
+
+We gratefully acknowledge the California Department of Water Resources
+(CA DWR) as a collaborator and data provider for the five Sacramento–San
+Joaquin Delta chlorophyll-a sites. These data are made available through
+CA DWR's [Environmental Data Initiative (EDI) data
+releases](https://portal.edirepository.org/nis/home.jsp), the [Water
+Data Library](https://wdl.water.ca.gov/waterdatalibrary/), and the
+[California Data Exchange Center (CDEC)](https://cdec.water.ca.gov/).
+See [Data sources and quality](targets.qmd#sec-data-sources) for
+details. <br /> <br /> Page last updated on `r Sys.Date()`
