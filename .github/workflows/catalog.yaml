@@ -37,6 +37,8 @@ jobs:
           . venv/bin/activate
           pip install stac-validator
 
+      - uses: ./.github/actions/install-mc
+
       - name: Render metadata
         shell: bash
         run: |
