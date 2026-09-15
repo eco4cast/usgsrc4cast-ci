@@ -210,7 +210,9 @@ if(length(submission_keys) > 0){
 
       if((tools::file_ext(curr_submission) %in% c("gz", "csv", "nc"))){
 
-        valid <- forecast_output_validator(file.path(local_dir, curr_submission))
+        # Use the real path: downloads preserve the bucket's nested layout, so
+        # the file lives under a project_id/ subdir, not directly in local_dir.
+        valid <- forecast_output_validator(submissions[i])
 
         if(valid){
 
