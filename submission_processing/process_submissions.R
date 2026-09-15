@@ -31,29 +31,129 @@ minioclient::mc_alias_set("submit",
                           Sys.getenv("AWS_ACCESS_KEY_SUBMISSIONS"),
                           Sys.getenv("AWS_SECRET_ACCESS_KEY_SUBMISSIONS"))
 
+# Since 2026-09-08 the NRP key has had ListBucket only on the submissions
+# bucket: both GetObject and DeleteObject return "Insufficient permissions". The
+# bucket's own policy, however, grants GetObject-by-ACL and DeleteObject to
+# Principal:* , so an unauthenticated client can do both - it just cannot list.
+# So we list with the authenticated alias above and do the reads and deletes
+# through this anonymous one. Drop it once NRP restores the key's permissions.
+minioclient::mc_alias_set("submit_read", config$submissions_endpoint, "", "")
+
 message(paste0("Starting Processing Submissions ", Sys.time()))
 
 local_dir <- file.path(here::here(), "submissions")
 unlink(local_dir, recursive = TRUE)
 fs::dir_create(local_dir)
 
+# Removal is now best-effort (see mark_processed below), so we also keep our own
+# record of what has been handled, on OSN where we have write access, and filter
+# those out before downloading. That keeps the pipeline correct even if deleting
+# from the submissions bucket stops working again. usgsrc4cast and neon4cast
+# share the OSN bucket, so this manifest uses a challenge-specific filename.
+manifest_object <- paste0("s3_store/", config$processed_submissions)
+manifest_local <- file.path(tempdir(), "processed_submissions.csv")
 
-## see if there are any files to download and process
-submit_files = minioclient::mc_ls(target = fs::path("submit", config$submissions_bucket, config$project_id),
-                                  recursive = TRUE,
-                                  details = TRUE)
+processed <- tryCatch({
+  minioclient::mc_cp(manifest_object, manifest_local)
+  manifest <- readr::read_csv(manifest_local, show_col_types = FALSE)
+  if ("key" %in% names(manifest)) as.character(manifest$key) else character(0)
+}, error = function(e) {
+  message("No processed-submissions record found; starting a new one.")
+  character(0)
+})
 
-if(nrow(submit_files) > 0){
+marked <- 0L   # submissions handled in this run
+removed <- 0L  # objects deleted from the bucket: newly handled plus backlog
+
+# The bucket policy grants DeleteObject to Principal:* , so the anonymous alias
+# can clear the bucket even though our key cannot. Best effort only: callers
+# have already recorded the submission, so a failure here costs space on the
+# bucket, not correctness, and must not abort the run.
+remove_from_bucket <- function(key) {
+  tryCatch({
+    minioclient::mc_rm(paste0("submit_read/", config$submissions_bucket, "/", key))
+    removed <<- removed + 1L
+    TRUE
+  }, error = function(e) {
+    warning("could not remove ", key, " from the submissions bucket: ",
+            conditionMessage(e), call. = FALSE)
+    FALSE
+  })
+}
+
+mark_processed <- function(key) {
+  # Record first, remove second. If the removal succeeds but the record was
+  # never written we would reprocess a submission that no longer exists; this
+  # order fails safe in the other direction instead.
+  processed <<- unique(c(processed, key))
+  marked <<- marked + 1L
+  readr::write_csv(data.frame(key = processed), manifest_local)
+  minioclient::mc_cp(manifest_local, manifest_object)
+
+  remove_from_bucket(key)
+}
+
+message("Listing submissions ...")
+
+# List the whole bucket with the authenticated alias (the only thing the key can
+# still do) and keep this challenge's submissions. neon4cast processes the rest
+# of the shared bucket, so filtering to project_id here is what divides the work.
+all_keys <- minioclient::mc_ls(paste0("submit/", config$submissions_bucket),
+                               recursive = TRUE,
+                               details = TRUE)$key
+
+wanted <- all_keys[stringr::str_detect(all_keys, config$project_id)]
+submission_keys <- setdiff(wanted, processed)
+
+message(sprintf("%d objects in bucket, %d for %s, %d already processed, %d to download",
+                length(all_keys),
+                length(wanted),
+                config$project_id,
+                length(wanted) - length(submission_keys),
+                length(submission_keys)))
+
+# Submissions already recorded as handled but still sitting in the bucket,
+# because removal failed or was never attempted on an earlier run. Clearing them
+# here is what actually drains the backlog: they are filtered out of
+# submission_keys above, so they never reach mark_processed() again.
+stale <- intersect(wanted, processed)
+if (length(stale) > 0) {
+  message(sprintf("Clearing %d already-processed submission(s) left in the bucket",
+                  length(stale)))
+  for (key in stale) remove_from_bucket(key)
+}
+
+if(length(submission_keys) > 0){
   message("Downloading forecasts ...")
 
-  minioclient::mc_mirror(from = fs::path("submit", config$submissions_bucket, config$project_id),
-                         to = local_dir)
+  # Replaces mc_mirror(), which cannot work while list and read live with
+  # different identities. Keys are copied one at a time through the anonymous
+  # alias, preserving the bucket's nested layout for the dir_ls() walk below. A
+  # single unreadable object is reported and skipped rather than aborting.
+  failed <- character(0)
+  for (key in submission_keys) {
+    dest <- file.path(local_dir, key)
+    fs::dir_create(dirname(dest))
+    copied <- tryCatch({
+      minioclient::mc_cp(paste0("submit_read/", config$submissions_bucket, "/", key), dest)
+      TRUE
+    }, error = function(e) {
+      warning("could not download ", key, ": ", conditionMessage(e), call. = FALSE)
+      FALSE
+    })
+    if (!isTRUE(copied)) failed <- c(failed, key)
+  }
 
   submissions <- fs::dir_ls(local_dir,
                             recurse = TRUE,
                             type = "file")
 
-  submissions_filenames <- basename(submissions)
+  message(sprintf("Downloaded %d of %d submissions",
+                  length(submission_keys) - length(failed),
+                  length(submission_keys)))
+  if (length(failed) > 0) {
+    message("Skipped unreadable submissions: ", paste(failed, collapse = ", "))
+  }
   print(submissions)
 
   if(length(submissions) > 0){
@@ -96,6 +196,9 @@ if(nrow(submit_files) > 0){
     for(i in 1:length(submissions)){
 
       curr_submission <- basename(submissions[i])
+      # Bucket-relative path (not the basename): submissions may sit under a
+      # prefix, and the manifest must match what mc_ls() returns to skip them.
+      curr_key <- as.character(fs::path_rel(submissions[i], local_dir))
       curr_project_id <-  stringr::str_split(curr_submission, "-")[[1]][1]
       if(curr_project_id != config$project_id){ # if the file doesn't have appropriate project_id, then move on to next file
         next
@@ -209,10 +312,7 @@ if(nrow(submit_files) > 0){
           minioclient::mc_cp(submission_timestamp, paste0(dirname(raw_bucket_object),"/", basename(submission_timestamp)))
 
           if(length(minioclient::mc_ls(raw_bucket_object)) > 0){
-            minioclient::mc_rm(file.path("submit",
-                                         config$submissions_bucket,
-                                         config$project_id,
-                                         curr_submission))
+            mark_processed(curr_key)
           }
 
           rm(fc)
@@ -230,10 +330,7 @@ if(nrow(submit_files) > 0){
           minioclient::mc_cp(submission_timestamp, paste0(dirname(raw_bucket_object),"/", basename(submission_timestamp)))
 
           if(length(minioclient::mc_ls(raw_bucket_object)) > 0){
-            minioclient::mc_rm(file.path("submit",
-                                         config$submissions_bucket,
-                                         config$project_id,
-                                         curr_submission))
+            mark_processed(curr_key)
           }
 
         }
@@ -255,6 +352,13 @@ if(nrow(submit_files) > 0){
   }
 
   unlink(local_dir, recursive = TRUE)
+
+  message(sprintf("Processed %d submission(s) this run, removed %d object(s) from the bucket; %d recorded in total",
+                  marked, removed, length(processed)))
+  if (marked > 0L && removed == 0L) {
+    message("Nothing could be removed: the bucket will keep growing until either ",
+            "the anonymous delete or the NRP key's DeleteObject permission works.")
+  }
 
   message(paste0("Completed Processing Submissions ", Sys.time()))
 }else{
