@@ -229,6 +229,11 @@ background-size: cover;
   <li><a href="#river-chlorophyll" id="toc-river-chlorophyll" class="nav-link" data-scroll-target="#river-chlorophyll">River Chlorophyll</a></li>
   </ul></li>
   <li><a href="#explore-the-sites" id="toc-explore-the-sites" class="nav-link" data-scroll-target="#explore-the-sites">Explore the sites</a></li>
+  <li><a href="#sec-data-sources" id="toc-sec-data-sources" class="nav-link" data-scroll-target="#sec-data-sources">Data sources and quality</a>
+  <ul class="collapse">
+  <li><a href="#usgs-sites-10-sites" id="toc-usgs-sites-10-sites" class="nav-link" data-scroll-target="#usgs-sites-10-sites">USGS sites (10 sites)</a></li>
+  <li><a href="#ca-dwr-delta-sites-5-sites" id="toc-ca-dwr-delta-sites-5-sites" class="nav-link" data-scroll-target="#ca-dwr-delta-sites-5-sites">CA DWR Delta sites (5 sites)</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/eco4cast/usgsrc4cast-ci/blob/main/targets.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/eco4cast/usgsrc4cast-ci/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -241,17 +246,17 @@ background-size: cover;
 
 <section id="tldr-forecast-the-targets" class="level2">
 <h2 class="anchored" data-anchor-id="tldr-forecast-the-targets">tl;dr: Forecast the targets!</h2>
-<p>The “targets” are time-series of United States Geological Survey (<a href="https://www.usgs.gov/">USGS</a>) data for use in model development and forecast evaluation.</p>
-<p>The targets are updated as new USGS data are made available.</p>
-<p>This challenge focuses on forecasting river chlorophyll-a at select USGS monitoring locations. The links to targets files are included below.</p>
+<p>The “targets” are time-series of United States Geological Survey (<a href="https://www.usgs.gov/">USGS</a>) and California Department of Water Resources (<a href="https://water.ca.gov/">CA DWR</a>) data for use in model development and forecast evaluation.</p>
+<p>The targets are updated as new USGS and CA DWR data are made available.</p>
+<p>This challenge focuses on forecasting river chlorophyll-a at select monitoring locations. Most sites are United States Geological Survey (<a href="https://www.usgs.gov/">USGS</a>) stations. In addition, five sites in the Sacramento–San Joaquin Delta are contributed by the California Department of Water Resources (<a href="https://water.ca.gov/">CA DWR</a>). See <a href="#sec-data-sources">Data sources and quality</a> below for how those data are assembled and quality-controlled. The links to targets files are included below.</p>
 </section>
 <section id="sec-starting-sites" class="level2">
 <h2 class="anchored" data-anchor-id="sec-starting-sites">Where to start</h2>
 <!-- If are you are getting started, we recommend the following focal sites for each of the five "themes". -->
 <!-- The first site in the list is the recommended starting site. -->
 <!-- -   Aquatics: USGS-05553700, USGS-01463500 -->
-<p>As you develop your forecasting skills and want to expand to more sites, the targets are available at all 10 USGS sites. You may also consider submitting forecasts to sites that match your interests or locality.</p>
-<p>More information about USGS sites can be found in the <a href="https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/sites/collection.json">site metadata</a> and on USGS’s <a href="https://dashboard.waterdata.usgs.gov/app/nwd/en/">website</a></p>
+<p>As you develop your forecasting skills and want to expand to more sites, the targets are available at all 15 sites (10 USGS sites and 5 CA DWR Delta sites). You may also consider submitting forecasts to sites that match your interests or locality.</p>
+<p>More information about the sites can be found in the <a href="https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/sites/collection.json">site metadata</a> and on USGS’s <a href="https://dashboard.waterdata.usgs.gov/app/nwd/en/">website</a></p>
 </section>
 <section id="sec-targets" class="level2">
 <h2 class="anchored" data-anchor-id="sec-targets">Explore the targets and themes</h2>
@@ -264,7 +269,7 @@ background-size: cover;
 <section id="river-chlorophyll" class="level3">
 <h3 class="anchored" data-anchor-id="river-chlorophyll">River Chlorophyll</h3>
 <p><img src="https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/media/images/Millstone-hab1.png" class="img-fluid"></p>
-<p>The river chlorophyll challenge invites you to forecast daily mean chlorophyll at up to 10 USGS river sites.</p>
+<p>The river chlorophyll challenge invites you to forecast daily mean chlorophyll at up to 15 river sites — 10 USGS sites and 5 CA DWR sites in the Sacramento–San Joaquin Delta.</p>
 <div class="cell">
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -380,12 +385,12 @@ background-size: cover;
 </div>
 <p>and the time series for the focal sites</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>aquatics_targets <span class="sc">|&gt;</span> </span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(site_id <span class="sc">%in%</span> aquatics_focal_sites) <span class="sc">|&gt;</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>aquatics_targets <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(site_id <span class="sc">%in%</span> aquatics_focal_sites) <span class="sc">|&gt;</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> datetime, <span class="at">y =</span> observation)) <span class="sc">+</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>site_id, <span class="at">scales =</span> <span class="st">"free"</span>) <span class="sc">+</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Chlorophyll-a (ug/L)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
@@ -401,8 +406,8 @@ background-size: cover;
 <h2 class="anchored" data-anchor-id="explore-the-sites">Explore the sites</h2>
 <div class="cell">
 <div class="cell-output-display">
-<div class="leaflet html-widget html-fill-item" id="htmlwidget-50d1abcc129ee1c45b00" style="width:100%;height:650px;"></div>
-<script type="application/json" data-for="htmlwidget-50d1abcc129ee1c45b00">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"setView":[[43.47839356422085,-98.74777398430538],2,[]],"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,"OSM",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addProviderTiles","args":["Esri.WorldImagery",null,"Imagery",{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addProviderTiles","args":["Esri.WorldTopoMap",null,"Topo Map",{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addLayersControl","args":[["Imagery","OSM","Topo Map"],[],{"collapsed":true,"autoZIndex":true,"position":"topright"}]},{"method":"addMarkers","args":[[45.5175,45.3793,44.7538,39.6328,41.1073,41.3248,41.2999,42.31,41.7567,40.2217],[-122.6692,-122.5773,-122.2974,-90.60769999999999,-89.3562,-88.98399999999999,-88.6142,-88.25149999999999,-75.0574,-74.77809999999999],null,null,["USGS","USGS","USGS","USGS","USGS","USGS","USGS","USGS","USGS","USGS"],{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["USGS-14211720","USGS-14211010","USGS-14181500","USGS-05586300","USGS-05558300","USGS-05553700","USGS-05543010","USGS-05549500","USGS-01427510","USGS-01463500"],null,{"showCoverageOnHover":true,"zoomToBoundsOnClick":true,"spiderfyOnMaxZoom":true,"removeOutsideVisibleBounds":true,"spiderLegPolylineOptions":{"weight":1.5,"color":"#222","opacity":0.5},"freezeAtZoom":false},null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[39.6328,45.5175],"lng":[-122.6692,-74.77809999999999]}},"evals":[],"jsHooks":[]}</script>
+<div class="leaflet html-widget html-fill-item" id="htmlwidget-305494771fc950138b6b" style="width:100%;height:650px;"></div>
+<script type="application/json" data-for="htmlwidget-305494771fc950138b6b">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"setView":[[43.47839356422085,-98.74777398430538],2,[]],"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,"OSM",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addProviderTiles","args":["Esri.WorldImagery",null,"Imagery",{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addProviderTiles","args":["Esri.WorldTopoMap",null,"Topo Map",{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addLayersControl","args":[["Imagery","OSM","Topo Map"],[],{"collapsed":true,"autoZIndex":true,"position":"topright"}]},{"method":"addMarkers","args":[[45.5175,45.3793,44.7538,39.6328,41.1073,41.3248,41.2999,42.31,41.7567,40.2217,37.6793,37.95,37.8203,37.8762,37.8076],[-122.6692,-122.5773,-122.2974,-90.60769999999999,-89.3562,-88.98399999999999,-88.6142,-88.25149999999999,-75.0574,-74.77809999999999,-121.2651,-121.32,-121.4349,-121.3833,-121.3312],null,null,["USGS","USGS","USGS","USGS","USGS","USGS","USGS","USGS","USGS","USGS","CA DWR","CA DWR","CA DWR","CA DWR","CA DWR"],{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["USGS-14211720","USGS-14211010","USGS-14181500","USGS-05586300","USGS-05558300","USGS-05553700","USGS-05543010","USGS-05549500","USGS-01427510","USGS-01463500","DWR-SJR","DWR-MLS","DWR-GLE","DWR-MHO","DWR-OH1"],null,{"showCoverageOnHover":true,"zoomToBoundsOnClick":true,"spiderfyOnMaxZoom":true,"removeOutsideVisibleBounds":true,"spiderLegPolylineOptions":{"weight":1.5,"color":"#222","opacity":0.5},"freezeAtZoom":false},null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[37.6793,45.5175],"lng":[-122.6692,-74.77809999999999]}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <p><br> <br> The following table lists all the sites in the EFI-USGS Ecological Forecasting Challenge. The columns with “theme” names incidate whether that site is included in that theme’s target file.</p>
@@ -411,13 +416,15 @@ background-size: cover;
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 11%">
+<col style="width: 5%">
 <col style="width: 7%">
-<col style="width: 30%">
-<col style="width: 50%">
+<col style="width: 29%">
+<col style="width: 47%">
 </colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: left;">site_id</th>
+<th style="text-align: left;">agency</th>
 <th style="text-align: left;">site_no</th>
 <th style="text-align: left;">station_nm</th>
 <th style="text-align: left;">site_url</th>
@@ -426,90 +433,105 @@ background-size: cover;
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">USGS-14211720</td>
+<td style="text-align: left;">USGS</td>
 <td style="text-align: left;">14211720</td>
 <td style="text-align: left;">WILLAMETTE RIVER AT PORTLAND, OR</td>
 <td style="text-align: left;">https://waterdata.usgs.gov/monitoring-location/14211720</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">USGS-14211010</td>
+<td style="text-align: left;">USGS</td>
 <td style="text-align: left;">14211010</td>
 <td style="text-align: left;">CLACKAMAS RIVER NEAR OREGON CITY, OR</td>
 <td style="text-align: left;">https://waterdata.usgs.gov/monitoring-location/14211010</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">USGS-14181500</td>
+<td style="text-align: left;">USGS</td>
 <td style="text-align: left;">14181500</td>
 <td style="text-align: left;">NORTH SANTIAM RIVER AT NIAGARA, OR</td>
 <td style="text-align: left;">https://waterdata.usgs.gov/monitoring-location/14181500</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">USGS-05586300</td>
+<td style="text-align: left;">USGS</td>
 <td style="text-align: left;">05586300</td>
 <td style="text-align: left;">ILLINOIS RIVER AT FLORENCE, IL</td>
 <td style="text-align: left;">https://waterdata.usgs.gov/monitoring-location/05586300</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">USGS-05558300</td>
+<td style="text-align: left;">USGS</td>
 <td style="text-align: left;">05558300</td>
 <td style="text-align: left;">ILLINOIS RIVER AT HENRY, IL</td>
 <td style="text-align: left;">https://waterdata.usgs.gov/monitoring-location/05558300</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">USGS-05553700</td>
+<td style="text-align: left;">USGS</td>
 <td style="text-align: left;">05553700</td>
 <td style="text-align: left;">ILLINOIS RIVER AT STARVED ROCK, IL</td>
 <td style="text-align: left;">https://waterdata.usgs.gov/monitoring-location/05553700</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">USGS-05543010</td>
+<td style="text-align: left;">USGS</td>
 <td style="text-align: left;">05543010</td>
 <td style="text-align: left;">ILLINOIS RIVER AT SENECA, IL</td>
 <td style="text-align: left;">https://waterdata.usgs.gov/monitoring-location/05543010</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">USGS-05549500</td>
+<td style="text-align: left;">USGS</td>
 <td style="text-align: left;">05549500</td>
 <td style="text-align: left;">FOX RIVER NEAR MCHENRY, IL</td>
 <td style="text-align: left;">https://waterdata.usgs.gov/monitoring-location/05549500</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">USGS-01427510</td>
+<td style="text-align: left;">USGS</td>
 <td style="text-align: left;">01427510</td>
 <td style="text-align: left;">DELAWARE RIVER AT CALLICOON NY</td>
 <td style="text-align: left;">https://waterdata.usgs.gov/monitoring-location/01427510</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">USGS-01463500</td>
+<td style="text-align: left;">USGS</td>
 <td style="text-align: left;">01463500</td>
 <td style="text-align: left;">Delaware River at Trenton NJ</td>
 <td style="text-align: left;">https://waterdata.usgs.gov/monitoring-location/01463500</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">DWR-SJR</td>
+<td style="text-align: left;">CA DWR</td>
 <td style="text-align: left;">SJR</td>
 <td style="text-align: left;">San Joaquin River Near Vernalis</td>
 <td style="text-align: left;">https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=SJR</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">DWR-MLS</td>
+<td style="text-align: left;">CA DWR</td>
 <td style="text-align: left;">MLS</td>
 <td style="text-align: left;">McLeod Lake, Stockton</td>
 <td style="text-align: left;">https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=MLS</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">DWR-GLE</td>
+<td style="text-align: left;">CA DWR</td>
 <td style="text-align: left;">GLE</td>
 <td style="text-align: left;">Grant Line Canal East</td>
 <td style="text-align: left;">https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=GLE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">DWR-MHO</td>
+<td style="text-align: left;">CA DWR</td>
 <td style="text-align: left;">MHO</td>
 <td style="text-align: left;">Middle River At Howard Road</td>
 <td style="text-align: left;">https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=MHO</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">DWR-OH1</td>
+<td style="text-align: left;">CA DWR</td>
 <td style="text-align: left;">OH1</td>
 <td style="text-align: left;">Old River Near Head</td>
 <td style="text-align: left;">https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=OH1</td>
@@ -518,8 +540,62 @@ background-size: cover;
 </table>
 </div>
 </div>
+<!--
+DRAFT — the CA DWR data-source description and acknowledgment below are pending
+review and sign-off by CA DWR collaborators. Do not merge to `main` (which
+publishes to GitHub Pages) until the wording is approved.
+-->
+</section>
+<section id="sec-data-sources" class="level2">
+<h2 class="anchored" data-anchor-id="sec-data-sources">Data sources and quality</h2>
+<p>Target chlorophyll-a observations come from two agencies, and the data pass through different levels of quality assurance depending on the source. When more than one source reports a value for the same site and day, the challenge keeps the value from the highest-quality source available.</p>
+<section id="usgs-sites-10-sites" class="level3">
+<h3 class="anchored" data-anchor-id="usgs-sites-10-sites">USGS sites (10 sites)</h3>
+<p>Observations are pulled from the USGS National Water Information System (<a href="https://waterdata.usgs.gov/nwis">NWIS</a>) and updated as new data are released. See the USGS <a href="https://dashboard.waterdata.usgs.gov/app/nwd/en/">Water Data dashboard</a> for the underlying station data.</p>
+</section>
+<section id="ca-dwr-delta-sites-5-sites" class="level3">
+<h3 class="anchored" data-anchor-id="ca-dwr-delta-sites-5-sites">CA DWR Delta sites (5 sites)</h3>
+<p>The five Sacramento–San Joaquin Delta sites (<code>DWR-SJR</code>, <code>DWR-MLS</code>, <code>DWR-GLE</code>, <code>DWR-MHO</code>, <code>DWR-OH1</code>) are monitored by the California Department of Water Resources. Their chlorophyll-a data are assembled from up to three sources, in decreasing order of data quality:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Source</th>
+<th>Quality</th>
+<th>Update cadence</th>
+<th>Role in the target record</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="https://portal.edirepository.org/nis/home.jsp"><strong>EDI</strong></a> <strong>data releases</strong></td>
+<td>Reviewed / <strong>QA-QC’d</strong></td>
+<td>~annual</td>
+<td>Authoritative historical record; failed-QA values are set to <code>NA</code> by the data publisher. Feeds the long baseline used by climatology models.</td>
+</tr>
+<tr class="even">
+<td><a href="https://wdl.water.ca.gov/waterdatalibrary/"><strong>Water Data Library</strong></a> <strong>(WDL/CNRA)</strong></td>
+<td>Reviewed / <strong>QA-QC’d</strong></td>
+<td>~every 2 months</td>
+<td>Extends the reviewed record past the latest EDI revision; pulled by a recurring quarterly backfill that replaces provisional CDEC values wherever WDL has coverage.</td>
+</tr>
+<tr class="odd">
+<td><a href="https://cdec.water.ca.gov/"><strong>CDEC</strong></a> <strong>real-time telemetry</strong></td>
+<td><strong>Not QA-QC’d</strong> (provisional)</td>
+<td>daily</td>
+<td>Keeps the most recent days current for scoring; may contain gaps or outliers until EDI/WDL catch up.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>What is and isn’t quality-controlled:</strong> the historical record for these sites (roughly 2005–2025, depending on station) comes from the QA-QC’d EDI data releases published by CA DWR, extended by reviewed WDL data where WDL has published past the latest EDI revision. Only the days more recent than the latest reviewed (EDI or WDL) values come from CDEC real-time telemetry, which is provisional and not quality-controlled. Those recent values are used so forecasts can be scored promptly, and are progressively replaced by reviewed values as CA DWR publishes them, first through the quarterly WDL backfill, then through subsequent EDI releases.</p>
+<p>EDI data releases used:</p>
+<ul>
+<li><strong>NCRO continuous water quality</strong> (<code>DWR-GLE</code>, <code>DWR-MHO</code>, <code>DWR-OH1</code>): <a href="https://portal.edirepository.org/nis/mapbrowse?packageid=edi.2180.2"><code>edi.2180.2</code></a></li>
+<li><strong>EMP</strong> (<code>DWR-SJR</code>): <a href="https://portal.edirepository.org/nis/mapbrowse?scope=edi&amp;identifier=1177&amp;revision=8"><code>edi.1177.8</code></a></li>
+</ul>
+<p><code>DWR-MLS</code> (McLeod Lake, Stockton) was installed in 2024 and is not yet in an EDI release, but reviewed WDL data are now available for it, so its record is a mix of reviewed WDL values and provisional CDEC values (rather than CDEC-only) until it appears in an EDI release.</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
