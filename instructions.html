@@ -214,7 +214,7 @@ background-size: cover;
   <li><a href="#forecasts-extend-out-to-30-days-in-the-future" id="toc-forecasts-extend-out-to-30-days-in-the-future" class="nav-link" data-scroll-target="#forecasts-extend-out-to-30-days-in-the-future"><span class="header-section-number">2.4</span> Forecasts extend out to 30 days in the future</a></li>
   <li><a href="#forecasts-can-be-submitted-everyday" id="toc-forecasts-can-be-submitted-everyday" class="nav-link" data-scroll-target="#forecasts-can-be-submitted-everyday"><span class="header-section-number">2.5</span> Forecasts can be submitted everyday</a></li>
   </ul></li>
-  <li><a href="#you-can-forecast-at-any-of-the-usgs-sites" id="toc-you-can-forecast-at-any-of-the-usgs-sites" class="nav-link" data-scroll-target="#you-can-forecast-at-any-of-the-usgs-sites"><span class="header-section-number">3</span> You can forecast at any of the USGS sites</a></li>
+  <li><a href="#you-can-forecast-at-any-of-the-usgs-or-ca-dwr-sites" id="toc-you-can-forecast-at-any-of-the-usgs-or-ca-dwr-sites" class="nav-link" data-scroll-target="#you-can-forecast-at-any-of-the-usgs-or-ca-dwr-sites"><span class="header-section-number">3</span> You can forecast at any of the USGS or CA DWR sites</a></li>
   <li><a href="#forecast-file-format" id="toc-forecast-file-format" class="nav-link" data-scroll-target="#forecast-file-format"><span class="header-section-number">4</span> Forecast file format</a></li>
   <li><a href="#representing-uncertainity" id="toc-representing-uncertainity" class="nav-link" data-scroll-target="#representing-uncertainity"><span class="header-section-number">5</span> Representing uncertainity</a>
   <ul class="collapse">
@@ -259,7 +259,7 @@ background-size: cover;
 <h2 data-number="2" class="anchored" data-anchor-id="generating-a-forecast"><span class="header-section-number">2</span> Generating a forecast</h2>
 <section id="all-forecasting-approaches-are-welcome" class="level3" data-number="2.1">
 <h3 data-number="2.1" class="anchored" data-anchor-id="all-forecasting-approaches-are-welcome"><span class="header-section-number">2.1</span> All forecasting approaches are welcome</h3>
-<p>We encourage you to use any modeling approach to make a prediction about the future conditions at any of the USGS sites.</p>
+<p>We encourage you to use any modeling approach to make a prediction about the future conditions at any of the USGS or CA DWR sites.</p>
 </section>
 <section id="must-include-uncertainty" class="level3" data-number="2.2">
 <h3 data-number="2.2" class="anchored" data-anchor-id="must-include-uncertainty"><span class="header-section-number">2.2</span> Must include uncertainty</h3>
@@ -279,9 +279,9 @@ background-size: cover;
 <p>Since forecasts can be submitted everyday, automation is important. We provide an example GitHub repository for both <a href="https://github.com/eco4cast/usgsrc4cast-R-example">R</a> and <a href="https://github.com/eco4cast/usgsrc4cast-python-example">Python</a> that can be used to automate your forecast with GitHub Actions. It also includes the use of a custom Docker Container for <a href="https://github.com/eco4cast/neon4cast-ci/blob/main/Dockerfile">R (eco4cast/rocker-neon4cast:latest)</a> or <a href="https://github.com/eco4cast/usgsrc4cast-ci/blob/main/python/Dockerfile">Python (eco4cast/usgsrc4cast-python:latest)</a> that has many of the packages and functions needed to generate and submit forecasts.</p>
 </section>
 </section>
-<section id="you-can-forecast-at-any-of-the-usgs-sites" class="level2" data-number="3">
-<h2 data-number="3" class="anchored" data-anchor-id="you-can-forecast-at-any-of-the-usgs-sites"><span class="header-section-number">3</span> You can forecast at any of the USGS sites</h2>
-<p>If are you are getting started, we recommend a set of <a href="./targets.html#sec-starting-sites">focal sites</a>. You are also welcome to submit forecasts to all or a subset of USGS sites . More information about USGS sites can be found in the <a href="https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/sites/collection.json">site metadata</a> and on USGS’s <a href="https://dashboard.waterdata.usgs.gov/app/nwd/en/">website</a></p>
+<section id="you-can-forecast-at-any-of-the-usgs-or-ca-dwr-sites" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="you-can-forecast-at-any-of-the-usgs-or-ca-dwr-sites"><span class="header-section-number">3</span> You can forecast at any of the USGS or CA DWR sites</h2>
+<p>If are you are getting started, we recommend a set of <a href="./targets.html#sec-starting-sites">focal sites</a>. You are also welcome to submit forecasts to all or a subset of USGS or CA DWR sites . More information about USGS and CA DWR sites can be found in the <a href="https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/sites/collection.json">site metadata</a> and on <a href="https://dashboard.waterdata.usgs.gov/app/nwd/en/">USGS</a> and <a href="https://wdl.water.ca.gov/waterdatalibrary/Map.aspx">CA DWR</a> websites.</p>
 </section>
 <section id="forecast-file-format" class="level2" data-number="4">
 <h2 data-number="4" class="anchored" data-anchor-id="forecast-file-format"><span class="header-section-number">4</span> Forecast file format</h2>
@@ -292,7 +292,7 @@ background-size: cover;
 <li><p><code>datetime</code>: forecast timestamp. Format <code>%Y-%m-%d %H:%M:%S</code> with UTC as the time zone. Forecasts submitted with a <code>%Y-%m-%d</code> format will be converted to a full datetime assuming UTC mid-night.</p></li>
 <li><p><code>reference_datetime</code>: The start of the forecast; this should be 0 times steps in the future. There should only be one value of <code>reference_datetime</code> in the file. Format is <code>%Y-%m-%d %H:%M:%S</code> with UTC as the time zone. Forecasts submitted with a <code>%Y-%m-%d</code> format will be converted to a full datetime assuming UTC mid-night.</p></li>
 <li><p><code>duration</code>: the time-step of the forecast. Use the value of <code>P1D</code> for a daily forecast, <code>P1W</code> for a weekly forecast, and <code>PT30M</code> for 30 minute forecast. This value should match the duration of the target variable that you are forecasting. Formatted as <a href="https://en.wikipedia.org/wiki/ISO_8601#Durations">ISO 8601 duration</a></p></li>
-<li><p><code>site_id</code>: code for USGS site.</p></li>
+<li><p><code>site_id</code>: code for USGS or CA DWR site.</p></li>
 <li><p><code>family</code> name of the probability distribution that is described by the parameter values in the parameter column (see list below for accepted distribution). An ensemble forecast as a family of <code>ensemble</code>. See note below about family</p></li>
 <li><p><code>parameter</code> the parameters for the distribution (see note below about the parameter column) or the number of the ensemble members. For example, the parameters for a normal distribution are called <code>mu</code> and <code>sigma</code>.</p></li>
 <li><p><code>variable</code>: standardized variable name. It must match the variable name in the target file (e.g., <code>chla</code>).</p></li>
