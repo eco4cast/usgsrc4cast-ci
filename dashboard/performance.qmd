@@ -15,7 +15,9 @@ source("R/plot-utils.R")
 #source("../R/ignore_sigpipes.R")
 #ignore_sigpipe()
 
-aquatics_focal_sites <- c("USGS-05553700", "USGS-01463500")
+aquatics_focal_sites <- c("USGS-05553700", "USGS-01463500",
+                          # two representative CA DWR sites
+                          "DWR-SJR", "DWR-MLS")
 ```
 
 This page visualizes the forecasts and forecast performance for the focal target variables.
@@ -104,7 +106,7 @@ df_P1D |>
          site_id %in% aquatics_focal_sites
          ) |>
   mutate(observation = as.numeric(NA)) |>
-  forecast_plots()
+  forecast_plots(ncol = 2, height_svg = 7)
 
 ```
 
@@ -126,7 +128,7 @@ ex_P1D |>
          model_id %in% best_models,
          site_id %in% aquatics_focal_sites
          ) |>
-  forecast_plots()
+  forecast_plots(ncol = 2, height_svg = 7)
 
 ```
 :::

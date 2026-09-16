@@ -9,7 +9,7 @@ We invite you to submit forecasts!
 
 The EFI-USGS River Chlorophyll Forecasting Challenge is an open platform
 for the ecological and data science communities to forecast data from
-[the U.S. Geological Survey (USGS)](https://www.usgs.gov/) before they
+the U.S. Geological Survey [(USGS)](https://www.usgs.gov/) and California Department of Water Resources [(CA DWR)](https://water.ca.gov/) before they
 are collected.
 
 The Challenge is hosted by the [Ecological Forecasting Initiative

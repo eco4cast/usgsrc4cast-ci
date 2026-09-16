@@ -21,7 +21,7 @@ We provide an overview of the steps for submitting with the details below:
 
 ### All forecasting approaches are welcome
 
-We encourage you to use any modeling approach to make a prediction about the future conditions at any of the USGS sites.
+We encourage you to use any modeling approach to make a prediction about the future conditions at any of the USGS or CA DWR sites.
 
 ### Must include uncertainty
 
@@ -50,11 +50,11 @@ Since forecasts can be submitted everyday, automation is important.
 We provide an example GitHub repository for both [R](https://github.com/eco4cast/usgsrc4cast-R-example) and [Python](https://github.com/eco4cast/usgsrc4cast-python-example) that can be used to automate your forecast with GitHub Actions.
 It also includes the use of a custom Docker Container for [R (eco4cast/rocker-neon4cast:latest)](https://github.com/eco4cast/neon4cast-ci/blob/main/Dockerfile) or [Python (eco4cast/usgsrc4cast-python:latest)](https://github.com/eco4cast/usgsrc4cast-ci/blob/main/python/Dockerfile) that has many of the packages and functions needed to generate and submit forecasts.
 
-## You can forecast at any of the USGS sites
+## You can forecast at any of the USGS or CA DWR sites
 
 If are you are getting started, we recommend a set of [focal sites](targets.qmd#sec-starting-sites).
-You are also welcome to submit forecasts to all or a subset of USGS sites .
-More information about USGS sites can be found in the [site metadata](https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/sites/collection.json) and on USGS's [website](https://dashboard.waterdata.usgs.gov/app/nwd/en/)
+You are also welcome to submit forecasts to all or a subset of USGS or CA DWR sites .
+More information about USGS and CA DWR sites can be found in the [site metadata](https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/sites/collection.json) and on [USGS](https://dashboard.waterdata.usgs.gov/app/nwd/en/) and [CA DWR](https://wdl.water.ca.gov/waterdatalibrary/Map.aspx) websites.
 
 ## Forecast file format
 
@@ -80,7 +80,7 @@ The file is a csv format with the following columns:
   This value should match the duration of the target variable that you are forecasting.
   Formatted as [ISO 8601 duration](https://en.wikipedia.org/wiki/ISO_8601#Durations)
 
-- `site_id`: code for USGS site.
+- `site_id`: code for USGS or CA DWR site.
 
 - `family` name of the probability distribution that is described by the parameter values in the parameter column (see list below for accepted distribution).
   An ensemble forecast as a family of `ensemble`.

@@ -27,10 +27,7 @@ The "targets" are time-series of United States Geological Survey ([USGS](https:/
 The targets are updated as new USGS and CA DWR data are made available.
 
 This challenge focuses on forecasting river chlorophyll-a at select monitoring locations.
-Most sites are United States Geological Survey ([USGS](https://www.usgs.gov/)) stations.
-In addition, five sites in the Sacramento–San Joaquin Delta are contributed by the California Department of Water Resources ([CA DWR](https://water.ca.gov/)).
-See [Data sources and quality](#sec-data-sources) below for how those data are assembled and quality-controlled.
-The links to targets files are included below.
+Ten sites are USGS stations, and five sites in the Sacramento–San Joaquin Delta are contributed by the CA DWR. See [Data sources and quality](#sec-data-sources) below for how those data are assembled and quality-controlled. The links to targets files are included below.
 
 ## Where to start {#sec-starting-sites}
 
@@ -43,7 +40,7 @@ The links to targets files are included below.
 As you develop your forecasting skills and want to expand to more sites, the targets are available at all 15 sites (10 USGS sites and 5 CA DWR Delta sites).
 You may also consider submitting forecasts to sites that match your interests or locality.
 
-More information about the sites can be found in the [site metadata](https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/sites/collection.json) and on USGS's [website](https://dashboard.waterdata.usgs.gov/app/nwd/en/)
+More information about the sites can be found in the [site metadata](https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/sites/collection.json) and on [USGS](https://dashboard.waterdata.usgs.gov/app/nwd/en/) and [CA DWR](https://wdl.water.ca.gov/waterdatalibrary/Map.aspx) websites.
 
 ## Explore the targets and themes {#sec-targets}
 
@@ -132,7 +129,6 @@ leaflet() %>%
 ```
 
 <br /> <br /> The following table lists all the sites in the EFI-USGS Ecological Forecasting Challenge.
-The columns with "theme" names incidate whether that site is included in that theme's target file.
 
 ```{r echo = FALSE}
 site_list <- read_csv("../USGS_site_metadata.csv", show_col_types = FALSE) |>
@@ -144,13 +140,6 @@ site_list <- read_csv("../USGS_site_metadata.csv", show_col_types = FALSE) |>
 site_list |> knitr::kable()
 ```
 
-```{=html}
-<!--
-DRAFT — the CA DWR data-source description and acknowledgment below are pending
-review and sign-off by CA DWR collaborators. Do not merge to `main` (which
-publishes to GitHub Pages) until the wording is approved.
--->
-```
 
 ## Data sources and quality {#sec-data-sources}
 
@@ -169,9 +158,9 @@ Their chlorophyll-a data are assembled from up to three sources, in decreasing o
 
 | Source | Quality | Update cadence | Role in the target record |
 |------------------|------------------|------------------|-------------------|
-| [**EDI**](https://portal.edirepository.org/nis/home.jsp) **data releases** | Reviewed / **QA-QC'd** | \~annual | Authoritative historical record; failed-QA values are set to `NA` by the data publisher. Feeds the long baseline used by climatology models. |
-| [**Water Data Library**](https://wdl.water.ca.gov/waterdatalibrary/) **(WDL/CNRA)** | Reviewed / **QA-QC'd** | \~every 2 months | Extends the reviewed record past the latest EDI revision; pulled by a recurring quarterly backfill that replaces provisional CDEC values wherever WDL has coverage. |
-| [**CDEC**](https://cdec.water.ca.gov/) **real-time telemetry** | **Not QA-QC'd** (provisional) | daily | Keeps the most recent days current for scoring; may contain gaps or outliers until EDI/WDL catch up. |
+| [**EDI**](https://portal.edirepository.org/nis/home.jsp) **data releases** | Reviewed / QA-QC'd | \~annual | Authoritative historical record; failed-QA values are set to `NA` by the data publisher. Feeds the long baseline used by climatology models. |
+| [**Water Data Library**](https://wdl.water.ca.gov/waterdatalibrary/) **(WDL/CNRA)** | Reviewed / QA-QC'd | \~every 2 months | Extends the reviewed record past the latest EDI revision; pulled by a recurring quarterly backfill that replaces provisional CDEC values wherever WDL has coverage. |
+| [**CDEC**](https://cdec.water.ca.gov/) **real-time telemetry** | Not QA-QC'd (provisional) | daily | Keeps the most recent days current for scoring; may contain gaps or outliers until EDI/WDL catch up. |
 
 **What is and isn't quality-controlled:** the historical record for these sites (roughly 2005–2025, depending on station) comes from the QA-QC'd EDI data releases published by CA DWR, extended by reviewed WDL data where WDL has published past the latest EDI revision.
 Only the days more recent than the latest reviewed (EDI or WDL) values come from CDEC real-time telemetry, which is provisional and not quality-controlled.
