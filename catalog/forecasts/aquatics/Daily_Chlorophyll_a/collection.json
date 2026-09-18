@@ -11,12 +11,17 @@
     {
       "rel": "item",
       "type": "application/json",
-      "href": "./models/persistenceRW.json"
+      "href": "./models/climatology.json"
     },
     {
       "rel": "item",
       "type": "application/json",
-      "href": "./models/usgs_habs_tirex.json"
+      "href": "./models/persistence.json"
+    },
+    {
+      "rel": "item",
+      "type": "application/json",
+      "href": "./models/persistenceRW.json"
     },
     {
       "rel": "item",
@@ -31,17 +36,12 @@
     {
       "rel": "item",
       "type": "application/json",
-      "href": "./models/climatology.json"
-    },
-    {
-      "rel": "item",
-      "type": "application/json",
-      "href": "./models/persistence.json"
-    },
-    {
-      "rel": "item",
-      "type": "application/json",
       "href": "./models/usgs_habs_chronos2.json"
+    },
+    {
+      "rel": "item",
+      "type": "application/json",
+      "href": "./models/usgs_habs_tirex.json"
     },
     {
       "rel": "parent",
@@ -86,7 +86,7 @@
       "interval": [
         [
           "2024-02-07T00:00:00Z",
-          "2026-10-21T00:00:00Z"
+          "2026-10-22T00:00:00Z"
         ]
       ]
     }
