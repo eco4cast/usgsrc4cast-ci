@@ -11,12 +11,6 @@
     {
       "rel": "child",
       "type": "application/json",
-      "href": "Pseudo/collection.json",
-      "title": "Pseudo"
-    },
-    {
-      "rel": "child",
-      "type": "application/json",
       "href": "Stage1-stats/collection.json",
       "title": "Stage1-stats"
     },
@@ -81,7 +75,7 @@
       "interval": [
         [
           "2020-01-01T00:00:00Z",
-          "2026-10-06T00:00:00Z"
+          "2026-10-07T00:00:00Z"
         ]
       ]
     }
