@@ -47,6 +47,10 @@ jobs:
     env:
       OSN_KEY: ${{ secrets.OSN_KEY }}
       OSN_SECRET: ${{ secrets.OSN_SECRET }}
+      # OSN's Ceph backend rejects the AWS SDK's default flexible-checksum
+      # (aws-chunked trailer) uploads with XAmzContentSHA256Mismatch; disable it.
+      AWS_REQUEST_CHECKSUM_CALCULATION: when_required
+      AWS_RESPONSE_CHECKSUM_VALIDATION: when_required
     steps:
       - uses: actions/checkout@v4
 

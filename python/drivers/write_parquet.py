@@ -45,6 +45,12 @@ def make_osn_filesystem():
         )
     # Disable EC2 metadata lookup so credentials are taken from the args, not IMDS.
     os.environ["AWS_EC2_METADATA_DISABLED"] = "TRUE"
+    # OSN's Ceph/RadosGW backend cannot parse the aws-chunked trailer that newer
+    # AWS SDKs (bundled in pyarrow) emit when the default "flexible checksums" are
+    # on — uploads fail with XAmzContentSHA256Mismatch. Revert to a plain
+    # single-SHA256 payload by only checksumming when explicitly required.
+    os.environ.setdefault("AWS_REQUEST_CHECKSUM_CALCULATION", "when_required")
+    os.environ.setdefault("AWS_RESPONSE_CHECKSUM_VALIDATION", "when_required")
     return pafs.S3FileSystem(
         endpoint_override=OSN_ENDPOINT,
         access_key=key,
