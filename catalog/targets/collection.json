@@ -4,8 +4,6 @@
   "stac_version": "1.0.0",
   "license": "CC0-1.0",
   "stac_extensions": [
-    "https://stac-extensions.github.io/scientific/v1.0.0/schema.json",
-    "https://stac-extensions.github.io/item-assets/v1.0.0/schema.json",
     "https://stac-extensions.github.io/table/v1.2.0/schema.json"
   ],
   "type": "Collection",
@@ -37,8 +35,8 @@
     },
     {
       "rel": "describedby",
-      "href": "https://projects.ecoforecast.org/usgsrc4cast-ci/",
-      "title": "EFI-USGS River Chlorophyll Forecast Challenge Dashboard",
+      "href": "https://projects.ecoforecast.org/usgsrc4cast-docs/",
+      "title": "EFI-USGS River Chlorophyll Forecasting Challenge Documentation",
       "type": "text/html"
     }
   ],
@@ -57,8 +55,8 @@
     "temporal": {
       "interval": [
         [
-          "2009-01-22T00:00:00Z",
-          "2025-12-15T00:00:00Z"
+          "2005-07-07T00:00:00Z",
+          "2026-10-05T00:00:00Z"
         ]
       ]
     }

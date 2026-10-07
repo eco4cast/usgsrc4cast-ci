@@ -41,8 +41,8 @@
     },
     {
       "rel": "describedby",
-      "href": {},
-      "title": {},
+      "href": "https://projects.ecoforecast.org/usgsrc4cast-docs/",
+      "title": "EFI-USGS River Chlorophyll Forecasting Challenge",
       "type": "text/html"
     }
   ],
@@ -50,14 +50,14 @@
   "extent": {
     "spatial": {
       "bbox": [
-        [-122.6692, 39.6328, -74.7781, 45.5175]
+        [-122.6692, 37.6793, -74.7781, 45.5175]
       ]
     },
     "temporal": {
       "interval": [
         [
           "2024-02-07T00:00:00Z",
-          "2025-12-15T00:00:00Z"
+          "2026-10-05T00:00:00Z"
         ]
       ]
     }

@@ -7,8 +7,12 @@ print(paste0("Running daily climatology at ", Sys.time()))
 source("baseline_models/models/aquatics_climatology.R")
 print(paste0("Completed daily climatology ", Sys.time()))
 
-print(paste0("Running daily persistence at ", Sys.time()))
+print(paste0("Running daily persistence RW at ", Sys.time()))
 source("baseline_models/models/aquatics_persistenceRW.R")
+print(paste0("Completed daily persistence RW ", Sys.time()))
+
+print(paste0("Running daily persistence at ", Sys.time()))
+source("baseline_models/models/aquatics_persistence_runner.R")
 print(paste0("Completed daily persistence ", Sys.time()))
 
 # TODO: not  sure what this is here for

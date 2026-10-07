@@ -7,7 +7,7 @@ project_id: usgsrc4cast
 # Endpoints
 endpoint: sdsc.osn.xsede.org
 noaa_endpoint: sdsc.osn.xsede.org
-submissions_endpoint: submit.ecoforecast.org
+submissions_endpoint: s3-west.nrp-nautilus.io
 
 # Buckets
 archive_bucket: bio230014-bucket01/challenges/archive
@@ -19,6 +19,11 @@ noaa_forecast_bucket: bio230014-bucket01/challenges/drivers/usgsrc4cast/noaa/gef
 prov_bucket: bio230014-bucket01/challenges/prov
 scores_bucket: bio230014-bucket01/challenges/scores
 submissions_bucket: submissions
+# Record of submissions already processed. Stands in for deleting them from the
+# submissions bucket, which the NRP key lost permission to do on 2026-09-08.
+# usgsrc4cast and neon4cast share this OSN bucket, so the filename is
+# challenge-specific to avoid clobbering neon4cast's manifest.
+processed_submissions: bio230014-bucket01/challenges/metadata/processed_submissions_usgsrc4cast.csv
 summaries_bucket: bio230014-bucket01/challenges/forecasts/summaries
 targets_bucket: bio230014-bucket01/challenges/targets
 
@@ -79,8 +84,8 @@ catalog_config:
   aws_download_path_forecasts: 'bio230014-bucket01/challenges/forecasts/parquet'
   aws_download_path_scores: 'bio230014-bucket01/challenges/scores/parquet'
   summaries_download_path: 'bio230014-bucket01/challenges/forecasts/summaries'
-  host_url: "https://www.ecoforecastprojectvt.org"
-  host_name: "Ecoforecast Challenge"
+  host_url: "https://ecoforecast.org/"
+  host_name: "Ecological Forecasting Initiative"
   bbox:
     max_lat: 45.5175
     min_lat: 39.6327
@@ -93,4 +98,6 @@ catalog_config:
   citation_text: "Thomas, R.Q., C. Boettiger, C.C. Carey, M.C. Dietze, L.R. Johnson, M.A. Kenney, J.S. Mclachlan, J.A. Peters, E.R. Sokol, J.F. Weltzin, A. Willson, W.M. Woelmer, and Challenge Contributors. 2023. The NEON Ecological Forecasting Challenge. Frontiers in Ecology and Environment 21: 112-113."
   dashboard_url: "https://projects.ecoforecast.org/usgsrc4cast-ci/"
   dashboard_title: "EFI-USGS River Chlorophyll Forecast Challenge Dashboard"
+  documentation_url: "https://projects.ecoforecast.org/usgsrc4cast-docs/"
+  catalog_title: "EFI-USGS River Chlorophyll Forecasting Challenge"
   site_metadata_url: 'https://raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/USGS_site_metadata.csv'

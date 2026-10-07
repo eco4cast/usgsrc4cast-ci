@@ -1,0 +1,27 @@
+on:
+  schedule:
+    # 06:00 UTC on the 1st of Jan, Apr, Jul, Oct — every 3 months. CA DWR
+    # republishes reviewed WDL continuous chla every ~2 months; a quarterly
+    # backfill keeps the target record's reviewed layer current.
+    - cron: '0 6 1 */3 *'
+  workflow_dispatch:
+
+name: wdl-backfill
+
+jobs:
+  wdl-backfill:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      OSN_KEY: ${{ secrets.OSN_KEY }}
+      OSN_SECRET: ${{ secrets.OSN_SECRET }}
+    container: eco4cast/usgsrc4cast-targets:latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: main
+      - name: Backfill S3 targets with reviewed CA DWR WDL data
+        shell: Rscript {0}
+        run: |
+          setwd("targets")
+          source("backfill_wdl_to_s3.R")

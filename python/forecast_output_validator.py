@@ -46,6 +46,14 @@ def forecast_output_validator(forecast_file):
             print("missing the variable and prediction columns")
             valid = False
 
+        if "prediction" in out.columns and out["prediction"].isna().all():
+            print("WARNING: prediction column is all NA values")
+            valid = False
+
+        if lexists(out, "model_id") and out["model_id"].nunique() > 1:
+            print("WARNING: file contains more than one model_id")
+            valid = False
+
         if lexists(out, "ensemble"):
             print("ensemble dimension should be named parameter")
             valid = False
@@ -101,7 +109,7 @@ def forecast_output_validator(forecast_file):
         valid = False
 
     if not valid:
-        print("Forecast file is not valid. The following link provides information about the format:\nhttps://projects.ecoforecast.org/neon4cast-ci/instructions.html#forecast-file-format")
+        print("Forecast file is not valid. The following link provides information about the format:\nhttps://projects.ecoforecast.org/usgsrc4cast-ci/instructions.html#forecast-file-format")
     else:
         print("Forecast format is valid")
     

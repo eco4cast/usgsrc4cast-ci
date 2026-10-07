@@ -37,6 +37,8 @@ jobs:
           . venv/bin/activate
           pip install stac-validator
 
+      - uses: ./.github/actions/install-mc
+
       - name: Render metadata
         shell: bash
         run: |
@@ -350,7 +352,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-    container: eco4cast/rocker-neon4cast:latest
     steps:
       - name: Call Healthcheck
         run: |

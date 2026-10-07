@@ -11,9 +11,12 @@ ENV GITHUB_PAT=$GITHUB_PAT
 # COPY --chown=${NB_USER} . ${HOME}
 
 #USER ${NB_USER}
+RUN apt-get update && apt-get install -y libglpk-dev && rm -rf /var/lib/apt/lists/*
+
 RUN install2.r --error \
   clustermq \
   dataRetrieval \
+  sf \
   tarchetypes \
   targets \
   && rm -rf /tmp/downloaded_packages /tmp/*.rds /tmp/Rtmp*

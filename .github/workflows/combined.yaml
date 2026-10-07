@@ -22,6 +22,8 @@ jobs:
         with:
           ref: main
 
+      - uses: ./.github/actions/install-mc
+
       - name: Process submissions
         shell: Rscript {0}
         run: |
@@ -69,7 +71,7 @@ jobs:
       - name: Set up Python
         run: |
           sudo apt-get update
-          sudo apt-get install -y python3-venv python3-pip
+          sudo apt-get install -y python3-venv python3-pip curl jq
 
       - name: Create and activate virtual environment
         run: |
@@ -82,8 +84,8 @@ jobs:
           pip install pandas
 
       - uses: quarto-dev/quarto-actions/setup@v2
-        with:
-          version: 1.4.146
+
+      - uses: ./.github/actions/install-mc
 
       - name: install deps
         shell: Rscript {0}
@@ -106,7 +108,7 @@ jobs:
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git checkout gh-pages
+          git checkout -f gh-pages
           cp -r dashboard/docs/* .
           git add .
           git commit -a -m "update pages" || echo "nothing to commit"

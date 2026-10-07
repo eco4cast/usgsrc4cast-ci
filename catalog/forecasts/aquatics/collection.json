@@ -52,14 +52,14 @@
   "extent": {
     "spatial": {
       "bbox": [
-        [-122.6692, 39.6328, -74.7781, 45.5175]
+        [-122.6692, 37.6793, -74.7781, 45.5175]
       ]
     },
     "temporal": {
       "interval": [
         [
           "2024-02-07T00:00:00Z",
-          "2026-01-18T00:00:00Z"
+          "2026-11-08T00:00:00Z"
         ]
       ]
     }
@@ -67,12 +67,12 @@
   "table:columns": [
     {
       "name": "datetime",
-      "type": "timestamp[us, tz=UTC]",
+      "type": "timestamp[us]",
       "description": "datetime of the forecasted value (ISO 8601)"
     },
     {
       "name": "reference_datetime",
-      "type": "timestamp[us, tz=UTC]",
+      "type": "timestamp[us]",
       "description": "datetime that the forecast was initiated (horizon = 0)"
     },
     {
@@ -97,7 +97,7 @@
     },
     {
       "name": "pub_datetime",
-      "type": "timestamp[us, tz=UTC]",
+      "type": "timestamp[us]",
       "description": "datetime that forecast was submitted"
     },
     {

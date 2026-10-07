@@ -3,14 +3,15 @@ library(targets)
 options(tidyverse.quiet = TRUE,
         clustermq.scheduler = "multicore")
 
-# set package needs
 tar_option_set(packages = c("dataRetrieval",
-                            "tidyverse"))
+                            "tidyverse",
+                            "sf",
+                            "lubridate"))
 
 source("src/download_nwis_data.R")
+source("src/download_cdec_data.R")
 source("src/s3_utils.R")
 
-# End this file with a list of target objects.
 list(
 
   tar_target(
@@ -32,8 +33,8 @@ list(
 
   tar_target(
     site_list_id,
-    read_csv(site_list_file) %>%
-      filter(include_in_challenge == "yes") %>%
+    read_csv(site_list_file) |>
+      filter(include_in_challenge == "yes") |>
       pull(NWIS_site_no)
   ),
 
@@ -41,23 +42,47 @@ list(
     metadata,
     {
       out_file <- "out/USGS_site_metadata.csv"
-      whatNWISsites(sites = site_list_id) %>%
-        tibble() %>%
-        mutate(site_id = paste(agency_cd, site_no, sep = "-"),
+      sites_prefixed <- paste0("USGS-", site_list_id)
+      site_meta <- read_waterdata_monitoring_location(
+        monitoring_location_id = sites_prefixed
+      )
+      coords <- sf::st_coordinates(site_meta)
+      site_meta |>
+        sf::st_drop_geometry() |>
+        mutate(latitude = coords[, "Y"],
+               longitude = coords[, "X"],
+               site_id = monitoring_location_id,
                project_id = "usgsrc4cast",
-               site_url = paste0("https://waterdata.usgs.gov/monitoring-location/", site_no)) %>%
-        relocate(site_id, project_id) %>%
-        relocate(site_url, .before = colocated) %>%
-        rename(latitude = dec_lat_va,
-               longitude = dec_long_va) %>%
+               site_no = monitoring_location_number,
+               station_nm = monitoring_location_name,
+               site_tp_cd = site_type_code,
+               site_url = paste0("https://waterdata.usgs.gov/monitoring-location/",
+                                 gsub("USGS-", "", monitoring_location_id))) |>
+        rename(agency_cd = agency_code) |>
+        select(site_id, project_id, agency_cd, site_no, station_nm,
+               site_tp_cd, latitude, longitude, site_url) |>
         write_csv(file = out_file)
       return(out_file)
     }
   ),
 
   tar_target(
+    s3_historic_csv,
+    {
+      out_file <- "out/s3_historic_data.csv"
+      s3_url <- config$target_groups$aquatics$targets_file
+      dat <- read_csv(s3_url, show_col_types = FALSE)
+      write_csv(dat, out_file)
+      return(out_file)
+    },
+    format = "file",
+    cue = tar_cue("always")
+  ),
+
+  tar_target(
     start_date,
-    as.Date("2000-01-01")
+    Sys.Date() - 365,
+    cue = tar_cue("always")
   ),
 
   tar_target(
@@ -83,34 +108,22 @@ list(
                            start_date = start_date,
                            end_date = end_date,
                            pcodes = pcodes_ugL,
-                           service = "dv", # dv is daily values
-                           statCd = "00003", # 00003 is mean
+                           statistic_id = "00003",
                            out_file = "out/historic_data.rds"),
     format = "file"
   ),
 
   tar_target(
-    sites_without_dv,
-    {
-      sites_with_dv = read_rds(historic_data_rds)
-      site_list_id[!site_list_id %in% sites_with_dv$site_no]
-    }
-  ),
-
-  tar_target(
     uv_historic_data_rds,
-    download_historic_uv_data(sites = sites_without_dv,
+    download_historic_uv_data(sites = site_list_id,
                               start_date = start_date,
                               end_date = end_date,
                               pcodes = pcodes_ugL,
-                              service = "uv",
                               out_file = "out/historic_uv_data.rds"),
     format = "file"
   ),
 
-  # there are several sites in the WRB that stopped collecting sensor chl. in ug/L
-  #  and switched to RFUs in 2024. See "targets/in/wrb_rfu_notes.txt" for more details
-  # Downloading the RFU UV data, converting to ug/L, and adding to the existing ug/L timeseries
+  # WRB sites that switched from ug/L sensors to RFU sensors in 2024
   tar_target(
     pcodes_rfu,
     c("32315")
@@ -127,33 +140,80 @@ list(
                                   start_date = start_date,
                                   end_date = end_date,
                                   pcodes = pcodes_rfu,
-                                  service = "uv",
                                   out_file = "out/historic_uv_rfu_data.rds"),
     format = "file"
+  ),
+
+  # CA DWR CDEC stations (chlorophyll sensor 28, ug/L). See
+  # docs/add_cadwr_cdec_sites.md. Written to S3 as DWR-{station} site_ids.
+  # NOTE: this pulls the same trailing 365-day window as the USGS targets so it
+  # respects the S3-backfill merge invariant in all_historic_data_csv. The full
+  # historical record (needed for climatology baselines) must be seeded into the
+  # S3 targets file by a separate one-time backfill job.
+  tar_target(
+    cdec_stations,
+    c("SJR", "MLS", "GLE", "MHO", "OH1")
+  ),
+
+  tar_target(
+    cdec_historic_data_rds,
+    # dur_code = "E" (15-min event): only SJR publishes an hourly chlorophyll
+    # series; all 5 stations publish event data, which is aggregated to daily.
+    download_cdec_chla_data(stations = cdec_stations,
+                            start_date = start_date,
+                            end_date = end_date,
+                            sensor_num = 28,
+                            dur_code = "E",
+                            out_file = "out/historic_cdec_data.rds"),
+    format = "file",
+    cue = tar_cue("always")
   ),
 
   tar_target(
     all_historic_data_csv,
     {
-      dv <- read_rds(historic_data_rds) %>% mutate(source = 'dv')
-      uv <- read_rds(uv_historic_data_rds) %>% mutate(source = 'uv')
-      uv_rfu <- read_rds(uv_rfu_historic_data_rds) %>% mutate(source = 'uv_rfu') %>%
+      dv <- read_rds(historic_data_rds) |> mutate(source = "dv")
+      uv <- read_rds(uv_historic_data_rds) |> mutate(source = "uv")
+      uv_rfu <- read_rds(uv_rfu_historic_data_rds) |> mutate(source = "uv_rfu") |>
         filter(site_no != "14181500")
-      site_14181500_rfu = read_rds(uv_rfu_historic_data_rds) %>% mutate(source = 'uv_rfu') %>%
-        filter(site_no == "14181500" & dateTime > as.Date('2024-04-24'))
+      site_14181500_rfu <- read_rds(uv_rfu_historic_data_rds) |>
+        mutate(source = "uv_rfu") |>
+        filter(site_no == "14181500" & dateTime > as.Date("2024-04-24"))
       uv_rfu <- bind_rows(uv_rfu, site_14181500_rfu)
-      out_file <- "out/USGS_chl_data.csv"
-      out <- bind_rows(dv, uv, uv_rfu) %>%
+
+      usgs_recent <- bind_rows(dv, uv, uv_rfu) |>
         rename(datetime = dateTime,
                site_id = site_no,
-               observation = chl_ug_L) %>%
+               observation = chl_ug_L) |>
+        mutate(site_id = paste0("USGS-", site_id))
+
+      dwr_recent <- read_rds(cdec_historic_data_rds) |>
+        rename(datetime = dateTime,
+               site_id = site_no,
+               observation = chl_ug_L) |>
+        mutate(site_id = paste0("DWR-", site_id))
+
+      recent <- bind_rows(usgs_recent, dwr_recent) |>
         mutate(variable = "chla",
-               site_id = paste0("USGS-", site_id),
                project_id = "usgsrc4cast",
-               duration = "P1D") %>%
-        distinct(site_id, datetime, .keep_all = TRUE) %>%
-        select(project_id, site_id, datetime,
-               duration, variable, observation) %>%
+               duration = "P1D") |>
+        distinct(site_id, datetime, .keep_all = TRUE) |>
+        select(project_id, site_id, datetime, duration, variable, observation)
+
+      s3_all <- read_csv(s3_historic_csv, show_col_types = FALSE)
+      s3_overlap <- s3_all |> filter(datetime >= min(recent$datetime))
+
+      # Abort if recent pull has < 90% of the rows S3 had for the same period
+      if (nrow(s3_overlap) > 0 && nrow(recent) < nrow(s3_overlap) * 0.9) {
+        stop("Recent data pull looks incomplete (",
+             nrow(recent), " rows vs ", nrow(s3_overlap),
+             " in S3 for the same period). Keeping S3 data as-is.")
+      }
+
+      s3_data <- s3_all |> filter(datetime < min(recent$datetime))
+
+      out_file <- "out/USGS_chl_data.csv"
+      out <- bind_rows(s3_data, recent) |>
         arrange(site_id, datetime)
       write_csv(out, file = out_file)
       return(out_file)
@@ -170,7 +230,3 @@ list(
   )
 
 )
-
-
-
-
