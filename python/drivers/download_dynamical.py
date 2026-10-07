@@ -46,6 +46,7 @@ from drivers.write_parquet import (
     write_stage3_parquet,
     list_stage2_reference_dates,
     read_stage3_site,
+    stage3_site_summary,
     make_osn_filesystem,
 )
 
@@ -326,40 +327,56 @@ def run_stage2(dates: list, output_dir: str, filesystem, lead_time: str,
 def run_stage3(start_date, end_date: str, output_dir: str, filesystem,
                overlap_days: int = STAGE3_OVERLAP_DAYS):
     """
-    Extend Stage 3 analysis incrementally, matching update_stage3.R.
+    Build / extend the fresh single-member Stage 3 analysis record.
 
-    For each site: read the existing record, pull analysis from
-    (existing max datetime − overlap_days) through end_date (or from an explicit
-    start_date), keep existing rows older than the regenerated window, and
-    overwrite the per-site partition. When Stage 3 is empty, start_date is required.
+    Fresh-history model (dynamical migration): Stage 3 is a single-member product
+    derived from the deterministic GEFS analysis. The pre-migration record was a
+    31-member product (~13M rows/site) derived from the pseudo forecast; it is
+    never loaded (that OOMs the runner) — each per-site write overwrites it.
+
+    Per site (processed one at a time to bound memory):
+      - If a small single-member record already exists, extend it: keep rows older
+        than the newly pulled window and append the new rows.
+      - If the site is absent or still holds the oversized legacy record, write the
+        freshly pulled single-member data (replacing any legacy file).
+
+    The pull window starts at --start if given, else overlap_days before the
+    earliest existing single-member max datetime. When no single-member history
+    exists yet (first fresh build / all-legacy), --start is required.
     """
     site_metadata, site_lats, site_lons = load_site_metadata()
     site_ids = list(site_lats.keys())
 
-    # Read existing per-site records to find how far forward each already extends.
-    existing = {}
-    max_dates = []
+    # Cheaply (metadata-only) find how far each site's existing SINGLE-MEMBER record
+    # extends. Legacy 31-member records report max=None and are flagged for replace.
+    site_max = {}
+    legacy_sites = []
     for sid in site_ids:
-        edf = read_stage3_site(output_dir, sid, filesystem)
-        if edf is not None and len(edf) > 0:
-            edf["datetime"] = _as_naive(edf["datetime"])
-            existing[sid] = edf
-            max_dates.append(edf["datetime"].max())
+        summ = stage3_site_summary(output_dir, sid, filesystem)
+        if summ is None:
+            continue
+        _, max_dt = summ
+        if max_dt is None:
+            legacy_sites.append(sid)                 # oversized legacy -> replace
+        else:
+            site_max[sid] = _as_naive(pd.Series([max_dt])).iloc[0]
 
     # Decide the analysis pull window.
     if start_date is not None:
         pull_start = pd.Timestamp(start_date)
-    elif max_dates:
-        pull_start = min(max_dates).normalize() - pd.Timedelta(days=overlap_days)
+    elif site_max:
+        pull_start = min(site_max.values()).normalize() - pd.Timedelta(days=overlap_days)
     else:
         raise SystemExit(
-            "Stage 3 is empty and no --start was provided; supply --start for "
-            "the initial build."
+            "Stage 3 has no single-member history to extend (sites are empty or "
+            "hold the legacy 31-member record); supply --start to build the fresh "
+            "single-member record."
         )
     pull_start_str = pull_start.strftime("%Y-%m-%d")
 
     print(f"Pulling analysis {pull_start_str} .. {end_date} "
-          f"({len(existing)}/{len(site_ids)} sites have existing data)")
+          f"(extend {len(site_max)}, replace-legacy {len(legacy_sites)}, "
+          f"{len(site_ids)} sites total)")
 
     analysis_ds = pull_gefs_analysis(
         start_time=np.datetime64(pull_start_str),
@@ -372,29 +389,27 @@ def run_stage3(start_date, end_date: str, output_dir: str, filesystem,
     df_new = process_analysis_to_stage3(analysis_ds, site_lats, site_lons)
     df_new["datetime"] = _as_naive(df_new["datetime"])
 
-    # Per site: retain history older than the regenerated window, append new rows.
-    combined = []
+    # Write one site at a time so no more than a single site's record is in memory.
+    written = 0
+    total_rows = 0
     for sid in site_ids:
         new_s = df_new[df_new["site_id"] == sid]
         if new_s.empty:
             continue
-        min_new = new_s["datetime"].min()
-        if sid in existing:
-            old = existing[sid]
+        if sid in site_max:  # extend existing small single-member record
+            min_new = new_s["datetime"].min()
+            old = read_stage3_site(output_dir, sid, filesystem)
+            old["datetime"] = _as_naive(old["datetime"])
             old = old[old["datetime"] < min_new].reindex(columns=COLUMN_ORDER)
-            combined.append(pd.concat([old, new_s[COLUMN_ORDER]], ignore_index=True))
-        else:
-            combined.append(new_s[COLUMN_ORDER])
+            out = pd.concat([old, new_s[COLUMN_ORDER]], ignore_index=True)
+        else:                # fresh build or legacy replacement
+            out = new_s[COLUMN_ORDER].copy()
 
-    out = pd.concat(combined, ignore_index=True)
+        write_stage3_parquet(out, output_dir, filesystem=filesystem)
+        written += 1
+        total_rows += len(out)
 
-    print(f"  Writing parquet to {output_dir}/")
-    write_stage3_parquet(out, output_dir, filesystem=filesystem)
-
-    n_sites = out["site_id"].nunique()
-    n_hours = out["datetime"].nunique()
-    print(f"Stage 3 complete: {len(out)} rows, {n_sites} sites, {n_hours} hours")
-    return out
+    print(f"Stage 3 complete: wrote {written} sites, {total_rows} rows")
 
 
 # =============================================================================

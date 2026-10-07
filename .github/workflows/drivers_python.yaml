@@ -36,7 +36,11 @@ on:
         required: false
         default: ""
       stage3_start:
-        description: "Stage 3 start (YYYY-MM-DD). Blank = extend from existing data."
+        description: "Stage 3 start (YYYY-MM-DD). Blank = extend from existing data. Set for the fresh single-member build."
+        required: false
+        default: ""
+      stage3_end:
+        description: "Stage 3 end (YYYY-MM-DD). Blank = yesterday. Use with stage3_start to chunk a large backfill."
         required: false
         default: ""
 
@@ -82,9 +86,7 @@ jobs:
 
       - name: Update Stage 3 (analysis)
         run: |
-          if [ -n "${{ inputs.stage3_start }}" ]; then
-            uv run python -m python.drivers.download_dynamical stage3 --s3 \
-              --start "${{ inputs.stage3_start }}"
-          else
-            uv run python -m python.drivers.download_dynamical stage3 --s3
-          fi
+          ARGS=""
+          if [ -n "${{ inputs.stage3_start }}" ]; then ARGS="$ARGS --start ${{ inputs.stage3_start }}"; fi
+          if [ -n "${{ inputs.stage3_end }}" ]; then ARGS="$ARGS --end ${{ inputs.stage3_end }}"; fi
+          uv run python -m python.drivers.download_dynamical stage3 --s3 $ARGS

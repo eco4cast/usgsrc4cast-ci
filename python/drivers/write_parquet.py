@@ -89,6 +89,53 @@ def list_stage2_reference_dates(output_dir: str, filesystem=None) -> set:
     return dates
 
 
+# A single-member Stage 3 site record spans at most a few hundred thousand rows
+# (hours x variables x 1 member). The legacy 31-member record is ~13M rows/site;
+# anything above this limit is treated as legacy and replaced, never read into
+# memory (loading it OOMs the runner).
+STAGE3_SINGLE_MEMBER_ROW_LIMIT = 3_000_000
+
+
+def stage3_site_summary(output_dir: str, site_id: str, filesystem=None):
+    """
+    Cheaply summarize an existing Stage 3 site partition for the fresh-history model.
+
+    Returns None if the site has no data. Otherwise returns (n_rows, max_datetime),
+    where n_rows comes from parquet metadata (no data scan). max_datetime is read
+    (datetime column only) solely for small single-member records; for an oversized
+    legacy 31-member record it is returned as None to signal "replace, do not merge".
+
+    Parameters
+    ----------
+    output_dir : str
+        Stage 3 root (local path or S3 bucket key).
+    site_id : str
+    filesystem : pyarrow.fs.FileSystem or None
+
+    Returns
+    -------
+    tuple(int, pandas.Timestamp | None) or None
+    """
+    import pyarrow.dataset as pads
+    import pyarrow.compute as pc
+
+    fs = filesystem or pafs.LocalFileSystem()
+    path = os.path.join(output_dir, f"site_id={site_id}")
+    info = fs.get_file_info(path)
+    if info.type == pafs.FileType.NotFound:
+        return None
+    dataset = pads.dataset(path, filesystem=fs, format="parquet")
+    if not dataset.files:
+        return None
+
+    n_rows = dataset.count_rows()  # parquet metadata, no data read
+    if n_rows > STAGE3_SINGLE_MEMBER_ROW_LIMIT:
+        return (n_rows, None)  # legacy 31-member record: drop & replace
+
+    dt = dataset.to_table(columns=["datetime"])["datetime"]
+    return (n_rows, pc.max(dt).as_py())
+
+
 def read_stage3_site(output_dir: str, site_id: str, filesystem=None):
     """
     Read the existing Stage 3 partition for one site, or None if absent.
