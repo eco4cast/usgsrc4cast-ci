@@ -153,19 +153,40 @@ Python implementations of key utilities:
 
 ### `/python/drivers`
 New Python-based GEFS driver pipeline (replacing R/gefs4cast):
-- `download_dynamical.py`: CLI orchestrator for generating Stage 2/3 from dynamical.org
+- `download_dynamical.py`: CLI orchestrator for generating Stage 1/2/3 from dynamical.org
+- `process_to_native.py`: Native-resolution Stage 1 + stage1-stats (GRIB names, per-ensemble)
 - `process_to_hourly.py`: Hourly interpolation, solar geometry correction, variable transforms
 - `solar_geometry.py`: Solar zenith angle and potential radiation calculations (ported from `to_hourly.R`)
-- `write_parquet.py`: Write partitioned parquet matching Stage 2/3 schema
+- `write_parquet.py`: Write partitioned parquet (local or OSN S3) matching Stage 1/2/3 schema
+
+Products produced: **stage1**, **stage1-stats**, **stage2**, **stage3**. The gefs4cast
+**pseudo** product is **deprecated** (dynamical.org can't reproduce its 31-member,
+4-cycle short-horizon structure). Stage 1 carries **16 of 25** GRIB variables — the 9
+land-surface/flux vars dynamical doesn't ingest (ICETK, LHTFL, SHTFL, SNOD, SOILW,
+TSOIL, ULWRF, USWRF, WEASD) are dropped. Stage 3 is single-member (deterministic
+analysis) vs 31-member in the old pseudo-derived product.
 
 **CLI usage:**
 ```bash
+# Generate Stage 1 + stage1-stats forecast for a date
+python -m python.drivers.download_dynamical stage1 --date 2025-09-07
+
 # Generate Stage 2 forecast for a date
 python -m python.drivers.download_dynamical stage2 --date 2025-09-07
 
 # Generate/update Stage 3 analysis data
 python -m python.drivers.download_dynamical stage3 --start 2025-09-01 --end 2025-09-07
+
+# One-shot historical backfill (stage1/stage2 accept --start/--end)
+python -m python.drivers.download_dynamical stage1 --start 2026-09-18 --end 2026-10-06
+
+# Write to the production OSN bucket (CI only; needs OSN_KEY/OSN_SECRET)
+python -m python.drivers.download_dynamical stage2 --s3
 ```
+
+S3 writes to OSN require OSN_KEY/OSN_SECRET, which exist only as GitHub Actions secrets
+(eco4cast org) — so the `--s3` path runs in CI (`.github/workflows/drivers_python.yaml`),
+not locally. Local runs use `--output` directories.
 
 ### `/docs`
 Project documentation:
@@ -410,6 +431,12 @@ New pipeline must produce identical parquet schema to current Stage 2/3:
 - Precipitation: dynamical's `precipitation_surface` is already in kg/m²/s (equivalent to mm/s), so it maps directly with no conversion (no accumulation conversion needed unlike gefs4cast)
 - End-to-end tested: dynamical.org zarr -> hourly processing -> partitioned parquet matching Stage 2/3 schema
 
-**Migration status:** Phase 1 (validation) and Phase 2 (pipeline scripts) complete. Phase 3 (S3 upload) and Phase 4 (parallel validation) not yet started.
+**Phase 3 S3 upload (completed):**
+- `write_parquet.py` writes to OSN via `make_osn_filesystem()` (OSN_KEY/OSN_SECRET), targeting production bucket paths
+- `process_to_native.py` adds stage1 + stage1-stats; output schema verified identical to the on-disk gefs4cast schema (`ensemble, cycle, horizon[duration s], datetime[us UTC], variable, prediction, family`; 31 members gec00/gep01-30 for stage1, geavg/gespr for stage1-stats)
+- `.github/workflows/drivers_python.yaml` runs stage1/stage2/stage3 daily (12:00 UTC) via uv, writing to OSN; `workflow_dispatch` inputs drive one-shot backfills
+- `pseudo` removed from `challenge_configuration.yaml` `noaa_forecast_groups`/`_group_paths`
+
+**Migration status:** Phases 1–3 complete. Phase 4 (parallel run & validation against the R products) and Phase 5 (cutover: retire `drivers_stage1.yaml`/`drivers_stage3.yaml`) not yet started.
 
 **Documentation:** See `docs/migrate_to_dynamical.md` for complete migration plan and status.

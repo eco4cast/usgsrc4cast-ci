@@ -331,8 +331,22 @@ fc = (
 
 **`python/drivers/download_dynamical.py`** - Main CLI orchestrator
 - Replaces: `download_stage1_pseudo.R`, `generate_stage2.R`, `generate_stage3.R`
-- Functions: `generate_stage2()`, `generate_stage3()`
-- CLI: `python -m python.drivers.download_dynamical stage2|stage3 [options]`
+- Functions: `run_stage1()`, `run_stage2()`, `run_stage3()`
+- CLI: `python -m python.drivers.download_dynamical stage1|stage2|stage3 [options]`
+- `--s3` writes to the production OSN bucket (needs OSN_KEY/OSN_SECRET, CI only);
+  `--start`/`--end` run a one-shot historical backfill without widening the daily window
+
+**`python/drivers/process_to_native.py`** - Native-resolution Stage 1 / stage1-stats
+- Replaces the stage1 and stage1-stats parts of `download_stage1_pseudo.R`
+- Keeps GEFS native resolution (3 h to day 10, 6 h to day 35), GRIB variable names,
+  per-ensemble structure; GRIB-convention units
+- `process_forecast_to_stage1()`: 31 members (gec00/gep01–gep30), family `ensemble`
+- `process_forecast_to_stage1_stats()`: ensemble mean/spread (geavg/gespr), family `spread`
+- **16 of 25 GRIB variables**: dynamical.org does not ingest the 9 land-surface/flux
+  variables gefs4cast carried (ICETK, LHTFL, SHTFL, SNOD, SOILW, TSOIL, ULWRF, USWRF,
+  WEASD); these are intentionally dropped
+- **`pseudo` deprecated**: it requires 31-member, 4-cycle short-horizon forecasts
+  dynamical.org does not provide, and is removed from `challenge_configuration.yaml`
 
 **`python/drivers/process_to_hourly.py`** - Hourly processing
 - Ported from `R/eco4cast-helpers/to_hourly.R`
@@ -346,10 +360,15 @@ fc = (
 - Solar constant: 1366 W/m², uses 0-360 longitude convention
 - Tested: produces correct diurnal cycle (peak at local noon, zero at night)
 
-**`python/drivers/write_parquet.py`** - Output formatting
+**`python/drivers/write_parquet.py`** - Output formatting (local or OSN S3)
+- `write_stage1_parquet()`: partitioned by `reference_datetime={date}/site_id={site}/`
+  (used for both stage1 and stage1-stats; explicit schema matching gefs4cast on-disk types)
 - `write_stage2_parquet()`: partitioned by `reference_datetime={date}/site_id={site}/`
 - `write_stage3_parquet()`: partitioned by `site_id={site}/`
 - Drops partition columns from data (stored in directory structure)
+- `make_osn_filesystem()`: authenticated OSN `S3FileSystem` from OSN_KEY/OSN_SECRET
+  (CI only); `filesystem=None` writes locally
+- `list_stage2_reference_dates()` / `read_stage3_site()`: cheap idempotency/gap-fill checks
 
 #### End-to-End Test Results (2025-09-01, 2 sites, 3-day forecast):
 - Stage 2: 46,624 rows, 31 ensemble members, 8 CF variables, hourly resolution
@@ -358,17 +377,31 @@ fc = (
 - Parquet files match expected partition scheme
 
 #### Key Differences from R Pipeline:
-- **No Stage 1 intermediate**: dynamical.org provides site-extracted data directly
+- **No Stage 1 S3 intermediate for Stage 2/3**: dynamical.org provides site-extracted
+  data directly, so Stage 2/3 read dynamical in-memory rather than from a Stage 1 S3
+  product. Stage 1 / stage1-stats are still published as standalone products (from the
+  same forecast pull) for downstream consumers, via `process_to_native.py`.
+- **Single-member Stage 3**: dynamical's analysis store is a deterministic reanalysis
+  with no ensemble dimension, so Stage 3 carries one member (parameter 0) vs the 31 in
+  the gefs4cast product (which derived Stage 3 from the pseudo forecast).
+- **`pseudo` deprecated**: not reproducible from dynamical (see process_to_native.py note).
 - **Precipitation**: dynamical's `precipitation_surface` is already `kg/m²/s` (units attr `kg m-2 s-1`, equivalent to mm/s), so it maps **directly** with no conversion (R pipeline divided 6h accumulation by 21600s). ⚠️ An earlier version of this pipeline divided by 1000, which made precip ~1000× too small — fixed; the transform is now identity.
 - **Temperature**: dynamical gives °C, add 273.15 for K (R pipeline added 273)
 - **Grid cell selection**: dynamical's nearest-neighbor may differ from gefs4cast at boundary sites (see Phase 1 results)
 
-### Phase 3: S3 Upload & Integration
+### Phase 3: S3 Upload & Integration ✅ COMPLETED
 
-S3 upload not yet implemented in `write_parquet.py`. Needs:
-- S3 write using `pyarrow.fs.S3FileSystem` with OSN credentials
-- Integration with existing bucket paths in `challenge_configuration.yaml`
-- Incremental Stage 3 updates (append new data, replace last 3 days)
+- S3 write implemented in `write_parquet.py` via `pyarrow.fs.S3FileSystem` +
+  `make_osn_filesystem()` (OSN_KEY/OSN_SECRET), targeting the production bucket paths.
+- `.github/workflows/drivers_python.yaml` runs Stage 1, Stage 2, and Stage 3 daily
+  (12:00 UTC) with uv, writing directly to OSN. `workflow_dispatch` inputs drive one-shot
+  historical backfills (e.g. recovering the Sept 2026 gap left by the failed R runs).
+- Incremental Stage 3 updates implemented (`run_stage3`): extend each site forward from
+  its max datetime, re-processing a trailing overlap window (matches `update_stage3.R`).
+- Daily gap-fill for Stage 1/2 (`run_stage1`/`run_stage2`): list existing
+  `reference_datetime` partitions and fill only what's missing in the trailing 7-day window.
+- OSN credentials live only in GitHub Actions (eco4cast org secrets); S3 writes are
+  validated in CI, not locally. Local runs use `--output` directories.
 
 Output parquet schema (verified matching current pipeline):
 
