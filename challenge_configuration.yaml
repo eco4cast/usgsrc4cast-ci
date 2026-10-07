@@ -48,8 +48,10 @@ target_groups:
   aquatics:
     targets_file: "https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/targets/project_id=usgsrc4cast/duration=P1D/river-chl-targets.csv.gz"
 
-noaa_forecast_groups: ['Pseudo','Stage1-stats','Stage1','Stage2','Stage3']
-noaa_forecast_group_paths: ['pseudo','stage1-stats','stage1','stage2','stage3']
+# 'Pseudo' deprecated with the dynamical.org migration: pseudo requires 31-member
+# 4-cycle short-horizon forecasts that dynamical.org does not provide.
+noaa_forecast_groups: ['Stage1-stats','Stage1','Stage2','Stage3']
+noaa_forecast_group_paths: ['stage1-stats','stage1','stage2','stage3']
 
 variable_groups:
   aquatics:

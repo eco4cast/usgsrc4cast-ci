@@ -73,3 +73,6 @@ archive/
 **/in/**
 
 _targets/
+
+__pycache__/
+*.pyc

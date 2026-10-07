@@ -1,0 +1,193 @@
+---
+title: "USGS RC4cast GEFS Driver Documentation"
+output: html_document
+---
+
+# Overview
+
+This document describes the NOAA GEFS (Global Ensemble Forecast System) driver data formats used in the USGS River Chlorophyll Forecasting Challenge. GEFS data is processed through three stages with increasing levels of processing.
+
+**S3 Bucket:** `bio230014-bucket01/challenges/drivers/usgsrc4cast/noaa/gefs-v12/`
+
+**Endpoint:** `https://sdsc.osn.xsede.org`
+
+```{r setup, message=FALSE, warning=FALSE}
+source("../R/eco4cast-helpers/noaa_gefs.R")
+library(tidyverse)
+```
+
+---
+
+# Stage 1: Raw GEFS Extractions
+
+Raw NOAA GEFS v12 forecasts extracted at site coordinates. Contains 31 ensemble members with 3-hourly resolution for days 1-10 and 6-hourly for days 11-30.
+
+**S3 Path:** `.../stage1/reference_datetime={date}`
+
+## Schema
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `site_id` | string | Site identifier (e.g., "USGS-01427510") |
+| `datetime` | timestamp | Valid time of forecast |
+| `variable` | string | GRIB variable name |
+| `prediction` | float | Forecast value |
+| `ensemble` | string | Ensemble member (gec00, gep01-gep30) |
+| `horizon` | duration | Forecast lead time (e.g., 43200 secs = 12 hrs) |
+| `cycle` | string | Forecast cycle (00, 06, 12, 18 UTC) |
+| `family` | string | Forecast family (typically "ensemble") |
+
+## Variables
+
+| Variable | Description | Units |
+|----------|-------------|-------|
+| `TMP` | 2m Temperature | **°C** (not K!) |
+| `RH` | Relative humidity | % |
+| `PRES` | Surface pressure | Pa |
+| `UGRD` | U-component of wind | m/s |
+| `VGRD` | V-component of wind | m/s |
+| `APCP` | Accumulated precipitation | kg/m² |
+| `DSWRF` | Downward shortwave radiation | W/m² |
+| `DLWRF` | Downward longwave radiation | W/m² |
+| `TMAX` | Maximum temperature | °C |
+| `TMIN` | Minimum temperature | °C |
+| `TCDC` | Total cloud cover | % |
+| `PWAT` | Precipitable water | kg/m² |
+
+> **Note:** The documentation in `noaa_gefs.R` incorrectly states TMP is in Kelvin. Verified from actual data: TMP is in Celsius.
+
+## Example Query
+
+```{r stage1, message=FALSE}
+stage1 <- noaa_stage1(project_id = 'usgsrc4cast', start_date = '2025-01-01') |>
+  head(100) |>
+  collect()
+
+glimpse(stage1)
+
+# Show example values
+stage1 |>
+  filter(variable %in% c("TMP", "RH", "PRES", "APCP")) |>
+  select(site_id, datetime, variable, prediction, ensemble) |>
+  head(20)
+```
+
+---
+
+# Stage 2: Hourly Site Forecasts (CF Names)
+
+Stage 1 data processed to hourly resolution with CF (Climate and Forecast) convention variable names. Fluxes are converted to per-second rates.
+
+**S3 Path:** `.../stage2/reference_datetime={date}/site_id={site_id}`
+
+## Schema
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `site_id` | string | Site identifier |
+| `datetime` | timestamp | Valid time (hourly) |
+| `variable` | string | CF convention variable name |
+| `prediction` | float | Forecast value |
+| `parameter` | int | Ensemble member number (0-30) |
+| `reference_datetime` | timestamp | Forecast initialization time |
+| `family` | string | Forecast family |
+
+## Variables (CF Convention)
+
+| Variable | Description | Units | Transformation from Stage 1 |
+|----------|-------------|-------|----------------------------|
+| `air_temperature` | 2m temperature | K | TMP + 273 |
+| `air_pressure` | Surface pressure | Pa | direct |
+| `relative_humidity` | 2m relative humidity | fraction (0-1) | RH / 100 |
+| `northward_wind` | U-component wind | m/s | direct |
+| `eastward_wind` | V-component wind | m/s | direct |
+| `precipitation_flux` | Precipitation rate | kg/m²/s | APCP / (6*3600) |
+| `surface_downwelling_shortwave_flux_in_air` | SW radiation | W/m² | solar geometry applied |
+| `surface_downwelling_longwave_flux_in_air` | LW radiation | W/m² | direct |
+
+## Example Query
+
+```{r stage2, message=FALSE}
+stage2 <- noaa_stage2(project_id = 'usgsrc4cast', start_date = '2025-01-01') |>
+  head(100) |>
+  collect()
+
+glimpse(stage2)
+
+# Show example values - note temperature is now in Kelvin
+stage2 |>
+  select(site_id, datetime, variable, prediction, parameter, reference_datetime) |>
+  head(20)
+
+# Unique variables in Stage 2
+unique(stage2$variable)
+```
+
+---
+
+# Stage 3: Pseudo-historical Nowcast
+
+Hourly resolution pseudo-historical data combining the most recent predictions from each forecast cycle. Used for model initialization and historical driver data.
+
+**S3 Path:** `.../stage3/site_id={site_id}`
+
+## Schema
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `site_id` | string | Site identifier |
+| `datetime` | timestamp | Valid time (hourly) |
+| `variable` | string | CF convention variable name |
+| `prediction` | float | Forecast value |
+| `parameter` | int | Ensemble member number (0-30) |
+| `reference_datetime` | NA | Not applicable for nowcast |
+| `family` | string | Forecast family |
+
+## Key Differences from Stage 2
+
+- `reference_datetime` is **NA** (not a timestamp)
+- Continuous time series (no gaps)
+- Combines multiple forecast cycles into single nowcast product
+- Same 8 CF-convention variables as Stage 2
+- All 31 ensemble members (parameter 0-30)
+
+## Example Query
+
+```{r stage3, message=FALSE}
+stage3 <- noaa_stage3(project_id = 'usgsrc4cast') |>
+  filter(datetime > as.Date('2025-01-01'), datetime < as.Date("2025-01-03")) |>
+  head(100) |>
+  collect()
+
+glimpse(stage3)
+
+# Show example values
+stage3 |>
+  select(site_id, datetime, variable, prediction, parameter, reference_datetime) |>
+  head(20)
+
+# Verify ensemble members
+unique(stage3$parameter)
+```
+
+---
+
+# Summary Comparison
+
+| Property | Stage 1 | Stage 2 | Stage 3 |
+|----------|---------|---------|---------|
+| Variable names | GRIB (TMP, RH, etc.) | CF convention | CF convention |
+| Temperature units | °C | K | K |
+| Humidity units | % | fraction (0-1) | fraction (0-1) |
+| Temporal resolution | 3h/6h | 1h (interpolated) | 1h |
+| Ensemble column | `ensemble` (string) | `parameter` (int) | `parameter` (int) |
+| Reference datetime | via partition | column (timestamp) | NA |
+| Precipitation | accumulated (kg/m²) | rate (kg/m²/s) | rate (kg/m²/s) |
+
+---
+
+# Related Documentation
+
+- [Migration to dynamical.org](migrate_to_dynamical.md) - Plans for migrating to dynamical.org zarr store
+- [dynamical.org GEFS Analysis](dynamical_gefs_analysis.md) - Reference for dynamical.org analysis dataset
+- [dynamical.org GEFS Forecast](dynamical_gefs_forecast.md) - Reference for dynamical.org forecast dataset

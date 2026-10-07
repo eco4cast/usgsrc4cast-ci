@@ -1,0 +1,86 @@
+name: gefs_dynamical_drivers
+
+# Python/dynamical.org replacement for the gefs4cast R driver pipeline
+# (drivers_stage1.yaml / drivers_stage3.yaml). Writes Stage 1 + stage1-stats
+# (native resolution), Stage 2 (forecast), and Stage 3 (analysis) parquet
+# directly to the production OSN bucket. The gefs4cast `pseudo` product is
+# deprecated (dynamical.org cannot reproduce it).
+#
+# Scheduled run: Stage 1 and Stage 2 fill any missing reference_datetimes in the
+# trailing 7-day window; Stage 3 extends each site's analysis record forward from
+# where it left off. All are idempotent.
+#
+# workflow_dispatch inputs allow a one-shot historical backfill (e.g. recovering
+# the gap left by the failed R runs) without widening the daily window.
+
+on:
+  schedule:
+    # 12:00 UTC — after dynamical.org has published the 00Z GEFS init for the day.
+    - cron: '0 12 * * *'
+  workflow_dispatch:
+    inputs:
+      stage1_start:
+        description: "Stage 1 backfill start (YYYY-MM-DD). Blank = daily 7-day gap-fill."
+        required: false
+        default: ""
+      stage1_end:
+        description: "Stage 1 backfill end (YYYY-MM-DD). Required if start is set."
+        required: false
+        default: ""
+      stage2_start:
+        description: "Stage 2 backfill start (YYYY-MM-DD). Blank = daily 7-day gap-fill."
+        required: false
+        default: ""
+      stage2_end:
+        description: "Stage 2 backfill end (YYYY-MM-DD). Required if start is set."
+        required: false
+        default: ""
+      stage3_start:
+        description: "Stage 3 start (YYYY-MM-DD). Blank = extend from existing data."
+        required: false
+        default: ""
+
+jobs:
+  drivers:
+    runs-on: ubuntu-latest
+    timeout-minutes: 1440
+    env:
+      OSN_KEY: ${{ secrets.OSN_KEY }}
+      OSN_SECRET: ${{ secrets.OSN_SECRET }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Install dependencies
+        run: uv sync --frozen
+
+      - name: Generate Stage 1 + stage1-stats (native resolution)
+        run: |
+          if [ -n "${{ inputs.stage1_start }}" ] && [ -n "${{ inputs.stage1_end }}" ]; then
+            uv run python -m python.drivers.download_dynamical stage1 --s3 \
+              --start "${{ inputs.stage1_start }}" --end "${{ inputs.stage1_end }}"
+          else
+            uv run python -m python.drivers.download_dynamical stage1 --s3
+          fi
+
+      - name: Generate Stage 2 (forecast)
+        run: |
+          if [ -n "${{ inputs.stage2_start }}" ] && [ -n "${{ inputs.stage2_end }}" ]; then
+            uv run python -m python.drivers.download_dynamical stage2 --s3 \
+              --start "${{ inputs.stage2_start }}" --end "${{ inputs.stage2_end }}"
+          else
+            uv run python -m python.drivers.download_dynamical stage2 --s3
+          fi
+
+      - name: Update Stage 3 (analysis)
+        run: |
+          if [ -n "${{ inputs.stage3_start }}" ]; then
+            uv run python -m python.drivers.download_dynamical stage3 --s3 \
+              --start "${{ inputs.stage3_start }}"
+          else
+            uv run python -m python.drivers.download_dynamical stage3 --s3
+          fi
