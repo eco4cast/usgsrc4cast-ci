@@ -1,19 +1,65 @@
+import functools
+
 import xarray as xr
 import pandas as pd
 import numpy as np
 from sklearn.cluster import DBSCAN
 from sklearn.metrics.pairwise import haversine_distances
 
+try:
+    # Route TLS through the OS trust store so https calls succeed behind
+    # TLS-inspecting proxies (e.g. USGS) that inject a self-signed root CA.
+    import truststore
+
+    truststore.inject_into_ssl()
+except ImportError:
+    pass
+
+import icechunk
+import pystac
+
+# dynamical.org publishes its datasets through a STAC catalog. Each dataset is a
+# child of this catalog; its "icechunk-https" asset points at an Icechunk repo we
+# open read-only. This replaces the older `.../latest.zarr?email=` HTTP-zarr URLs.
+DYNAMICAL_CATALOG = "https://stac.dynamical.org/catalog.json"
+GEFS_ANALYSIS = "noaa-gefs-analysis"
+GEFS_FORECAST = "noaa-gefs-forecast-35-day"
+
+
+@functools.cache
+def _stac_catalog():
+    return pystac.Catalog.from_file(DYNAMICAL_CATALOG)
+
+
+@functools.cache
+def open_dynamical(dataset_id: str) -> xr.Dataset:
+    """Open a dynamical.org dataset via its STAC entry as a read-only xarray Dataset.
+
+    Parameters
+    ----------
+    dataset_id : str
+        STAC child id, e.g. ``noaa-gefs-analysis`` or ``noaa-gefs-forecast-35-day``.
+
+    Returns
+    -------
+    xr.Dataset
+        The full (lazy) dataset backed by the Icechunk store.
+    """
+    asset = _stac_catalog().get_child(dataset_id).assets["icechunk-https"]
+    repo = icechunk.Repository.open(icechunk.http_storage(asset.href))
+    session = repo.readonly_session("main")
+    return xr.open_zarr(session.store, chunks=None, decode_timedelta=True)
+
+
 def pull_gefs_analysis(
         start_time: np.datetime64,
         end_time: np.datetime64,
         site_metadata: xr.Dataset,
         variables: list,
-        base_url: str = "https://data.dynamical.org/noaa/gefs/analysis/latest.zarr?email=",
-        email: str = "optional@email.com"
+        dataset_id: str = GEFS_ANALYSIS,
 ) -> xr.Dataset:
     """
-    Retrieves a subset of the GEFS analysis zarr store from dynamical.org.
+    Retrieves a subset of the GEFS analysis dataset from dynamical.org.
 
     Parameters
     ----------
@@ -25,26 +71,21 @@ def pull_gefs_analysis(
         Dataset containing 'latitude' and 'longitude' variables.
     variables : list
         List of variable names to include in the subset.
-    base_url : str, optional
-        Base URL of the zarr store (default: "https://data.dynamical.org/noaa/gefs/analysis/latest.zarr?email=").
-    email : str, optional
-        Email address to include in the URL (default: "optional@email.com").
+    dataset_id : str, optional
+        STAC child id of the analysis dataset (default: ``noaa-gefs-analysis``).
 
     Returns
     -------
     xr.Dataset
-        Subset of the GEFS analysis zarr store.
+        Subset of the GEFS analysis dataset.
 
     Notes
     -----
     The `site_metadata` parameter should contain 'latitude' and 'longitude' columns.
     The function uses the `nearest` method to select the grid point closest to the specified location.
     """
-    # Construct the full URL with the provided email
-    url = base_url + email
-
-    # Open the zarr store
-    zarr = xr.open_zarr(url, chunks=None, decode_timedelta=True)  
+    # Open the dataset via the STAC catalog / Icechunk repo
+    zarr = open_dynamical(dataset_id)
 
     # First, select the time and variables to minimize data transfer
     # Then do spatial subsetting - this order is more efficient
@@ -76,11 +117,10 @@ def pull_gefs_operational(
         site_metadata: xr.Dataset,
         lead_times: int,
         variables: list,
-        base_url: str = "https://data.dynamical.org/noaa/gefs/forecast-35-day/latest.zarr?email=",
-        email: str = "optional@email.com"
+        dataset_id: str = GEFS_FORECAST,
 ) -> xr.Dataset:
     """
-    Retrieves a subset of the GEFS forecast zarr store from dynamical.org.
+    Retrieves a subset of the GEFS forecast dataset from dynamical.org.
 
     Parameters
     ----------
@@ -94,15 +134,13 @@ def pull_gefs_operational(
         Number of lead times to include in the subset.
     variables : list
         List of variable names to include in the subset.
-    base_url : str, optional
-        Base URL of the zarr store (default: "https://data.dynamical.org/noaa/gefs/forecast-35-day/latest.zarr?email=").
-    email : str, optional
-        Email address to include in the URL (default: "optional@email.com").
+    dataset_id : str, optional
+        STAC child id of the forecast dataset (default: ``noaa-gefs-forecast-35-day``).
 
     Returns
     -------
     xr.Dataset
-        Subset of the GEFS forecast zarr store.
+        Subset of the GEFS forecast dataset.
 
     Notes
     -----
@@ -110,11 +148,8 @@ def pull_gefs_operational(
     The function uses the `nearest` method to select the grid point closest to the specified location.
     The lead times are selected using the `slice` method, with the end value being the specified `lead_times`.
     """
-    # Construct the full URL with the provided email
-    url = base_url + email
-
-    # Open the zarr store
-    zarr = xr.open_zarr(url, chunks='auto', decode_timedelta=True)
+    # Open the dataset via the STAC catalog / Icechunk repo
+    zarr = open_dynamical(dataset_id)
 
     # First, select the time, lead_time, and variables to minimize data transfer
     # Then do spatial subsetting - this order is more efficient
@@ -212,7 +247,6 @@ if __name__ == "__main__":
         end_time=end_time,
         site_metadata=site_metadata,
         variables=variables,
-        email="jzwart@usgs.gov"
     )
 
     print(gefs_analysis_zarr)
@@ -225,7 +259,6 @@ if __name__ == "__main__":
         site_metadata=site_metadata,
         lead_times=lead_times,
         variables=variables,
-        email="jzwart@usgs.gov"
     )
 
     print(gefs_operational_zarr)

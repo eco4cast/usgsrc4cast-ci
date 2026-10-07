@@ -201,7 +201,26 @@ variables = [
 
 ## Dynamical.org API Details
 
-### Endpoints
+### Access: STAC catalog + Icechunk (current pattern)
+
+> **Updated access pattern (2026):** dynamical.org now serves its datasets through a
+> STAC catalog backed by **Icechunk** repositories. This replaces the older
+> `.../latest.zarr?email=YOUR_EMAIL` HTTP-zarr URLs (no email query param is needed
+> anymore). See `python/dynamical_utils.py::open_dynamical()` and the reference
+> implementation in the chronos2 forecast project (`src/fetch_covariates.py`).
+
+```
+STAC catalog:  https://stac.dynamical.org/catalog.json
+Analysis:      STAC child id  "noaa-gefs-analysis"           (asset "icechunk-https")
+Forecast:      STAC child id  "noaa-gefs-forecast-35-day"    (asset "icechunk-https")
+```
+
+The datasets are opened by resolving the STAC child, opening its `icechunk-https`
+asset as a read-only Icechunk repository, and handing the session store to
+`xr.open_zarr`. Behind a TLS-inspecting proxy (e.g. USGS) `truststore.inject_into_ssl()`
+routes HTTPS through the OS trust store so the self-signed root CA is accepted.
+
+#### Legacy endpoints (deprecated)
 ```
 Analysis:     https://data.dynamical.org/noaa/gefs/analysis/latest.zarr?email=YOUR_EMAIL
 Forecast:     https://data.dynamical.org/noaa/gefs/forecast-35-day/latest.zarr?email=YOUR_EMAIL
@@ -243,20 +262,39 @@ Forecast:     https://data.dynamical.org/noaa/gefs/forecast-35-day/latest.zarr?e
 
 ### Access Pattern (from dynamical_utils.py)
 ```python
+import functools
+
+import icechunk
+import pystac
 import xarray as xr
 
-# Analysis (for pseudo/stage3)
-zarr = xr.open_zarr(
-    "https://data.dynamical.org/noaa/gefs/analysis/latest.zarr?email=YOUR_EMAIL",
-    chunks=None,
-    decode_timedelta=True
-)
+try:
+    import truststore  # accept the USGS TLS-inspecting proxy's root CA
+    truststore.inject_into_ssl()
+except ImportError:
+    pass
 
-# Forecast (for stage2)
-zarr = xr.open_zarr(
-    "https://data.dynamical.org/noaa/gefs/forecast-35-day/latest.zarr?email=YOUR_EMAIL",
-    chunks='auto',
-    decode_timedelta=True
+DYNAMICAL_CATALOG = "https://stac.dynamical.org/catalog.json"
+
+
+@functools.cache
+def open_dynamical(dataset_id: str) -> xr.Dataset:
+    """Open a dynamical.org dataset via its STAC entry as a read-only Dataset."""
+    catalog = pystac.Catalog.from_file(DYNAMICAL_CATALOG)
+    asset = catalog.get_child(dataset_id).assets["icechunk-https"]
+    repo = icechunk.Repository.open(icechunk.http_storage(asset.href))
+    session = repo.readonly_session("main")
+    return xr.open_zarr(session.store, chunks=None, decode_timedelta=True)
+
+
+# Analysis (for pseudo/stage3)
+analysis = open_dynamical("noaa-gefs-analysis")
+
+# Forecast (for stage2) — select an init, then swap to the provided valid_time coord
+forecast = open_dynamical("noaa-gefs-forecast-35-day")
+fc = (
+    forecast.sel(init_time=init_time, lead_time=slice("0h", "35d"))
+    .swap_dims({"lead_time": "valid_time"})
 )
 ```
 
@@ -264,6 +302,15 @@ zarr = xr.open_zarr(
 - **Forecast init times**: Only 00:00 UTC forecasts are archived (not 06, 12, 18 UTC)
 - **Interpolation**: 0.5° data is bilinearly interpolated to 0.25° for consistency
 - **Forecast start date**: 2020-10-01, slightly later than current pseudo (2020-09-24)
+- **Staged publication**: The 35-day forecast is published in segments — dynamical.org
+  ingests the 0–16 day portion first and backfills days 16–35 hours later. On a run
+  day the newest init may only cover ~16 lead days. Consumers that need the full
+  horizon should check `lead_time` coverage and, if short, fall back to the most
+  recent init that spans the horizon (see `fetch_covariates.py::_candidate_init_times`
+  in the chronos2 project; `download_dynamical.py` currently warns on short coverage).
+- **`valid_time` coordinate**: The forecast dataset carries a `valid_time` coordinate
+  indexed by `lead_time`; use `swap_dims({"lead_time": "valid_time"})` instead of
+  recomputing `init_time + lead_time` by hand.
 
 ---
 
@@ -312,7 +359,7 @@ zarr = xr.open_zarr(
 
 #### Key Differences from R Pipeline:
 - **No Stage 1 intermediate**: dynamical.org provides site-extracted data directly
-- **Precipitation**: dynamical gives mm/s rate, divided by 1000 for kg/m²/s (R pipeline divided 6h accumulation by 21600s)
+- **Precipitation**: dynamical's `precipitation_surface` is already `kg/m²/s` (units attr `kg m-2 s-1`, equivalent to mm/s), so it maps **directly** with no conversion (R pipeline divided 6h accumulation by 21600s). ⚠️ An earlier version of this pipeline divided by 1000, which made precip ~1000× too small — fixed; the transform is now identity.
 - **Temperature**: dynamical gives °C, add 273.15 for K (R pipeline added 273)
 - **Grid cell selection**: dynamical's nearest-neighbor may differ from gefs4cast at boundary sites (see Phase 1 results)
 
