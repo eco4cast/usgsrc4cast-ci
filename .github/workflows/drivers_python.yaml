@@ -43,6 +43,10 @@ on:
         description: "Stage 3 end (YYYY-MM-DD). Blank = yesterday. Use with stage3_start to chunk a large backfill."
         required: false
         default: ""
+      stage3_rebuild:
+        description: "Stage 3 site(s) to rebuild from scratch (space-separated site_ids, e.g. 'DWR-SJR DWR-MLS'). Blank = normal extend. Use with stage3_start to repair a partition."
+        required: false
+        default: ""
 
 jobs:
   drivers:
@@ -89,4 +93,5 @@ jobs:
           ARGS=""
           if [ -n "${{ inputs.stage3_start }}" ]; then ARGS="$ARGS --start ${{ inputs.stage3_start }}"; fi
           if [ -n "${{ inputs.stage3_end }}" ]; then ARGS="$ARGS --end ${{ inputs.stage3_end }}"; fi
+          if [ -n "${{ inputs.stage3_rebuild }}" ]; then ARGS="$ARGS --rebuild ${{ inputs.stage3_rebuild }}"; fi
           uv run python -m python.drivers.download_dynamical stage3 --s3 $ARGS

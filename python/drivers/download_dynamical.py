@@ -46,6 +46,7 @@ from drivers.write_parquet import (
     write_stage3_parquet,
     list_stage2_reference_dates,
     read_stage3_site,
+    delete_stage3_site,
     stage3_site_summary,
     make_osn_filesystem,
 )
@@ -325,7 +326,7 @@ def run_stage2(dates: list, output_dir: str, filesystem, lead_time: str,
 # =============================================================================
 
 def run_stage3(start_date, end_date: str, output_dir: str, filesystem,
-               overlap_days: int = STAGE3_OVERLAP_DAYS):
+               overlap_days: int = STAGE3_OVERLAP_DAYS, rebuild_sites=None):
     """
     Build / extend the fresh single-member Stage 3 analysis record.
 
@@ -339,6 +340,15 @@ def run_stage3(start_date, end_date: str, output_dir: str, filesystem,
         than the newly pulled window and append the new rows.
       - If the site is absent or still holds the oversized legacy record, write the
         freshly pulled single-member data (replacing any legacy file).
+      - If the site is in rebuild_sites, skip the existing record entirely: delete
+        the partition and write the freshly pulled window (repair for partitions
+        written with a broken schema, e.g. the null-typed reference_datetime of
+        the 5 DWR sites — see docs/stage3_reference_datetime_null_type_bug.md).
+        For a chunked rebuild, pass --rebuild only on the first chunk; later
+        chunks extend normally.
+
+    rebuild_sites: None = no rebuild; empty list = all sites; otherwise the
+    given site IDs.
 
     The pull window starts at --start if given, else overlap_days before the
     earliest existing single-member max datetime. When no single-member history
@@ -346,12 +356,23 @@ def run_stage3(start_date, end_date: str, output_dir: str, filesystem,
     """
     site_metadata, site_lats, site_lons = load_site_metadata()
     site_ids = list(site_lats.keys())
+    if rebuild_sites is None:
+        rebuild_sites = set()          # flag not given
+    elif len(rebuild_sites) == 0:
+        rebuild_sites = set(site_ids)  # bare --rebuild = all sites
+    else:
+        rebuild_sites = set(rebuild_sites)
+    unknown = rebuild_sites - set(site_ids)
+    if unknown:
+        raise SystemExit(f"Unknown site_id(s) in --rebuild: {sorted(unknown)}")
 
     # Cheaply (metadata-only) find how far each site's existing SINGLE-MEMBER record
     # extends. Legacy 31-member records report max=None and are flagged for replace.
     site_max = {}
     legacy_sites = []
     for sid in site_ids:
+        if sid in rebuild_sites:
+            continue  # rebuild: ignore the existing record, write fresh
         summ = stage3_site_summary(output_dir, sid, filesystem)
         if summ is None:
             continue
@@ -374,9 +395,14 @@ def run_stage3(start_date, end_date: str, output_dir: str, filesystem,
         )
     pull_start_str = pull_start.strftime("%Y-%m-%d")
 
+    if rebuild_sites and start_date is None:
+        print("  WARNING: --rebuild without --start: rebuilt sites will only "
+              "cover the pull window derived from the other sites' history, "
+              "not their full record.")
+
     print(f"Pulling analysis {pull_start_str} .. {end_date} "
           f"(extend {len(site_max)}, replace-legacy {len(legacy_sites)}, "
-          f"{len(site_ids)} sites total)")
+          f"rebuild {len(rebuild_sites)}, {len(site_ids)} sites total)")
 
     analysis_ds = pull_gefs_analysis(
         start_time=np.datetime64(pull_start_str),
@@ -402,7 +428,11 @@ def run_stage3(start_date, end_date: str, output_dir: str, filesystem,
             old["datetime"] = _as_naive(old["datetime"])
             old = old[old["datetime"] < min_new].reindex(columns=COLUMN_ORDER)
             out = pd.concat([old, new_s[COLUMN_ORDER]], ignore_index=True)
-        else:                # fresh build or legacy replacement
+        else:                # fresh build, legacy replacement, or rebuild
+            if sid in rebuild_sites:
+                # Drop the old partition first so stale part files can't mix
+                # with the fresh write.
+                delete_stage3_site(output_dir, sid, filesystem)
             out = new_s[COLUMN_ORDER].copy()
 
         write_stage3_parquet(out, output_dir, filesystem=filesystem)
@@ -471,6 +501,12 @@ def main():
                     help=f"Local output directory. Default: {STAGE3_OUTPUT}")
     s3.add_argument("--s3", action="store_true",
                     help="Write to the production OSN bucket (needs OSN_KEY/OSN_SECRET).")
+    s3.add_argument("--rebuild", nargs="*", default=None, metavar="SITE_ID",
+                    help="Rebuild site(s) from scratch: skip the extend path, "
+                         "delete the existing partition, and write the pulled "
+                         "window fresh. No site args = all sites. Use with "
+                         "--start; for a chunked rebuild pass --rebuild only on "
+                         "the first chunk.")
 
     args = parser.parse_args()
 
@@ -501,7 +537,7 @@ def main():
         output_dir, filesystem = resolve_target(args.output, args.s3, S3_STAGE3_BUCKET)
         end = args.end or (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
         run_stage3(args.start, end, output_dir, filesystem,
-                   overlap_days=args.overlap_days)
+                   overlap_days=args.overlap_days, rebuild_sites=args.rebuild)
 
 
 if __name__ == "__main__":

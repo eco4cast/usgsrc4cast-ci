@@ -136,6 +136,32 @@ def stage3_site_summary(output_dir: str, site_id: str, filesystem=None):
     return (n_rows, pc.max(dt).as_py())
 
 
+def delete_stage3_site(output_dir: str, site_id: str, filesystem=None):
+    """
+    Delete an existing Stage 3 site partition (all part files).
+
+    Used by the --rebuild path so a fresh write cannot leave stale part files
+    behind — a parquet dataset reads every file in the partition directory.
+    No-op if the partition does not exist.
+
+    Parameters
+    ----------
+    output_dir : str
+        Stage 3 root (local path or S3 bucket key).
+    site_id : str
+        Site whose partition to delete.
+    filesystem : pyarrow.fs.FileSystem or None
+        None for local; otherwise an S3 filesystem.
+    """
+    fs = filesystem or pafs.LocalFileSystem()
+    path = os.path.join(output_dir, f"site_id={site_id}")
+    info = fs.get_file_info(path)
+    if info.type == pafs.FileType.Directory:
+        fs.delete_dir(path)
+    elif info.type == pafs.FileType.File:
+        fs.delete_file(path)
+
+
 def read_stage3_site(output_dir: str, site_id: str, filesystem=None):
     """
     Read the existing Stage 3 partition for one site, or None if absent.
@@ -276,6 +302,12 @@ def write_stage3_parquet(df: pd.DataFrame, output_dir: str, filesystem=None):
 
     Partition scheme: site_id={site}/part-0.parquet
 
+    reference_datetime is normalized to datetime64[ns] before writing so the
+    column is always arrow timestamp[ns] — matching the healthy USGS
+    partitions. An all-None object column would otherwise be written as arrow
+    null type, splitting the stage3 schema and breaking downstream arrow
+    dataset reads (see docs/stage3_reference_datetime_null_type_bug.md).
+
     Parameters
     ----------
     df : pd.DataFrame
@@ -290,6 +322,9 @@ def write_stage3_parquet(df: pd.DataFrame, output_dir: str, filesystem=None):
     """
     df = df[COLUMN_ORDER].copy()
     df["datetime"] = pd.to_datetime(df["datetime"])
+    # Explicit datetime64[ns]: bare pd.to_datetime on an all-NaT object column
+    # can infer a different resolution in newer pandas.
+    df["reference_datetime"] = pd.to_datetime(df["reference_datetime"]).astype("datetime64[ns]")
     df["parameter"] = df["parameter"].astype(int)
 
     # Sort by variable, datetime, parameter (matches R update_stage3.R behavior)
@@ -300,4 +335,13 @@ def write_stage3_parquet(df: pd.DataFrame, output_dir: str, filesystem=None):
 
         out = group.drop(columns=["site_id"])
         table = pa.Table.from_pandas(out, preserve_index=False)
+        # Guard: fail loudly rather than silently write a non-timestamp
+        # reference_datetime (e.g. arrow null type from an all-None column).
+        rd_type = table.schema.field("reference_datetime").type
+        if not pa.types.is_timestamp(rd_type):
+            raise TypeError(
+                f"stage3 reference_datetime for site_id={site_id} has arrow "
+                f"type {rd_type!r}; expected timestamp[ns]. Refusing to write "
+                f"(see docs/stage3_reference_datetime_null_type_bug.md)."
+            )
         _write_table(table, partition_dir, filesystem)
