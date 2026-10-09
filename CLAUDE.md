@@ -388,11 +388,16 @@ The NOAA GEFS driver pipeline is being migrated from the R-based gefs4cast appro
 - dynamical.org already extracts and processes GEFS data
 - Reduces infrastructure complexity and maintenance burden
 
-**dynamical.org endpoints:**
-```
-Analysis:  https://data.dynamical.org/noaa/gefs/analysis/latest.zarr
-Forecast:  https://data.dynamical.org/noaa/gefs/forecast-35-day/latest.zarr
-```
+**dynamical.org endpoints** (resolve via the STAC catalog, https://stac.dynamical.org/catalog.json; the old `data.dynamical.org/.../latest.zarr` URLs are retired after 2026-09-30):
+
+| Purpose | STAC collection id | Notes |
+|---|---|---|
+| Analysis (stage3) | `noaa-gefs-analysis` | physical, 0.25°, 27 vars, from 2000 — what the pipeline currently uses |
+| Analysis (stage3) | `noaa-gefs-analysis-0-25-degree-virtual` | virtual, 0.25°, 38 vars (incl. soil/flux), from 2020-10-01 |
+| Forecast (stage1/2) | `noaa-gefs-forecast-35-day` | physical, 0.25°, 27 vars — what the pipeline currently uses |
+| Forecast (stage1/2) | `noaa-gefs-forecast-35-day-0-5-degree-virtual` | virtual, **0.5°**, 268 vars |
+
+Virtual collections are "optimized for spatial (map) access patterns" — a good fit for this pipeline's per-site point extraction (low latency). Also available: `noaa-gefs-forecast-10-day-0-25-degree-virtual`, `noaa-gefs-forecast-16-day-0-5-degree-virtual`. Caveats before switching the pipeline: the virtual 35-day forecast is 0.5° (resolution downgrade vs 0.25° physical; Phase 1 validation showed grid-cell selection already shifts pressure ~4700 Pa at mountain sites, so re-validation would be needed), and it names precipitation `total_precipitation_surface` (not `precipitation_surface`).
 
 **Key mappings:**
 | Current Stage | dynamical.org Source | Notes |
@@ -440,3 +445,7 @@ New pipeline must produce identical parquet schema to current Stage 2/3:
 **Migration status:** Phases 1–3 complete. Phase 4 (parallel run & validation against the R products) and Phase 5 (cutover: retire `drivers_stage1.yaml`/`drivers_stage3.yaml`) not yet started.
 
 **Documentation:** See `docs/migrate_to_dynamical.md` for complete migration plan and status.
+
+## dynamical.org Data Access
+
+Official instructions for AI coding agents using dynamical.org datasets: https://dynamical.org/prompt.md
