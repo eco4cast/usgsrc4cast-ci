@@ -1,4 +1,5 @@
 import os
+import re
 
 import pandas as pd
 
@@ -35,6 +36,18 @@ def forecast_output_validator(forecast_file):
     if os.path.getsize(file_in) == 0:
         print("file is empty (0 bytes) - the upload may have been interrupted; the submitter needs to re-upload")
         return False
+
+    if file_in.endswith(".csv"):
+        # botocore >= 1.36 (recent AWS CLI v2 / boto3) can send PutObject as
+        # aws-chunked, and the submissions endpoint stores that framing
+        # verbatim on unsigned PUTs: the file then starts with a hex
+        # chunk-size line (e.g. "8d298") and every column check below fails
+        # in a confusing way (see issue #119).
+        with open(file_in, "r", errors="replace") as f:
+            first_line = f.readline().rstrip("\r\n")
+        if re.fullmatch(r"[0-9a-fA-F]+", first_line):
+            print("first line looks like undecoded chunked-transfer framing (aws-chunked): the upload client wrapped the file and the endpoint stored the wrapper. Re-upload with request checksum calculation set to when_required, e.g. AWS_REQUEST_CHECKSUM_CALCULATION=when_required")
+            return False
 
     if any(file_in.endswith(ext) for ext in [".csv", ".csv.gz"]):
         # if file is csv or csv.gz file

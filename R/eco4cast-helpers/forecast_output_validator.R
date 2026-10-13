@@ -17,6 +17,19 @@ forecast_output_validator <- function(forecast_file){
     return(invisible(FALSE))
   }
 
+  # botocore >= 1.36 (recent AWS CLI v2 / boto3) can send PutObject as
+  # aws-chunked, and the submissions endpoint stores that framing verbatim on
+  # unsigned PUTs: the file then starts with a hex chunk-size line (e.g.
+  # "8d298") and every column check below fails in a confusing way. Detect it
+  # explicitly (see issue #119).
+  if (grepl("[.]csv$", file_in)) {
+    first_line <- readLines(file_in, n = 1, warn = FALSE)
+    if (length(first_line) == 1 && !is.na(first_line) && grepl("^[0-9a-fA-F]+$", first_line)) {
+      usethis::ui_warn("first line looks like undecoded chunked-transfer framing (aws-chunked): the upload client wrapped the file and the endpoint stored the wrapper. Re-upload with request checksum calculation set to when_required, e.g. AWS_REQUEST_CHECKSUM_CALCULATION=when_required")
+      return(invisible(FALSE))
+    }
+  }
+
   if(any(vapply(c("[.]csv", "[.]csv\\.gz"), grepl, logical(1), file_in))){
 
     # if file is csv zip file
