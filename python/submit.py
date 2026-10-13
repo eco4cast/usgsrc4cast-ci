@@ -106,8 +106,17 @@ def submit_forecast_with_aws_cli(forecast_file,
             "--no-verify-ssl"
         ]
 
+        # botocore >= 1.36 (recent AWS CLI v2 / boto3) defaults to
+        # request_checksum_calculation="when_supported", which sends PutObject
+        # as aws-chunked with a CRC32 trailer. The submissions endpoint (Ceph
+        # RGW) stores that framing verbatim on unsigned PUTs, silently
+        # corrupting the file (see issue #119). when_required keeps plain
+        # Content-Length uploads.
+        env = dict(os.environ)
+        env["AWS_REQUEST_CHECKSUM_CALCULATION"] = "when_required"
+
         # Run the command
-        result = subprocess.run(command, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        result = subprocess.run(command, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env)
 
         # Print the output
         print(result.stdout.decode())

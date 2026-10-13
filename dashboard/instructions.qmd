@@ -200,6 +200,18 @@ download_and_exec_script("https://raw.githubusercontent.com/eco4cast/usgsrc4cast
 submit(forecast_file = "project_id-year-month-day-model_id.csv", project_id = "usgsrc4cast")
 ```
 
+::: {.callout-note}
+**Uploading directly with the AWS CLI?** Recent AWS CLI v2 / boto3 versions
+(botocore ≥ 1.36, mid-2024 onward) default to sending uploads with HTTP
+chunked framing and a checksum trailer. The submissions endpoint stores that
+framing verbatim on unsigned PUTs, which silently corrupts the file — the
+upload reports success, but the stored object starts with a hex chunk-size
+line instead of your CSV header, and the forecast is rejected as invalid.
+If you upload with `aws s3 cp ... --no-sign-request` yourself, set
+`AWS_REQUEST_CHECKSUM_CALCULATION=when_required` in your environment first.
+The `submit()` helpers above already do this for you.
+:::
+
 ## Post-submission
 
 ### Processing
