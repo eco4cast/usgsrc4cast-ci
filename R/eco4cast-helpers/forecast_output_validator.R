@@ -12,10 +12,20 @@ forecast_output_validator <- function(forecast_file){
 
   message(file_in)
 
+  if (file.size(file_in) == 0) {
+    usethis::ui_warn("file is empty (0 bytes) - the upload may have been interrupted; the submitter needs to re-upload")
+    return(invisible(FALSE))
+  }
+
   if(any(vapply(c("[.]csv", "[.]csv\\.gz"), grepl, logical(1), file_in))){
 
     # if file is csv zip file
     out <- readr::read_csv(file_in, guess_max = 1e6, show_col_types = FALSE)
+
+    if (nrow(out) == 0) {
+      usethis::ui_warn("file has no data rows")
+      valid <- FALSE
+    }
 
     if(lexists(out, c("model_id"))){
       usethis::ui_done("file has model_id column")

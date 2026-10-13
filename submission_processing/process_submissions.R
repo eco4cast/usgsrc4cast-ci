@@ -98,9 +98,17 @@ message("Listing submissions ...")
 # List the whole bucket with the authenticated alias (the only thing the key can
 # still do) and keep this challenge's submissions. neon4cast processes the rest
 # of the shared bucket, so filtering to project_id here is what divides the work.
-all_keys <- minioclient::mc_ls(paste0("submit/", config$submissions_bucket),
-                               recursive = TRUE,
-                               details = TRUE)$key
+listing <- minioclient::mc_ls(paste0("submit/", config$submissions_bucket),
+                              recursive = TRUE,
+                              details = TRUE)
+all_keys <- listing$key
+# Object sizes from the same listing, used below to tell an empty object in
+# the bucket (e.g. an interrupted upload) apart from a truncated download.
+key_bytes <- if (is.null(listing$bytes)) {
+  setNames(numeric(0), character(0))
+} else {
+  setNames(listing$bytes, listing$key)
+}
 
 wanted <- all_keys[stringr::str_detect(all_keys, config$project_id)]
 submission_keys <- setdiff(wanted, processed)
@@ -131,6 +139,7 @@ if(length(submission_keys) > 0){
   # alias, preserving the bucket's nested layout for the dir_ls() walk below. A
   # single unreadable object is reported and skipped rather than aborting.
   failed <- character(0)
+  empty <- character(0)
   for (key in submission_keys) {
     dest <- file.path(local_dir, key)
     fs::dir_create(dirname(dest))
@@ -141,18 +150,39 @@ if(length(submission_keys) > 0){
       warning("could not download ", key, ": ", conditionMessage(e), call. = FALSE)
       FALSE
     })
-    if (!isTRUE(copied)) failed <- c(failed, key)
+    if (!isTRUE(copied)) {
+      failed <- c(failed, key)
+    } else if (file.size(dest) == 0) {
+      # A zero-byte download is unusable, but it must NOT be marked
+      # processed: leaving the object in the bucket means a re-upload under
+      # the same key (or a retried transfer) is picked up on the next run.
+      remote <- key_bytes[[key]]
+      warning(paste0("downloaded file for ", key, " is 0 bytes",
+                     if (identical(remote, 0))
+                       " (object in the bucket is also empty - likely an interrupted upload; the submitter needs to re-upload)"
+                     else
+                       " (possible truncated download; will retry next run)"),
+              call. = FALSE)
+      empty <- c(empty, key)
+    }
   }
 
   submissions <- fs::dir_ls(local_dir,
                             recurse = TRUE,
                             type = "file")
+  if (length(empty) > 0) {
+    submissions <- setdiff(submissions, file.path(local_dir, empty))
+  }
 
   message(sprintf("Downloaded %d of %d submissions",
-                  length(submission_keys) - length(failed),
+                  length(submission_keys) - length(failed) - length(empty),
                   length(submission_keys)))
   if (length(failed) > 0) {
     message("Skipped unreadable submissions: ", paste(failed, collapse = ", "))
+  }
+  if (length(empty) > 0) {
+    message("Skipped empty downloads (left in bucket, will retry): ",
+            paste(empty, collapse = ", "))
   }
   print(submissions)
 

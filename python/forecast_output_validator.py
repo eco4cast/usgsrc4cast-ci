@@ -1,3 +1,5 @@
+import os
+
 import pandas as pd
 
 def lexists(df, name):
@@ -30,9 +32,17 @@ def forecast_output_validator(forecast_file):
 
     print(file_in)
 
+    if os.path.getsize(file_in) == 0:
+        print("file is empty (0 bytes) - the upload may have been interrupted; the submitter needs to re-upload")
+        return False
+
     if any(file_in.endswith(ext) for ext in [".csv", ".csv.gz"]):
         # if file is csv or csv.gz file
         out = pd.read_csv(file_in)
+
+        if len(out) == 0:
+            print("file has no data rows")
+            valid = False
 
         if lexists(out, "model_id"):
             print("file has model_id column")
