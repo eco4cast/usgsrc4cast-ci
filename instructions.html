@@ -590,6 +590,19 @@ background-size: cover;
 <span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>submit(forecast_file <span class="op">=</span> <span class="st">"project_id-year-month-day-model_id.csv"</span>, project_id <span class="op">=</span> <span class="st">"usgsrc4cast"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Uploading directly with the AWS CLI?</strong> Recent AWS CLI v2 / boto3 versions (botocore ≥ 1.36, mid-2024 onward) default to sending uploads with HTTP chunked framing and a checksum trailer. The submissions endpoint stores that framing verbatim on unsigned PUTs, which silently corrupts the file — the upload reports success, but the stored object starts with a hex chunk-size line instead of your CSV header, and the forecast is rejected as invalid. If you upload with <code>aws s3 cp ... --no-sign-request</code> yourself, set <code>AWS_REQUEST_CHECKSUM_CALCULATION=when_required</code> in your environment first. The <code>submit()</code> helpers above already do this for you.</p>
+</div>
+</div>
 </section>
 </section>
 <section id="post-submission" class="level2" data-number="7">
