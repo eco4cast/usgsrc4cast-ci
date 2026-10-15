@@ -49,6 +49,11 @@
       "href": "./models/hypernature_mech1.json"
     },
     {
+      "rel": "item",
+      "type": "application/json",
+      "href": "./models/hypernature_mech2.json"
+    },
+    {
       "rel": "parent",
       "type": "application/json",
       "href": "../collection.json"
@@ -91,7 +96,7 @@
       "interval": [
         [
           "2024-02-07T00:00:00Z",
-          "2026-11-17T00:00:00Z"
+          "2026-11-18T00:00:00Z"
         ]
       ]
     }
