@@ -15,10 +15,10 @@
   "properties": {
     "title": "hypernature_mech1",
     "description": "All scores for the Daily_Chlorophyll_a variable for the hypernature_mech1 model. Information for the model is provided as follows: A process-based (mechanistic) model of river phytoplankton with a single state variable, log chlorophyll-a, rather than a statistical or machine-learning model.\n\nParameters are estimated by DE-MC_Z (ter Braak & Vrugt 2008 — differential-evolution MCMC with snooker updates and an archive), with convergence assessed by rank-normalised split-R̂ and bulk/tail ESS (Vehtari et al. 2021). Fitting used blocked k-fold cross-validation on a pre-declared split with a held-out reserve.\n\nForecasts pool three uncertainty sources: posterior parameter draws, 31 NOAA GEFS v12 driver members, and accumulated process noise. Water temperature is forecast by an AR(1) model with exogenous GEFS air temperature; turbidity and discharge, which have no forecast product, by AR(1) reversion to a day-of-year climatology. Each driver forecast’s spread is calibrated against its own hindcast.\n\nImplemented in F# (filter and model) with Python for data and driver forecasting..\n                                    The model predicts this variable at the following sites: USGS-05586300.\n                                    Scores are metrics that describe how well forecasts compare to observations. The scores catalog includes are summaries of the forecasts (i.e., mean, median, confidence intervals), matched observations (if available), and scores (metrics of how well the model distribution compares to observations)",
-    "datetime": "2026-10-13T00:00:00Z",
-    "updated": "2026-10-15T00:00:00Z",
+    "datetime": "2026-10-14T00:00:00Z",
+    "updated": "2026-10-16T00:00:00Z",
     "start_datetime": "2026-10-12T00:00:00Z",
-    "end_datetime": "2026-10-14T00:00:00Z",
+    "end_datetime": "2026-10-15T00:00:00Z",
     "providers": [
       {
         "url": null,
