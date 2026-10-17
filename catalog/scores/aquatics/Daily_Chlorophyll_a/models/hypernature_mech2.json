@@ -15,10 +15,10 @@
   "properties": {
     "title": "hypernature_mech2",
     "description": "All scores for the Daily_Chlorophyll_a variable for the hypernature_mech2 model. Information for the model is provided as follows: A mechanistic (process-based) model, not machine learning. Log chlorophyll-a follows an ODE with temperature- and light-limited growth (Smith 1936 photosynthesis–irradiance curve, depth-integrated under Beer–Lambert attenuation driven by turbidity), temperature-dependent respiration, discharge washout, and a linearised density-dependence term. The system is linear in log space, so the one-day update is the exact Ornstein–Uhlenbeck solution and an exact Kalman filter is used — no ensemble or particle filter. The observation equation models the target as the daily mean of the sub-daily sonde record rather than a point sample, which needs a two-state filter and an added Brownian-bridge variance term. All 12 parameters are estimated jointly by Bayesian inference using DE-MC_Z differential-evolution MCMC (ter Braak & Vrugt 2008), converged to R̂ 1.002. Drivers are USGS NWIS and NOAA GEFS v12; future drivers are themselves forecast with AR(1) models. Forecasts pool parameter, driver-ensemble and process uncertainty into 200 members. Implemented in F#; no XGBoost, Random Forest or ARIMA.\n                                    The model predicts this variable at the following sites: USGS-05586300.\n                                    Scores are metrics that describe how well forecasts compare to observations. The scores catalog includes are summaries of the forecasts (i.e., mean, median, confidence intervals), matched observations (if available), and scores (metrics of how well the model distribution compares to observations)",
-    "datetime": "2026-10-14T00:00:00Z",
-    "updated": "2026-10-16T00:00:00Z",
+    "datetime": "2026-10-15T00:00:00Z",
+    "updated": "2026-10-17T00:00:00Z",
     "start_datetime": "2026-10-14T00:00:00Z",
-    "end_datetime": "2026-10-15T00:00:00Z",
+    "end_datetime": "2026-10-16T00:00:00Z",
     "providers": [
       {
         "url": null,
