@@ -24,7 +24,7 @@ This page visualizes the forecasts and forecast performance for the focal target
 
 ## Most recent forecasts {#sec-performance}
 
-Only the top performing models from the last 30 days are shown.
+All models from the last 30 days are shown.
 
 ```{r echo = FALSE}
 ### GET FORECASTS
@@ -79,15 +79,13 @@ ex_P1D <- df_P1D_scores |>
 ```
 
 ```{r}
-#Best models (based on last 30 days)
+#All models (based on last 30 days)
 best_cutoff <- Sys.Date() - lubridate::days(30)
 
 best_P1D_scores <- df_P1D_scores |>
   filter(reference_datetime > best_cutoff) |>
   summarise(score = mean(crps, na.rm = TRUE), .by = c("model_id","variable")) |>
-  arrange(variable, score) |>
-  group_by(variable) |>
-  slice(1:5)
+  arrange(variable, score)
 
 ```
 
@@ -114,7 +112,7 @@ df_P1D |>
 
 ## Forecast analysis
 
-Below are forecasts submitted 30 days ago and include the observations used to evaluate them. Mouse over to see the team id, scroll to zoom. Only the top five performing models are shown. Information on how to access the scores can be found in our [catalog](https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/scores/collection.json)
+Below are forecasts submitted 30 days ago and include the observations used to evaluate them. Mouse over to see the team id, scroll to zoom. All models are shown. Information on how to access the scores can be found in our [catalog](https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/eco4cast/usgsrc4cast-ci/main/catalog/scores/collection.json)
 
 ::: panel-tabset
 ### River Chlorophyll-a
