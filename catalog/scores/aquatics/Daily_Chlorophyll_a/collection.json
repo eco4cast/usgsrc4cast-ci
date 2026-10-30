@@ -11,17 +11,17 @@
     {
       "rel": "item",
       "type": "application/json",
-      "href": "./models/persistenceRW.json"
-    },
-    {
-      "rel": "item",
-      "type": "application/json",
       "href": "./models/USGSHABs1.json"
     },
     {
       "rel": "item",
       "type": "application/json",
-      "href": "./models/USGSHABsDL1.json"
+      "href": "./models/persistence.json"
+    },
+    {
+      "rel": "item",
+      "type": "application/json",
+      "href": "./models/persistenceRW.json"
     },
     {
       "rel": "item",
@@ -32,6 +32,11 @@
       "rel": "item",
       "type": "application/json",
       "href": "./models/usgs_habs_tirex.json"
+    },
+    {
+      "rel": "item",
+      "type": "application/json",
+      "href": "./models/USGSHABsDL1.json"
     },
     {
       "rel": "item",
@@ -47,11 +52,6 @@
       "rel": "item",
       "type": "application/json",
       "href": "./models/hypernature_mech2.json"
-    },
-    {
-      "rel": "item",
-      "type": "application/json",
-      "href": "./models/persistence.json"
     },
     {
       "rel": "parent",
@@ -96,7 +96,7 @@
       "interval": [
         [
           "2024-02-07T00:00:00Z",
-          "2026-10-28T00:00:00Z"
+          "2026-10-29T00:00:00Z"
         ]
       ]
     }
