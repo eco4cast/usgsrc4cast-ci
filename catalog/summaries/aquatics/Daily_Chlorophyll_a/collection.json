@@ -26,17 +26,17 @@
     {
       "rel": "item",
       "type": "application/json",
+      "href": "./models/persistence.json"
+    },
+    {
+      "rel": "item",
+      "type": "application/json",
       "href": "./models/persistenceRW.json"
     },
     {
       "rel": "item",
       "type": "application/json",
       "href": "./models/usgs_habs_tirex.json"
-    },
-    {
-      "rel": "item",
-      "type": "application/json",
-      "href": "./models/persistence.json"
     },
     {
       "rel": "item",
@@ -96,7 +96,7 @@
       "interval": [
         [
           "2024-02-07T00:00:00Z",
-          "2026-12-06T00:00:00Z"
+          "2026-12-07T00:00:00Z"
         ]
       ]
     }
